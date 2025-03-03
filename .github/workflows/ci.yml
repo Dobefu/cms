@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: ["*"]
+    tags: ["v*"]
+  pull_request:
+    branches: ["*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Create a .env file
+        run: |
+          touch .env
+          echo "APP_NAME=\"${{ vars.APP_NAME }}\"" >> .env
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+
+      - name: Install the latest version of Corepack
+        run: npm i -g corepack@latest
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+  test:
+    name: "Test"
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Create a .env file
+        run: |
+          touch .env
+          echo "APP_NAME=\"${{ vars.APP_NAME }}\"" >> .env
+
+      - name: Install the latest version of Corepack
+        run: npm i -g corepack@latest
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        run: pnpm coverage
+
+      - name: Delete the .env file after tests are completed
+        run: rm .env
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
