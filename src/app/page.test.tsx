@@ -1,15 +1,15 @@
-import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
-import Page from "./page";
+import { cleanup, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from 'vitest'
+import Page from './page'
 
-describe("Page", () => {
+describe('Page', () => {
   afterEach(() => {
-    cleanup();
-  });
+    cleanup()
+  })
 
-  it("Renders normally", () => {
-    render(Page());
+  it('Renders normally', () => {
+    render(Page())
 
-    expect(screen).toBeDefined();
-  });
-});
+    expect(screen).toBeDefined()
+  })
+})
