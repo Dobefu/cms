@@ -1,0 +1,13 @@
+# Build artifacts.
+build/
+coverage/
+
+# NextJS cache directory.
+.next/
+
+# GitHub config files.
+.github/
+
+# Package manager lockfiles.
+pnpm-lock.yaml
+package-lock.yml
