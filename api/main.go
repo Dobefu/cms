@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"github.com/Dobefu/cms/api/cmd/server"
+)
 
 func main() {
-	fmt.Println("Main")
+	port := 4000
+
+	server.Init(port)
 }
