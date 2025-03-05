@@ -1,2 +1,8 @@
+# The compiled binary.
 api
+
+# Temp directory files (mainly error logs).
 tmp/*
+
+# Go test and coverage output.
+*.out
