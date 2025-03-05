@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Dobefu/cms/api/cmd/color"
 	"github.com/Dobefu/cms/api/cmd/server"
 )
 
@@ -83,7 +84,7 @@ func listSubCommands() {
 	fmt.Fprintf(flag.CommandLine.Output(), "Usage of %s:\n", os.Args[0])
 
 	for idx, cmd := range cmds {
-		fmt.Printf("  %s:\n", idx)
+		color.PrintfColor(color.FgLightCyan, color.BgDefault, "  %s:\n", idx)
 		fmt.Printf("    %s\n", cmd.desc)
 	}
 
