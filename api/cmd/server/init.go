@@ -13,7 +13,7 @@ func Init(port int) (err error) {
 		Handler: router,
 	}
 
-	fmt.Printf("Listening on http://localhost:%d\n", port)
+	fmt.Printf("Starting server on http://localhost:%d\n", port)
 	err = server.ListenAndServe()
 
 	if err != nil {

@@ -11,6 +11,20 @@ import (
 func handleRoutes() *http.ServeMux {
 	mux := http.NewServeMux()
 
+	mux.Handle(
+		"GET /{catchall...}",
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			path := strings.TrimRight(r.URL.Path, "/")
+
+			if path != r.URL.Path {
+				http.Redirect(w, r, path, http.StatusSeeOther)
+				return
+			}
+
+			w.WriteHeader(404)
+		}),
+	)
+
 	apiRoute(mux, 1, "/", "GET", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "{}")
 	})
