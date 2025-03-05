@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "predev": "cd ./api && go build",
+    "dev": "concurrently --names \"CMS,API\" -c white.dim,cyan \"next dev --turbopack\" \"cd ./api && air\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint && prettier . --check",
@@ -28,6 +29,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/coverage-v8": "3.0.7",
     "@vitest/ui": "3.0.7",
+    "concurrently": "^9.1.2",
     "eslint": "^9.21.0",
     "eslint-config-next": "15.2.0",
     "eslint-config-prettier": "^10.0.2",
