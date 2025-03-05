@@ -2,11 +2,12 @@ package main
 
 import (
 	"flag"
-	"log"
 	"os"
+
+	"github.com/Dobefu/cms/api/cmd/logger"
 )
 
 var flagNewFlagSet = flag.NewFlagSet
 
-var loggerFatal = log.Fatal
+var loggerFatal = logger.Fatal
 var osExit = os.Exit
