@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func Init(port int) (err error) {
+func Init(port uint) (err error) {
 	router := handleRoutes()
 
 	server := &http.Server{
