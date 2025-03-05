@@ -6,12 +6,18 @@ import (
 	"os"
 
 	"github.com/Dobefu/cms/api/cmd/color"
+	"github.com/Dobefu/cms/api/cmd/logger"
 	"github.com/Dobefu/cms/api/cmd/server"
 )
 
 type subCommand struct {
 	desc string
 }
+
+var (
+	verbose = flag.Bool("verbose", false, "Enable verbose logging")
+	quiet   = flag.Bool("quiet", false, "Only log warnings and errors")
+)
 
 func main() {
 	flag.Parse()
@@ -71,13 +77,19 @@ func registerGlobalFlags(fset *flag.FlagSet) {
 }
 
 func applyGlobalFlags() {
-	// TODO
+	if *verbose {
+		logger.SetLogLevel(logger.LOG_VERBOSE)
+	}
+
+	if *quiet {
+		logger.SetLogLevel(logger.LOG_WARNING)
+	}
 }
 
 func listSubCommands() {
 	cmds := map[string]subCommand{
 		"server": {
-			desc: "Run a webserver with API endpoints",
+			desc: "Run the API server",
 		},
 	}
 
