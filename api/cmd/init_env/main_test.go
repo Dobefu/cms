@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/Dobefu/csb/cmd/logger"
+	"github.com/Dobefu/cms/api/cmd/logger"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
 )
