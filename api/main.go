@@ -7,7 +7,6 @@ import (
 
 	"github.com/Dobefu/cms/api/cmd/color"
 	"github.com/Dobefu/cms/api/cmd/logger"
-	"github.com/Dobefu/cms/api/cmd/server"
 )
 
 type subCommand struct {
@@ -25,7 +24,7 @@ func main() {
 	args := flag.Args()
 
 	if len(args) < 1 {
-		listSubCommands()
+		listSubCommands(1)
 		return
 	}
 
@@ -37,7 +36,7 @@ func main() {
 }
 
 func runSubCommand(args []string) error {
-	flag := flagNewFlagSet(args[0], flag.ExitOnError)
+	flag := flagNewFlagSet(args[0], flag.ContinueOnError)
 	var err error
 
 	switch args[0] {
@@ -52,14 +51,15 @@ func runSubCommand(args []string) error {
 		}
 
 		applyGlobalFlags()
-		err = server.Init(*port)
+		err = serverInit(*port)
 
 		if err != nil {
-			fmt.Printf("Could not start server: %s\n", err)
+			fmt.Printf("could not start the server: %s\n", err)
 		}
 
 	default:
-		listSubCommands()
+		applyGlobalFlags()
+		listSubCommands(1)
 	}
 
 	return err
@@ -81,7 +81,7 @@ func applyGlobalFlags() {
 	}
 }
 
-func listSubCommands() {
+func listSubCommands(exitCode int) {
 	cmds := map[string]subCommand{
 		"server": {
 			desc: "Run the API server",
@@ -95,5 +95,5 @@ func listSubCommands() {
 		fmt.Printf("    %s\n", cmd.desc)
 	}
 
-	osExit(1)
+	osExit(exitCode)
 }
