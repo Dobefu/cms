@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/Dobefu/cms/api/cmd/logger"
+	"github.com/Dobefu/cms/api/cmd/migrate_db"
 	"github.com/Dobefu/cms/api/cmd/server"
 	"github.com/stretchr/testify/assert"
 )
@@ -27,11 +28,15 @@ func setupMainTests() (cleanup func()) {
 
 	osExit = func(code int) { isOsExitCalled = true }
 	serverInit = func(port uint) (err error) { return nil }
+	migrateDbMain = func(reset bool) error { return nil }
+	databaseConnect = func() error { return nil }
+	dbPing = func() error { return nil }
 
 	return func() {
 		loggerFatal = logger.Fatal
 		osExit = os.Exit
 		serverInit = server.Init
+		migrateDbMain = migrate_db.Main
 		os.Args = oldOsArgs
 	}
 }
@@ -39,6 +44,28 @@ func setupMainTests() (cleanup func()) {
 func TestMainNoArguments(t *testing.T) {
 	cleanup := setupMainTests()
 	defer cleanup()
+
+	main()
+	assert.True(t, isOsExitCalled)
+}
+
+func TestMainErrDatabaseConnect(t *testing.T) {
+	cleanup := setupMainTests()
+	defer cleanup()
+
+	databaseConnect = func() error { return assert.AnError }
+	os.Args = []string{os.Args[0], "bogus"}
+
+	main()
+	assert.True(t, isOsExitCalled)
+}
+
+func TestMainErrDbPing(t *testing.T) {
+	cleanup := setupMainTests()
+	defer cleanup()
+
+	dbPing = func() error { return assert.AnError }
+	os.Args = []string{os.Args[0], "bogus"}
 
 	main()
 	assert.True(t, isOsExitCalled)
@@ -103,4 +130,25 @@ func TestMainWithSubCommandServer(t *testing.T) {
 
 	main()
 	assert.False(t, isLoggerFatalCalled)
+}
+
+func TestMainWithSubCommandMigrateErr(t *testing.T) {
+	cleanup := setupMainTests()
+	defer cleanup()
+
+	migrateDbMain = func(reset bool) error { return assert.AnError }
+	os.Args = []string{os.Args[0], "migrate"}
+
+	main()
+	assert.True(t, isLoggerFatalCalled)
+}
+
+func TestMainWithSubCommandMigrateErrFlag(t *testing.T) {
+	cleanup := setupMainTests()
+	defer cleanup()
+
+	os.Args = []string{os.Args[0], "migrate", "--bogus"}
+
+	main()
+	assert.True(t, isLoggerFatalCalled)
 }
