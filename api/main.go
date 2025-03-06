@@ -37,11 +37,6 @@ func main() {
 }
 
 func runSubCommand(args []string) error {
-	if len(args) < 1 {
-		listSubCommands()
-		return nil
-	}
-
 	flag := flagNewFlagSet(args[0], flag.ExitOnError)
 	var err error
 
