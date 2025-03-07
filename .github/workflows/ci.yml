@@ -11,8 +11,8 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    name: "Build"
+  build-nextjs:
+    name: "Build NextJS"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -48,9 +48,9 @@ jobs:
       - name: Build
         run: pnpm build
 
-  test:
-    name: "Test"
-    needs: [build]
+  test-nextjs:
+    name: "Test NextJS"
+    needs: [build-nextjs]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -89,7 +89,7 @@ jobs:
 
   sonar-scan:
     name: "SonarQube Scan"
-    needs: [test]
+    needs: [test-nextjs]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
