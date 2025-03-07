@@ -16,6 +16,7 @@ import (
 var (
 	isOsExitCalled      bool
 	isLoggerFatalCalled bool
+	envFile             = "--env-file=.env.example"
 )
 
 func setupMainTests() (cleanup func()) {
@@ -61,7 +62,7 @@ func TestMainErrDatabaseConnect(t *testing.T) {
 	defer cleanup()
 
 	databaseConnect = func() error { return assert.AnError }
-	os.Args = []string{os.Args[0], "bogus"}
+	os.Args = []string{os.Args[0], "bogus", envFile}
 
 	main()
 	assert.True(t, isOsExitCalled)
@@ -72,7 +73,7 @@ func TestMainErrDbPing(t *testing.T) {
 	defer cleanup()
 
 	dbPing = func() error { return assert.AnError }
-	os.Args = []string{os.Args[0], "bogus"}
+	os.Args = []string{os.Args[0], "bogus", envFile}
 
 	main()
 	assert.True(t, isOsExitCalled)
@@ -82,7 +83,7 @@ func TestMainWithSubCommandErr(t *testing.T) {
 	cleanup := setupMainTests()
 	defer cleanup()
 
-	os.Args = []string{os.Args[0], "bogus"}
+	os.Args = []string{os.Args[0], "bogus", envFile}
 
 	main()
 	assert.True(t, isOsExitCalled)
@@ -92,7 +93,7 @@ func TestMainWithSubCommandVerbose(t *testing.T) {
 	cleanup := setupMainTests()
 	defer cleanup()
 
-	os.Args = []string{os.Args[0], "--verbose"}
+	os.Args = []string{os.Args[0], "--verbose", envFile}
 
 	main()
 	assert.True(t, isOsExitCalled)
@@ -102,7 +103,7 @@ func TestMainWithSubCommandQuiet(t *testing.T) {
 	cleanup := setupMainTests()
 	defer cleanup()
 
-	os.Args = []string{os.Args[0], "--quiet"}
+	os.Args = []string{os.Args[0], "--quiet", envFile}
 
 	main()
 	assert.True(t, isOsExitCalled)
@@ -112,7 +113,7 @@ func TestMainWithSubCommandServerErrFlag(t *testing.T) {
 	cleanup := setupMainTests()
 	defer cleanup()
 
-	os.Args = []string{os.Args[0], "server", "--bogus"}
+	os.Args = []string{os.Args[0], "server", "--bogus", envFile}
 
 	main()
 	assert.True(t, isLoggerFatalCalled)
@@ -123,7 +124,7 @@ func TestMainWithSubCommandServerErr(t *testing.T) {
 	defer cleanup()
 
 	serverInit = func(port uint) (err error) { return errors.New("server subcommand test error") }
-	os.Args = []string{os.Args[0], "server"}
+	os.Args = []string{os.Args[0], "server", envFile}
 
 	main()
 	assert.True(t, isLoggerFatalCalled)
@@ -133,7 +134,7 @@ func TestMainWithSubCommandServer(t *testing.T) {
 	cleanup := setupMainTests()
 	defer cleanup()
 
-	os.Args = []string{os.Args[0], "server"}
+	os.Args = []string{os.Args[0], "server", envFile}
 
 	main()
 	assert.False(t, isLoggerFatalCalled)
@@ -144,7 +145,7 @@ func TestMainWithSubCommandMigrateErr(t *testing.T) {
 	defer cleanup()
 
 	migrateDbMain = func(reset bool) error { return assert.AnError }
-	os.Args = []string{os.Args[0], "migrate"}
+	os.Args = []string{os.Args[0], "migrate", envFile}
 
 	main()
 	assert.True(t, isLoggerFatalCalled)
@@ -154,7 +155,7 @@ func TestMainWithSubCommandMigrateErrFlag(t *testing.T) {
 	cleanup := setupMainTests()
 	defer cleanup()
 
-	os.Args = []string{os.Args[0], "migrate", "--bogus"}
+	os.Args = []string{os.Args[0], "migrate", "--bogus", envFile}
 
 	main()
 	assert.True(t, isLoggerFatalCalled)
@@ -167,7 +168,7 @@ func TestMainWithSubCommandUserCreateErr(t *testing.T) {
 	cliCreateUser = func(username string, email string, password string) (err error) {
 		return assert.AnError
 	}
-	os.Args = []string{os.Args[0], "user:create"}
+	os.Args = []string{os.Args[0], "user:create", envFile}
 
 	main()
 	assert.True(t, isLoggerFatalCalled)
@@ -177,7 +178,7 @@ func TestMainWithSubCommandUserCreateErrFlag(t *testing.T) {
 	cleanup := setupMainTests()
 	defer cleanup()
 
-	os.Args = []string{os.Args[0], "user:create", "--bogus"}
+	os.Args = []string{os.Args[0], "user:create", "--bogus", envFile}
 
 	main()
 	assert.True(t, isLoggerFatalCalled)
