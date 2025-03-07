@@ -8,9 +8,7 @@ import (
 	"github.com/Dobefu/cms/api/cmd/server/middleware"
 )
 
-func handleRoutes() *http.ServeMux {
-	mux := http.NewServeMux()
-
+func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 	mux.Handle(
 		"GET /{catchall...}",
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
