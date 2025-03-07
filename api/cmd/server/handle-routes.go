@@ -14,7 +14,7 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			path := strings.TrimRight(r.URL.Path, "/")
 
-			if path != r.URL.Path {
+			if path != "" && path != r.URL.Path {
 				http.Redirect(w, r, path, http.StatusSeeOther)
 				return
 			}
