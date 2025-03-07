@@ -3,6 +3,7 @@ module github.com/Dobefu/cms/api
 go 1.23.5
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.9
 	github.com/stretchr/testify v1.10.0
