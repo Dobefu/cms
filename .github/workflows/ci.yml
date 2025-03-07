@@ -17,10 +17,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v2
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: "./.nvmrc"
+          cache: 'pnpm'
+          cache-dependency-path: './pnpm-lock.yaml'
 
       - name: Create a .env file
         run: |
@@ -36,12 +40,6 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
-
-      - name: Install the latest version of Corepack
-        run: npm i -g corepack@latest
-
-      - name: Enable Corepack
-        run: corepack enable
 
       - name: Install dependencies
         run: pnpm install
@@ -77,23 +75,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v2
+
       - uses: actions/download-artifact@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: "./.nvmrc"
+          cache: 'pnpm'
+          cache-dependency-path: './pnpm-lock.yaml'
 
       - name: Create a .env file
         run: |
           touch .env
           echo "APP_NAME=\"${{ vars.APP_NAME }}\"" >> .env
-
-      - name: Install the latest version of Corepack
-        run: npm i -g corepack@latest
-
-      - name: Enable Corepack
-        run: corepack enable
 
       - name: Install dependencies
         run: pnpm install
