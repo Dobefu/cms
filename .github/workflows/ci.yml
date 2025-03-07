@@ -48,6 +48,25 @@ jobs:
       - name: Build
         run: pnpm build
 
+  build-golang:
+    name: "Build Golang"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+
+      - name: Install dependencies
+        working-directory: ./api
+        run: go get .
+
+      - name: Build
+        working-directory: ./api
+        run: go build -v ./...
+
   test-nextjs:
     name: "Test NextJS"
     needs: [build-nextjs]
@@ -87,9 +106,40 @@ jobs:
           name: coverage
           path: coverage/
 
+  test-golang:
+    name: "Test Golang"
+    needs: [build-golang]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+
+      - name: Create a test results directory
+        working-directory: ./api
+        run: mkdir test-results
+
+      - name: Run tests
+        working-directory: ./api
+        run: |
+          go test "./..." -coverprofile="test-results/coverage.out" -covermode=count
+          go test "./..." -coverprofile="coverage.out" -covermode=count -json > test-report.out
+          grep -v "test_utils.go" coverage.out > coverage.tmp
+          grep -v "test_utils.go" test-report.out > test-report.tmp
+          mv coverage.tmp test-results/coverage.out
+          mv test-report.tmp test-results/test-report.out
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: api/test-results/
+
   sonar-scan:
     name: "SonarQube Scan"
-    needs: [test-nextjs]
+    needs: [test-nextjs, test-golang]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
