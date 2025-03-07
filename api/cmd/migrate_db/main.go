@@ -7,8 +7,12 @@ import (
 	"github.com/Dobefu/cms/api/cmd/database"
 )
 
-func Main(reset bool) error {
-	var err error
+func Main(reset bool) (err error) {
+	err = createMigrationsTable()
+
+	if err != nil {
+		return err
+	}
 
 	if reset {
 		loggerInfo("Reverting existing migrations")
@@ -29,12 +33,8 @@ func Main(reset bool) error {
 	return nil
 }
 
-func down() error {
-	version, _, err := getMigrationState()
-
-	if err != nil {
-		return err
-	}
+func down() (err error) {
+	version, _ := getMigrationState()
 
 	if version == 0 {
 		loggerInfo("Nothing to revert")
@@ -80,12 +80,8 @@ func down() error {
 	return nil
 }
 
-func up() error {
-	version, _, err := getMigrationState()
-
-	if err != nil {
-		return err
-	}
+func up() (err error) {
+	version, _ := getMigrationState()
 
 	files, err := getFs().ReadDir("migrations")
 
@@ -125,8 +121,8 @@ func up() error {
 	return nil
 }
 
-func createMigrationsTable() error {
-	_, err := database.DB.Exec(`
+func createMigrationsTable() (err error) {
+	_, err = database.DB.Exec(`
     CREATE TABLE IF NOT EXISTS migrations(
       version bigint NOT NULL PRIMARY KEY,
       dirty boolean NOT NULL
@@ -140,44 +136,28 @@ func createMigrationsTable() error {
 	return nil
 }
 
-func getMigrationState() (int, bool, error) {
-	err := createMigrationsTable()
-
-	if err != nil {
-		return 0, true, err
-	}
-
+func getMigrationState() (version int, dirty bool) {
 	row := database.DB.QueryRow("SELECT version,dirty FROM migrations LIMIT 1")
-
-	var version int
-	var dirty bool
-
-	err = row.Scan(&version, &dirty)
+	err := row.Scan(&version, &dirty)
 
 	// If nothing is found, the table is empty.
 	// This is fine, since an initial migration will produce this result.
 	// When this happens, default values should be returned.
 	if err != nil {
-		return 0, false, nil
+		return 0, false
 	}
 
-	return version, dirty, nil
+	return version, dirty
 }
 
-func setMigrationState(version int, dirty bool) error {
-	err := createMigrationsTable()
-
-	if err != nil {
-		return err
-	}
-
+func setMigrationState(version int, dirty bool) (err error) {
 	_, err = database.DB.Exec("TRUNCATE migrations")
 
 	if err != nil {
 		return err
 	}
 
-	_, err = database.DB.Exec("INSERT into migrations (version, dirty) VALUES ($1, $2)", version, dirty)
+	_, err = database.DB.Exec("INSERT INTO migrations (version, dirty) VALUES ($1, $2)", version, dirty)
 
 	if err != nil {
 		return err
@@ -186,7 +166,7 @@ func setMigrationState(version int, dirty bool) error {
 	return nil
 }
 
-func runMigration(filename string, index int) error {
+func runMigration(filename string, index int) (err error) {
 	queryBytes, err := getFs().ReadFile(fmt.Sprintf("migrations/%s", filename))
 
 	if err != nil {
