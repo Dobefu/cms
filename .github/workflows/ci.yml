@@ -69,7 +69,6 @@ jobs:
 
   test-nextjs:
     name: "Test NextJS"
-    needs: [build-nextjs]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -108,7 +107,6 @@ jobs:
 
   test-golang:
     name: "Test Golang"
-    needs: [build-golang]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
