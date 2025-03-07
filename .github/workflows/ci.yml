@@ -134,7 +134,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: api/test-results
+          name: test-results
           path: api/test-results/
 
   sonar-scan:
