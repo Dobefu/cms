@@ -53,6 +53,8 @@ func TestMainNoArguments(t *testing.T) {
 	cleanup := setupMainTests()
 	defer cleanup()
 
+	os.Args = []string{os.Args[0], envFile}
+
 	main()
 	assert.True(t, isOsExitCalled)
 }
