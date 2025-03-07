@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
+  generateBuildId: () => {
+    return process.env.GIT_HASH ?? null
+  },
   async headers() {
     return [
       {
