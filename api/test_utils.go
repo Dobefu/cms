@@ -19,4 +19,4 @@ var loggerFatal = logger.Fatal
 var osExit = os.Exit
 var serverInit = server.Init
 var migrateDbMain = migrate_db.Main
-var cliUserCreate = cli.CreateUser
+var cliCreateUser = cli.CreateUser

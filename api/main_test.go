@@ -5,6 +5,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Dobefu/cms/api/cmd/cli"
+	"github.com/Dobefu/cms/api/cmd/database"
 	"github.com/Dobefu/cms/api/cmd/logger"
 	"github.com/Dobefu/cms/api/cmd/migrate_db"
 	"github.com/Dobefu/cms/api/cmd/server"
@@ -31,12 +33,17 @@ func setupMainTests() (cleanup func()) {
 	migrateDbMain = func(reset bool) error { return nil }
 	databaseConnect = func() error { return nil }
 	dbPing = func() error { return nil }
+	cliCreateUser = func(username string, email string, password string) (err error) {
+		return nil
+	}
 
 	return func() {
 		loggerFatal = logger.Fatal
 		osExit = os.Exit
 		serverInit = server.Init
 		migrateDbMain = migrate_db.Main
+		dbPing = func() error { return database.DB.Ping() }
+		cliCreateUser = cli.CreateUser
 		os.Args = oldOsArgs
 	}
 }
@@ -148,6 +155,29 @@ func TestMainWithSubCommandMigrateErrFlag(t *testing.T) {
 	defer cleanup()
 
 	os.Args = []string{os.Args[0], "migrate", "--bogus"}
+
+	main()
+	assert.True(t, isLoggerFatalCalled)
+}
+
+func TestMainWithSubCommandUserCreateErr(t *testing.T) {
+	cleanup := setupMainTests()
+	defer cleanup()
+
+	cliCreateUser = func(username string, email string, password string) (err error) {
+		return assert.AnError
+	}
+	os.Args = []string{os.Args[0], "user:create"}
+
+	main()
+	assert.True(t, isLoggerFatalCalled)
+}
+
+func TestMainWithSubCommandUserCreateErrFlag(t *testing.T) {
+	cleanup := setupMainTests()
+	defer cleanup()
+
+	os.Args = []string{os.Args[0], "user:create", "--bogus"}
 
 	main()
 	assert.True(t, isLoggerFatalCalled)

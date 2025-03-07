@@ -103,7 +103,7 @@ func runSubCommand(args []string) error {
 		}
 
 		applyGlobalFlags()
-		err = cliUserCreate(*username, *email, *password)
+		err = cliCreateUser(*username, *email, *password)
 
 		if err != nil {
 			fmt.Printf("user creation failed: %s\n", err)
