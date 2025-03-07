@@ -90,6 +90,25 @@ func runSubCommand(args []string) error {
 			fmt.Printf("database migration failed: %s\n", err)
 		}
 
+	case "user:create":
+		username := flag.String("username", "", "The username")
+		email := flag.String("email", "", "The email address of the user")
+		password := flag.String("password", "", "The password of the user")
+
+		registerGlobalFlags(flag)
+		err = flag.Parse(args[1:])
+
+		if err != nil {
+			break
+		}
+
+		applyGlobalFlags()
+		err = cliUserCreate(*username, *email, *password)
+
+		if err != nil {
+			fmt.Printf("user creation failed: %s\n", err)
+		}
+
 	default:
 		applyGlobalFlags()
 		listSubCommands(1)
@@ -124,6 +143,9 @@ func listSubCommands(exitCode int) {
 		},
 		"migrate": {
 			desc: "Migrate the database",
+		},
+		"user:create": {
+			desc: "Create a new user",
 		},
 	}
 
