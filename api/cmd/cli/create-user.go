@@ -2,7 +2,6 @@ package cli
 
 import (
 	"github.com/Dobefu/cms/api/cmd/cli/utils"
-	"github.com/Dobefu/cms/api/cmd/user"
 )
 
 func CreateUser(username string, email string, password string) (err error) {
@@ -24,7 +23,7 @@ func CreateUser(username string, email string, password string) (err error) {
 		return err
 	}
 
-	err = user.Create(username, email, password, true)
+	err = userCreate(username, email, password, true)
 
 	if err != nil {
 		return err
