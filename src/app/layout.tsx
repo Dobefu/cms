@@ -1,3 +1,4 @@
+import Footer from '@/components/layout/footer'
 import Header from '@/components/layout/header'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
@@ -28,13 +29,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html className="h-full" lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-zinc-100 text-black antialiased dark:bg-zinc-900 dark:text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-full flex-col gap-4 bg-zinc-100 text-black antialiased dark:bg-zinc-900 dark:text-white`}
       >
         <Header />
 
-        {children}
+        <main className="flex-1" id="main-content">
+          {children}
+        </main>
+
+        <Footer />
       </body>
     </html>
   )
