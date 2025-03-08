@@ -3,7 +3,12 @@ import Heading from '@/components/elements/heading'
 import Input from '@/components/form/input'
 import Label from '@/components/form/label'
 import Container from '@/components/layout/container'
+import { Metadata } from 'next'
 import Form from 'next/form'
+
+export const metadata: Metadata = {
+  title: 'Log in',
+}
 
 export default function Login() {
   return (
