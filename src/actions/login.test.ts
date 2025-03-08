@@ -39,14 +39,36 @@ describe('Login', () => {
     expect(spy).not.toHaveBeenCalled()
   })
 
-  it('Returns an error when the fetch call fails', async () => {
+  it('Returns a JSON error when the fetch call fails', async () => {
     const spy = vi.spyOn(navigation, 'redirect')
 
     global.fetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 422,
       json: () => {
-        return Promise.resolve(JSON.stringify(''))
+        return Promise.resolve({
+          data: null,
+          error: 'Test error',
+        })
+      },
+    })
+
+    const formData = new FormData()
+    formData.append('username', 'Username')
+    formData.append('password', 'Password')
+
+    await login(formData)
+    expect(spy).not.toHaveBeenCalled()
+  })
+
+  it('Returns a generic error when the fetch call fails', async () => {
+    const spy = vi.spyOn(navigation, 'redirect')
+
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 422,
+      json: () => {
+        return Promise.resolve('')
       },
     })
 
