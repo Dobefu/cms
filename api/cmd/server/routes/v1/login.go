@@ -13,6 +13,12 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+
+	if err != nil {
+		utils.PrintError(w, errors.New("Internal server error"), true)
+	}
+
 	username := r.FormValue("username")
 	password := r.FormValue("password")
 
@@ -27,7 +33,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	)
 
 	var hashedPassword string
-	err := row.Scan(&hashedPassword)
+	err = row.Scan(&hashedPassword)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -46,5 +52,5 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprint(w, "{}")
+	fmt.Fprint(w, `{"data":null,"error":null}`)
 }
