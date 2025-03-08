@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { vi } from 'vitest'
 
 process.env.MOCK_PATHNAME = '/'
-process.env.NEXT_PUBLIC_APP_URL = 'http://localhost.test'
+process.env.API_ENDPOINT = 'http://api-endpoint'
 
 vi.mock('react', async () => {
   const actual = await vi.importActual('react')
