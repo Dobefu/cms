@@ -10,6 +10,7 @@ export type Props = Readonly<{
 export default function Heading({ children, className, level }: Props) {
   if (!level || level < 1 || level > 6) {
     console.error('Invalid tag level')
+    return
   }
 
   const Tag = `h${level}` as keyof JSX.IntrinsicElements
