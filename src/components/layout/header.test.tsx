@@ -11,5 +11,6 @@ describe('Header', () => {
     render(<Header />)
 
     expect(screen.getByRole('banner')).toBeDefined()
+    expect(screen.getByRole('navigation')).toBeDefined()
   })
 })
