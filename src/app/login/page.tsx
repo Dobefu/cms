@@ -21,7 +21,7 @@ export default function Login() {
         <Form action={login} className="flex flex-col gap-4">
           <Label>
             Username
-            <Input name="username" placeholder="Username" />
+            <Input autoFocus name="username" placeholder="Username" />
           </Label>
 
           <Label>
