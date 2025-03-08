@@ -1,3 +1,7 @@
 export default function Footer() {
-  return <footer>FOOTER</footer>
+  return (
+    <footer className="flex items-center gap-4 p-4">
+      {process.env.APP_NAME}
+    </footer>
+  )
 }
