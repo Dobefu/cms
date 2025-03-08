@@ -35,7 +35,13 @@ export async function login(formData: FormData) {
         })
 
         if (!response.ok) {
-          throw `response returned status code ${response.status}`
+          const errJson = await response.json()
+
+          if (errJson && 'error' in errJson) {
+            throw new Error(errJson.error)
+          }
+
+          throw new Error(`response returned status code ${response.status}`)
         }
 
         return response
