@@ -10,4 +10,4 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: db
     ports:
-      - "2345:5432"
+      - '2345:5432'
