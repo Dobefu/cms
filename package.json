@@ -12,7 +12,8 @@
     "lint:fix": "next lint && prettier . --write",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest --coverage"
+    "coverage": "vitest --coverage",
+    "sql": "docker compose exec -it db psql db"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.67.2",
