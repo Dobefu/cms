@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/Dobefu/cms/api/cmd/database"
 	"github.com/Dobefu/cms/api/cmd/logger"
@@ -13,13 +14,6 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-
-	if err != nil {
-		utils.PrintError(w, errors.New("Internal server error"), true)
-		return
-	}
-
 	username := r.FormValue("username")
 	password := r.FormValue("password")
 
@@ -34,7 +28,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	)
 
 	var hashedPassword string
-	err = row.Scan(&hashedPassword)
+	err := row.Scan(&hashedPassword)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -50,6 +44,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		utils.PrintError(w, errors.New("Invalid username or password"), false)
+		return
+	}
+
+	_, err = database.DB.Exec(
+		"UPDATE users SET last_login = $1 WHERE username = $2",
+		time.Now().UTC(),
+		username,
+	)
+
+	if err != nil {
+		logger.Error(err.Error())
+		utils.PrintError(w, errors.New("Internal server error"), true)
 		return
 	}
 

@@ -27,17 +27,6 @@ func setupLoginTests(t *testing.T) (rr *httptest.ResponseRecorder, mock sqlmock.
 	}
 }
 
-func TestLoginErrMissingBody(t *testing.T) {
-	rr, _, cleanup := setupLoginTests(t)
-	defer cleanup()
-
-	req, err := http.NewRequest("POST", "", nil)
-	assert.NoError(t, err)
-
-	Login(rr, req)
-	assert.JSONEq(t, `{"data": null, "error": "Internal server error"}`, rr.Body.String())
-}
-
 func TestLoginErrMissingCredentials(t *testing.T) {
 	rr, _, cleanup := setupLoginTests(t)
 	defer cleanup()
@@ -94,6 +83,28 @@ func TestLoginErrInvalidPassword(t *testing.T) {
 	assert.JSONEq(t, `{"data": null, "error": "Invalid username or password"}`, rr.Body.String())
 }
 
+func TestLoginErrSetLastUpdated(t *testing.T) {
+	rr, mock, cleanup := setupLoginTests(t)
+	defer cleanup()
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte("test"), 12)
+	assert.NoError(t, err)
+
+	mock.ExpectQuery("SELECT password FROM users WHERE .+ LIMIT 1").WillReturnRows(
+		sqlmock.NewRows([]string{"password"}).AddRow(hashedPassword),
+	)
+
+	mock.ExpectExec("UPDATE users SET last_login = .+").WillReturnError(assert.AnError)
+
+	req, err := http.NewRequest("POST", "", strings.NewReader("username=test&password=test"))
+	assert.NoError(t, err)
+
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	Login(rr, req)
+	assert.JSONEq(t, `{"data": null, "error": "Internal server error"}`, rr.Body.String())
+}
+
 func TestLoginSuccess(t *testing.T) {
 	rr, mock, cleanup := setupLoginTests(t)
 	defer cleanup()
@@ -104,6 +115,8 @@ func TestLoginSuccess(t *testing.T) {
 	mock.ExpectQuery("SELECT password FROM users WHERE .+ LIMIT 1").WillReturnRows(
 		sqlmock.NewRows([]string{"password"}).AddRow(hashedPassword),
 	)
+
+	mock.ExpectExec("UPDATE users SET last_login = .+").WillReturnResult(sqlmock.NewResult(1, 1))
 
 	req, err := http.NewRequest("POST", "", strings.NewReader("username=test&password=test"))
 	assert.NoError(t, err)
