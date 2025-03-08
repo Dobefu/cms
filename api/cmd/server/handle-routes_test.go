@@ -50,7 +50,7 @@ func TestHandleRoutesApiV1(t *testing.T) {
 }
 
 func TestHandleRoutesApiV1Login(t *testing.T) {
-	rr, cleanup := setupHandleRoutesTests(t, "GET", "/api/v1/login", nil)
+	rr, cleanup := setupHandleRoutesTests(t, "POST", "/api/v1/login", nil)
 	defer cleanup()
 
 	assert.Equal(t, http.StatusOK, rr.Code)

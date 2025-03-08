@@ -18,9 +18,9 @@ func TestLogin(t *testing.T) {
 	rr, cleanup := setupLoginTests()
 	defer cleanup()
 
-	req, err := http.NewRequest("GET", "", nil)
+	req, err := http.NewRequest("POST", "", nil)
 	assert.NoError(t, err)
 
 	Login(rr, req)
-	assert.JSONEq(t, "{}", rr.Body.String())
+	assert.JSONEq(t, `{"data": null, "error": "Missing username and/ or password"}`, rr.Body.String())
 }

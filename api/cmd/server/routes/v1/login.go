@@ -1,10 +1,18 @@
 package v1
 
 import (
-	"fmt"
+	"errors"
 	"net/http"
+
+	"github.com/Dobefu/cms/api/cmd/server/utils"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "{}")
+	username := r.FormValue("username")
+	password := r.FormValue("password")
+
+	if username == "" || password == "" {
+		utils.PrintError(w, errors.New("Missing username and/ or password"), false)
+	}
+
 }
