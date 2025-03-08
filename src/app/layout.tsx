@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html className="h-full" lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-full flex-col gap-4 bg-zinc-100 text-black antialiased dark:bg-zinc-800 dark:text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-full flex-col gap-4 bg-zinc-100 text-gray-800 antialiased dark:bg-zinc-800 dark:text-white`}
       >
         <Header />
 
