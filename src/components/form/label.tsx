@@ -1,7 +1,7 @@
 export type Props = Readonly<{
   children: React.ReactNode
-  form?: string | undefined
-  htmlFor?: string | undefined
+  form?: string
+  htmlFor?: string
 }>
 
 export default function Label({ children, form, htmlFor }: Props) {

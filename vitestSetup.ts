@@ -22,6 +22,7 @@ vi.mock('next/navigation', async () => {
       push: vi.fn(),
     })),
     notFound: vi.fn(),
+    redirect: vi.fn(),
     useSearchParams: () => {
       return new URLSearchParams(process.env.MOCK_PATHNAME)
     },
