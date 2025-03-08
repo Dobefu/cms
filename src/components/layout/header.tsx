@@ -3,10 +3,6 @@ import Link from 'next/link'
 export default function Header() {
   const links = [
     {
-      title: 'Home',
-      href: '/',
-    },
-    {
       title: 'Login',
       href: '/login',
     },
