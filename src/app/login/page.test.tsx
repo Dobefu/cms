@@ -1,14 +1,14 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import Homepage from './page'
+import Login from './page'
 
-describe('Homepage', () => {
+describe('Login', () => {
   afterEach(() => {
     cleanup()
   })
 
   it('Renders normally', () => {
-    render(Homepage())
+    render(Login())
 
     expect(screen).toBeDefined()
   })

@@ -31,11 +31,11 @@ export default function RootLayout({
   return (
     <html className="h-full" lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-full flex-col gap-4 bg-zinc-100 text-black antialiased dark:bg-zinc-900 dark:text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-full flex-col gap-4 bg-zinc-100 text-black antialiased dark:bg-zinc-800 dark:text-white`}
       >
         <Header />
 
-        <main className="flex-1 px-4" id="main-content">
+        <main className="flex flex-1 flex-col gap-4 px-4" id="main-content">
           {children}
         </main>
 
