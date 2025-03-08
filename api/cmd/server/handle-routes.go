@@ -27,6 +27,8 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 		fmt.Fprint(w, "{}")
 	})
 
+	apiRoute(mux, 1, "/login", "GET", routesV1Login)
+
 	return mux
 }
 
