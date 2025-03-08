@@ -17,6 +17,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		utils.PrintError(w, errors.New("Internal server error"), true)
+		return
 	}
 
 	username := r.FormValue("username")

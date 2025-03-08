@@ -27,11 +27,22 @@ func setupLoginTests(t *testing.T) (rr *httptest.ResponseRecorder, mock sqlmock.
 	}
 }
 
-func TestLoginErrMissingCredentials(t *testing.T) {
+func TestLoginErrMissingBody(t *testing.T) {
 	rr, _, cleanup := setupLoginTests(t)
 	defer cleanup()
 
 	req, err := http.NewRequest("POST", "", nil)
+	assert.NoError(t, err)
+
+	Login(rr, req)
+	assert.JSONEq(t, `{"data": null, "error": "Internal server error"}`, rr.Body.String())
+}
+
+func TestLoginErrMissingCredentials(t *testing.T) {
+	rr, _, cleanup := setupLoginTests(t)
+	defer cleanup()
+
+	req, err := http.NewRequest("POST", "", strings.NewReader(""))
 	assert.NoError(t, err)
 
 	Login(rr, req)
