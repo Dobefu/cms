@@ -3,10 +3,21 @@ import React from 'react'
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
   ({ className, type, ...props }, ref) => {
+    let typeClasses = ''
+
+    switch (type) {
+      case 'button':
+      case 'submit':
+        typeClasses =
+          'text-white bg-blue-600 dark:bg-blue-700 dark:not-disabled:hover:bg-blue-600 font-medium not-disabled:hover:bg-blue-700 outline-offset-4 not-disabled:cursor-pointer transition-colors dark:not-disabled:active:bg-blue-800 not-disabled:active:bg-blue-800'
+        break
+    }
+
     return (
       <input
         className={cn(
-          'w-full rounded-lg border border-zinc-200 px-3 py-2.5 shadow-xs dark:border-zinc-600 dark:bg-zinc-950',
+          'w-full rounded-lg border border-zinc-200 px-3 py-2.5 shadow-xs disabled:opacity-75 dark:border-zinc-600 dark:bg-zinc-950',
+          typeClasses,
           className,
         )}
         ref={ref}
