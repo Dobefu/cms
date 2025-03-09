@@ -7,16 +7,19 @@
 
 ## Getting Started
 
-First, run the development server:
+Run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+In a different terminal, navigate to `./api` and run:
+
+```bash
+./api migrate
+```
+
+This will perform migrations on an empty database, and only needs to be done once.
+By default, there are no users. To create one, run `./api user:create`.
+
+Open [http://localhost:3000](http://localhost:3000) in a browser.
