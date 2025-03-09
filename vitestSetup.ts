@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useState } from 'react'
 import { vi } from 'vitest'
 
 process.env.MOCK_PATHNAME = '/'
@@ -10,6 +11,17 @@ vi.mock('react', async () => {
   return {
     ...actual,
     useContext: () => ({ locale: { code: 'en' } }),
+    useActionState: (_action: () => unknown, initialState: unknown) => {
+      const [isPending, setIsPending] = useState(false)
+
+      return [
+        initialState,
+        vi.fn(() => {
+          setIsPending(true)
+        }),
+        isPending,
+      ]
+    },
   }
 })
 
