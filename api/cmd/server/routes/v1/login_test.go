@@ -78,5 +78,5 @@ func TestLoginSuccess(t *testing.T) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	Login(rr, req)
-	assert.JSONEq(t, `{"data": null, "error": null}`, rr.Body.String())
+	assert.JSONEq(t, `{"data": {"token": ""}, "error": null}`, rr.Body.String())
 }

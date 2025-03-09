@@ -17,7 +17,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := userLogin(username, password)
+	token, err := userLogin(username, password)
 
 	if err != nil {
 		if err == user.ErrUnexpected {
@@ -29,5 +29,5 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprint(w, `{"data":null,"error":null}`)
+	fmt.Fprintf(w, `{"data":{"token":"%s"},"error":null}`, token)
 }
