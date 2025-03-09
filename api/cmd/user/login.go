@@ -13,9 +13,9 @@ var ErrMissingCredentials = errors.New("Missing username and/ or password")
 var ErrCredentials = errors.New("Invalid username or password")
 var ErrUnexpected = errors.New("Internal server error")
 
-func Login(username string, password string) (err error) {
+func Login(username string, password string) (token string, err error) {
 	if username == "" || password == "" {
-		return errors.New("Missing username and/ or password")
+		return "", errors.New("Missing username and/ or password")
 	}
 
 	row := database.DB.QueryRow(
@@ -29,29 +29,29 @@ func Login(username string, password string) (err error) {
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return ErrCredentials
+			return "", ErrCredentials
 		} else {
-			return ErrUnexpected
+			return "", ErrUnexpected
 		}
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 
 	if err != nil {
-		return ErrCredentials
+		return "", ErrCredentials
 	}
 
 	err = SetLastLogin(userId, time.Now().UTC())
 
 	if err != nil {
-		return ErrUnexpected
+		return "", ErrUnexpected
 	}
 
-	_, err = UpdateSessionToken(userId)
+	token, err = UpdateSessionToken(userId)
 
 	if err != nil {
-		return ErrUnexpected
+		return "", ErrUnexpected
 	}
 
-	return nil
+	return token, nil
 }

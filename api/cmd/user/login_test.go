@@ -27,7 +27,7 @@ func TestLoginErrMissingCredentials(t *testing.T) {
 	_, cleanup := setupLoginTests(t)
 	defer cleanup()
 
-	err := Login("", "")
+	_, err := Login("", "")
 	assert.EqualError(t, err, ErrMissingCredentials.Error())
 }
 
@@ -37,7 +37,7 @@ func TestLoginErrInternalServerError(t *testing.T) {
 
 	mock.ExpectQuery("SELECT .+ FROM users WHERE .+ LIMIT 1").WillReturnError(assert.AnError)
 
-	err := Login("Username", "Password")
+	_, err := Login("Username", "Password")
 	assert.EqualError(t, err, ErrUnexpected.Error())
 }
 
@@ -47,7 +47,7 @@ func TestLoginErrInvalidUser(t *testing.T) {
 
 	mock.ExpectQuery("SELECT .+ FROM users WHERE .+ LIMIT 1").WillReturnError(sql.ErrNoRows)
 
-	err := Login("bogus", "bogus")
+	_, err := Login("bogus", "bogus")
 	assert.EqualError(t, err, ErrCredentials.Error())
 }
 
@@ -59,7 +59,7 @@ func TestLoginErrInvalidPassword(t *testing.T) {
 		sqlmock.NewRows([]string{"id", "password"}).AddRow(0, ""),
 	)
 
-	err := Login("test", "bogus")
+	_, err := Login("test", "bogus")
 	assert.EqualError(t, err, ErrCredentials.Error())
 }
 
@@ -76,7 +76,7 @@ func TestLoginErrSetLastUpdated(t *testing.T) {
 
 	mock.ExpectExec("UPDATE users SET last_login = .+").WillReturnError(assert.AnError)
 
-	err = Login("test", "test")
+	_, err = Login("test", "test")
 	assert.EqualError(t, err, ErrUnexpected.Error())
 }
 
@@ -93,7 +93,7 @@ func TestLoginErrUpdateSessionToken(t *testing.T) {
 
 	mock.ExpectExec("UPDATE users SET last_login = .+").WillReturnResult(sqlmock.NewResult(1, 1))
 
-	err = Login("test", "test")
+	_, err = Login("test", "test")
 	assert.EqualError(t, err, ErrUnexpected.Error())
 }
 
@@ -114,6 +114,6 @@ func TestLoginSuccess(t *testing.T) {
 		sqlmock.NewResult(1, 1),
 	)
 
-	err = Login("test", "test")
+	_, err = Login("test", "test")
 	assert.NoError(t, err)
 }

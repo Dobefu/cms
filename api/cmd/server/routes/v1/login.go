@@ -17,7 +17,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := userLogin(username, password)
+	_, err := userLogin(username, password)
 
 	if err != nil {
 		if err == user.ErrUnexpected {

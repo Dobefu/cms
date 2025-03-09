@@ -12,6 +12,8 @@ import (
 )
 
 func UpdateSessionToken(userId int) (token string, err error) {
+	token = generateSessionToken(userId)
+
 	_, err = database.DB.Exec(
 		`
       INSERT INTO sessions (user_id, token) VALUES ($1, $2)
@@ -20,7 +22,7 @@ func UpdateSessionToken(userId int) (token string, err error) {
         WHERE sessions.user_id = excluded.user_id
     `,
 		userId,
-		generateSessionToken(userId),
+		token,
 		time.Now().UTC(),
 	)
 
@@ -29,7 +31,7 @@ func UpdateSessionToken(userId int) (token string, err error) {
 		return "", err
 	}
 
-	return "", nil
+	return token, nil
 }
 
 func generateSessionToken(userId int) (token string) {

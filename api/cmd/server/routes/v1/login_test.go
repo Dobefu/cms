@@ -14,8 +14,8 @@ import (
 func setupLoginTests() (rr *httptest.ResponseRecorder, cleanup func()) {
 	rr = httptest.NewRecorder()
 
-	userLogin = func(username string, password string) (err error) {
-		return nil
+	userLogin = func(username string, password string) (token string, err error) {
+		return "", nil
 	}
 
 	return rr, func() {
@@ -38,8 +38,8 @@ func TestLoginErrLoginCredentials(t *testing.T) {
 	rr, cleanup := setupLoginTests()
 	defer cleanup()
 
-	userLogin = func(username string, password string) (err error) {
-		return user.ErrCredentials
+	userLogin = func(username string, password string) (token string, err error) {
+		return "", user.ErrCredentials
 	}
 
 	req, err := http.NewRequest("POST", "", strings.NewReader("username=test&password=bogus"))
@@ -55,8 +55,8 @@ func TestLoginErrUnexpected(t *testing.T) {
 	rr, cleanup := setupLoginTests()
 	defer cleanup()
 
-	userLogin = func(username string, password string) (err error) {
-		return user.ErrUnexpected
+	userLogin = func(username string, password string) (token string, err error) {
+		return "", user.ErrUnexpected
 	}
 
 	req, err := http.NewRequest("POST", "", strings.NewReader("username=test&password=test"))
