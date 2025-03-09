@@ -9,7 +9,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
       case 'button':
       case 'submit':
         typeClasses =
-          'text-white bg-blue-600 dark:bg-blue-700 dark:not-disabled:hover:bg-blue-600 font-medium not-disabled:hover:bg-blue-700 outline-offset-4 not-disabled:cursor-pointer transition-colors dark:not-disabled:active:bg-blue-800 not-disabled:active:bg-blue-800'
+          'text-white bg-blue-600 dark:bg-blue-700 dark:not-disabled:hover:bg-blue-600 font-medium not-disabled:hover:bg-blue-700 outline-offset-4 not-disabled:cursor-pointer transition-colors dark:not-disabled:active:bg-blue-800 not-disabled:active:bg-blue-800 px-5'
         break
       default:
         typeClasses =
