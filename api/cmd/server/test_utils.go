@@ -8,3 +8,4 @@ import (
 
 var httpListenAndServe = http.ListenAndServe
 var routesV1Login = routes_v1.Login
+var routesV1ValidateSession = routes_v1.ValidateSession
