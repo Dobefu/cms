@@ -57,6 +57,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: 3.0.7
         version: 3.0.7(vitest@3.0.7(@types/node@22.13.8)(@vitest/ui@3.0.7)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.1))
+      '@vitest/eslint-plugin':
+        specifier: ^1.1.36
+        version: 1.1.36(@typescript-eslint/utils@8.25.0(eslint@9.21.0(jiti@2.4.2))(typescript@5.8.2))(eslint@9.21.0(jiti@2.4.2))(typescript@5.8.2)(vitest@3.0.7(@types/node@22.13.8)(@vitest/ui@3.0.7)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.1))
       '@vitest/ui':
         specifier: 3.0.7
         version: 3.0.7(vitest@3.0.7)
@@ -963,6 +966,19 @@ packages:
       vitest: 3.0.7
     peerDependenciesMeta:
       '@vitest/browser':
+        optional: true
+
+  '@vitest/eslint-plugin@1.1.36':
+    resolution: {integrity: sha512-IjBV/fcL9NJRxGw221ieaDsqKqj8qUo7rvSupDxMjTXyhsCusHC6M+jFUNqBp4PCkYFcf5bjrKxeZoCEWoPxig==}
+    peerDependencies:
+      '@typescript-eslint/utils': ^8.24.0
+      eslint: '>= 8.57.0'
+      typescript: '>= 5.0.0'
+      vitest: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      vitest:
         optional: true
 
   '@vitest/expect@3.0.7':
@@ -3565,6 +3581,14 @@ snapshots:
       vitest: 3.0.7(@types/node@22.13.8)(@vitest/ui@3.0.7)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.1)
     transitivePeerDependencies:
       - supports-color
+
+  '@vitest/eslint-plugin@1.1.36(@typescript-eslint/utils@8.25.0(eslint@9.21.0(jiti@2.4.2))(typescript@5.8.2))(eslint@9.21.0(jiti@2.4.2))(typescript@5.8.2)(vitest@3.0.7(@types/node@22.13.8)(@vitest/ui@3.0.7)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.1))':
+    dependencies:
+      '@typescript-eslint/utils': 8.25.0(eslint@9.21.0(jiti@2.4.2))(typescript@5.8.2)
+      eslint: 9.21.0(jiti@2.4.2)
+    optionalDependencies:
+      typescript: 5.8.2
+      vitest: 3.0.7(@types/node@22.13.8)(@vitest/ui@3.0.7)(jiti@2.4.2)(jsdom@26.0.0)(lightningcss@1.29.1)
 
   '@vitest/expect@3.0.7':
     dependencies:

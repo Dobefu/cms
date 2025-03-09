@@ -1,5 +1,6 @@
 import { FlatCompat } from '@eslint/eslintrc'
 import pluginQuery from '@tanstack/eslint-plugin-query'
+import pluginVitest from '@vitest/eslint-plugin'
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 import pluginReact from 'eslint-plugin-react'
 
@@ -15,7 +16,10 @@ const eslintConfig = [
   {
     ...pluginJsxA11y.flatConfigs.strict,
     ...pluginReact.configs.flat.recommended,
+    plugins: { vitest: pluginVitest },
     rules: {
+      ...pluginVitest.configs.recommended.rules,
+
       'react/boolean-prop-naming': ['warn'],
       'react/forward-ref-uses-ref': ['warn'],
       'react/hook-use-state': ['warn'],
@@ -39,6 +43,27 @@ const eslintConfig = [
       'react/prefer-stateless-function': ['error'],
       'react/require-default-props': ['error'],
       'react/style-prop-object': ['warn'],
+
+      'vitest/consistent-test-it': ['warn'],
+      'vitest/no-identical-title': ['error'],
+      'vitest/no-hooks': [
+        'error',
+        {
+          allow: ['beforeEach', 'afterEach', 'beforeAll', 'afterAll'],
+        },
+      ],
+      'vitest/no-test-return-statement': ['warn'],
+      'vitest/prefer-expect-assertions': ['warn'],
+      'vitest/prefer-hooks-in-order': ['warn'],
+      'vitest/prefer-hooks-on-top': ['warn'],
+      'vitest/prefer-lowercase-title': ['warn'],
+      'vitest/prefer-spy-on': ['warn'],
+      'vitest/prefer-strict-boolean-matchers': ['warn'],
+      'vitest/prefer-strict-equal': ['warn'],
+      'vitest/require-mock-type-parameters': ['warn'],
+      'vitest/require-top-level-describe': ['warn'],
+      'vitest/valid-expect': ['warn'],
+      'vitest/valid-title': ['warn'],
     },
   },
 ]
