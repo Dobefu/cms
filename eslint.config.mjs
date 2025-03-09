@@ -3,6 +3,7 @@ import pluginQuery from '@tanstack/eslint-plugin-query'
 import pluginVitest from '@vitest/eslint-plugin'
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 import pluginReact from 'eslint-plugin-react'
+import pluginTestingLibrary from 'eslint-plugin-testing-library'
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
@@ -10,12 +11,18 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.config({
-    extends: ['next/core-web-vitals', 'next/typescript', 'prettier'],
+    extends: [
+      'next/core-web-vitals',
+      'next/typescript',
+      'prettier',
+      'plugin:testing-library/react',
+    ],
   }),
   ...pluginQuery.configs['flat/recommended'],
   {
     ...pluginJsxA11y.flatConfigs.strict,
     ...pluginReact.configs.flat.recommended,
+    ...pluginTestingLibrary.configs['flat/react'],
     plugins: { vitest: pluginVitest },
     rules: {
       ...pluginVitest.configs.all.rules,
