@@ -2,12 +2,14 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import NotFound from './not-found'
 
-describe('NotFound', () => {
+describe('notFound', () => {
   afterEach(() => {
     cleanup()
   })
 
-  it('Renders normally', () => {
+  it('renders normally', () => {
+    expect.hasAssertions()
+
     render(<NotFound />)
 
     expect(screen.getByRole('heading')).toBeDefined()

@@ -9,14 +9,13 @@ export const initialState: FormState = {
   errorGeneric: undefined,
 }
 
-describe('Login', () => {
+describe('login', () => {
   beforeEach(() => {
-    global.fetch = vi.fn().mockResolvedValue({
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ...new Response(),
+      json: () => Promise.resolve({}),
       ok: true,
       status: 200,
-      json: () => {
-        return Promise.resolve(JSON.stringify(''))
-      },
     })
   })
 
@@ -25,7 +24,9 @@ describe('Login', () => {
     vi.restoreAllMocks()
   })
 
-  it('Redirects', async () => {
+  it('redirects', async () => {
+    expect.hasAssertions()
+
     const spy = vi.spyOn(navigation, 'redirect')
 
     const formData = new FormData()
@@ -36,7 +37,9 @@ describe('Login', () => {
     expect(spy).toHaveBeenCalled()
   })
 
-  it('Returns early when the API endpoint is missing', async () => {
+  it('returns early when the API endpoint is missing', async () => {
+    expect.hasAssertions()
+
     delete process.env.API_ENDPOINT
     const spy = vi.spyOn(navigation, 'redirect')
 
@@ -48,18 +51,16 @@ describe('Login', () => {
     expect(spy).not.toHaveBeenCalled()
   })
 
-  it('Returns a JSON error when the fetch call fails', async () => {
+  it('returns a JSON error when the fetch call fails', async () => {
+    expect.hasAssertions()
+
     const spy = vi.spyOn(navigation, 'redirect')
 
-    global.fetch = vi.fn().mockResolvedValue({
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ...new Response(),
+      json: () => Promise.resolve({ data: null, error: 'Test error' }),
       ok: false,
       status: 422,
-      json: () => {
-        return Promise.resolve({
-          data: null,
-          error: 'Test error',
-        })
-      },
     })
 
     const formData = new FormData()
@@ -70,15 +71,16 @@ describe('Login', () => {
     expect(spy).not.toHaveBeenCalled()
   })
 
-  it('Returns a generic error when the fetch call fails', async () => {
+  it('returns a generic error when the fetch call fails', async () => {
+    expect.hasAssertions()
+
     const spy = vi.spyOn(navigation, 'redirect')
 
-    global.fetch = vi.fn().mockResolvedValue({
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ...new Response(),
+      json: () => Promise.resolve({}),
       ok: false,
       status: 422,
-      json: () => {
-        return Promise.resolve('')
-      },
     })
 
     const formData = new FormData()
@@ -89,7 +91,9 @@ describe('Login', () => {
     expect(spy).not.toHaveBeenCalled()
   })
 
-  it('Returns early with missing data', async () => {
+  it('returns early with missing data', async () => {
+    expect.hasAssertions()
+
     const spy = vi.spyOn(navigation, 'redirect')
 
     const formData = new FormData()

@@ -2,14 +2,13 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import LoginForm, { initialState } from './login.client'
 
-describe('LoginForm', () => {
+describe('loginForm', () => {
   beforeEach(() => {
-    global.fetch = vi.fn().mockResolvedValue({
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ...new Response(),
+      json: () => Promise.resolve({}),
       ok: true,
       status: 200,
-      json: () => {
-        return Promise.resolve(JSON.stringify(''))
-      },
     })
   })
 
@@ -18,14 +17,18 @@ describe('LoginForm', () => {
     vi.restoreAllMocks()
   })
 
-  it('Renders normally', () => {
+  it('renders normally', () => {
+    expect.hasAssertions()
+
     render(<LoginForm />)
 
     expect(screen.getByRole<HTMLInputElement>('textbox').name).toBe('username')
     expect(screen.getByRole<HTMLInputElement>('button').type).toBe('submit')
   })
 
-  it('Can submit', async () => {
+  it('can submit', async () => {
+    expect.hasAssertions()
+
     render(<LoginForm />)
 
     const usernameInput = screen.getByText('Username').querySelector('input')
@@ -42,7 +45,9 @@ describe('LoginForm', () => {
     expect(screen).toBeDefined()
   })
 
-  it('Renders with errors', () => {
+  it('renders with errors', () => {
+    expect.hasAssertions()
+
     initialState.username = 'Username'
     initialState.errorUsername = 'Username error'
     initialState.errorPassword = 'Password error'

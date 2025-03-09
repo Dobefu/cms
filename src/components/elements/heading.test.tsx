@@ -2,48 +2,62 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import Heading from './heading'
 
-describe('Heading', () => {
+describe('heading', () => {
   afterEach(() => {
     cleanup()
   })
 
-  it('Renders normally (h1)', () => {
+  it('renders normally (h1)', () => {
+    expect.hasAssertions()
+
     render(<Heading level={1}>TITLE</Heading>)
 
     expect(screen.getByRole('heading').className).toContain('text-3xl')
   })
 
-  it('Renders normally (h2)', () => {
+  it('renders normally (h2)', () => {
+    expect.hasAssertions()
+
     render(<Heading level={2}>TITLE</Heading>)
 
     expect(screen.getByRole('heading').className).toContain('text-2xl')
   })
 
-  it('Renders normally (h3)', () => {
+  it('renders normally (h3)', () => {
+    expect.hasAssertions()
+
     render(<Heading level={3}>TITLE</Heading>)
 
     expect(screen.getByRole('heading').className).toContain('text-xl')
   })
 
-  it('Renders normally (h4)', () => {
+  it('renders normally (h4)', () => {
+    expect.hasAssertions()
+
     render(<Heading level={4}>TITLE</Heading>)
 
     expect(screen.getByRole('heading').className).toContain('text-lg')
   })
 
-  it('Renders normally (h5)', () => {
+  it('renders normally (h5)', () => {
+    expect.hasAssertions()
+
     render(<Heading level={5}>TITLE</Heading>)
 
     expect(screen.getByRole('heading').className).toContain('text-md')
   })
 
-  it('Renders normally (h6)', () => {
+  it('renders normally (h6)', () => {
+    expect.hasAssertions()
+
     render(<Heading level={6}>TITLE</Heading>)
 
     expect(screen.getByRole('heading').className).toContain('text-sm')
   })
 
-  it('Does not render on invalid levels', () => {
+  it('does not render on invalid levels', () => {
+    expect.hasAssertions()
+
     render(<Heading level={0}>TITLE</Heading>)
 
     expect(screen.queryByRole('heading')).toBeNull()
