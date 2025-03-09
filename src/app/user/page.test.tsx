@@ -1,4 +1,4 @@
-import { cleanup, render } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { cookies } from 'next/headers'
 import * as navigation from 'next/navigation'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -15,7 +15,6 @@ describe('user', () => {
   })
 
   afterEach(async () => {
-    cleanup()
     vi.restoreAllMocks()
 
     const cookieStore = await cookies()

@@ -1,12 +1,8 @@
-import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
 import Heading from './heading'
 
 describe('heading', () => {
-  afterEach(() => {
-    cleanup()
-  })
-
   it('renders normally (h1)', () => {
     expect.hasAssertions()
 

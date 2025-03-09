@@ -1,12 +1,8 @@
-import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
 import Input from './input'
 
 describe('input', () => {
-  afterEach(() => {
-    cleanup()
-  })
-
   it('renders a textbox', () => {
     expect.hasAssertions()
 

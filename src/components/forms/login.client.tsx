@@ -23,6 +23,7 @@ export default function LoginForm() {
         Username
         <Input
           autoFocus
+          data-testid="username"
           defaultValue={state.username}
           name="username"
           placeholder="Username"
@@ -35,6 +36,7 @@ export default function LoginForm() {
       <Label>
         Password
         <Input
+          data-testid="password"
           name="password"
           placeholder="Password"
           required

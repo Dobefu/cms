@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import LoginForm, { initialState } from './login.client'
 
@@ -13,7 +13,6 @@ describe('loginForm', () => {
   })
 
   afterEach(() => {
-    cleanup()
     vi.restoreAllMocks()
   })
 
@@ -31,14 +30,14 @@ describe('loginForm', () => {
 
     render(<LoginForm />)
 
-    const usernameInput = screen.getByText('Username').querySelector('input')
-    const passwordInput = screen.getByText('Password').querySelector('input')
+    const usernameInput = screen.getByTestId('username')
+    const passwordInput = screen.getByTestId('password')
 
     expect(usernameInput).toBeDefined()
     expect(passwordInput).toBeDefined()
 
-    fireEvent.change(usernameInput!, { target: { value: 'Username' } })
-    fireEvent.change(passwordInput!, { target: { value: 'Password' } })
+    fireEvent.change(usernameInput, { target: { value: 'Username' } })
+    fireEvent.change(passwordInput, { target: { value: 'Password' } })
 
     fireEvent.click(screen.getByRole<HTMLInputElement>('button'))
 
