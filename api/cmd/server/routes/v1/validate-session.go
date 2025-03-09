@@ -44,8 +44,8 @@ func ValidateSession(w http.ResponseWriter, r *http.Request) {
 
 	tokenAge := time.Now().Unix() - lastUpdated.Unix()
 
-	if tokenAge > 360 {
-		newToken, err := user.UpdateSessionToken(userId)
+	if tokenAge >= 360 {
+		newToken, err := userUpdateSessionToken(userId)
 
 		if err != nil {
 			logger.Error(err.Error())
