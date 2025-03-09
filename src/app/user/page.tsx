@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'My account',
 }
 
-export default async function Login() {
+export default async function User() {
   const { isAnonymous } = await validateSession()
 
   if (isAnonymous) {
