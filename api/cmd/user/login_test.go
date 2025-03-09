@@ -28,7 +28,7 @@ func TestLoginErrMissingCredentials(t *testing.T) {
 	defer cleanup()
 
 	err := Login("", "")
-	assert.EqualError(t, err, "Missing username and/ or password")
+	assert.EqualError(t, err, ErrMissingCredentials.Error())
 }
 
 func TestLoginErrInternalServerError(t *testing.T) {
@@ -48,7 +48,7 @@ func TestLoginErrInvalidUser(t *testing.T) {
 	mock.ExpectQuery("SELECT password FROM users WHERE .+ LIMIT 1").WillReturnError(sql.ErrNoRows)
 
 	err := Login("bogus", "bogus")
-	assert.EqualError(t, err, errCredentials.Error())
+	assert.EqualError(t, err, ErrCredentials.Error())
 }
 
 func TestLoginErrInvalidPassword(t *testing.T) {
@@ -58,7 +58,7 @@ func TestLoginErrInvalidPassword(t *testing.T) {
 	mock.ExpectQuery("SELECT password FROM users WHERE .+ LIMIT 1").WillReturnRows(sqlmock.NewRows([]string{"password"}).AddRow(""))
 
 	err := Login("test", "bogus")
-	assert.EqualError(t, err, errCredentials.Error())
+	assert.EqualError(t, err, ErrCredentials.Error())
 }
 
 func TestLoginErrSetLastUpdated(t *testing.T) {

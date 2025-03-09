@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 
@@ -15,11 +14,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 
 	if username == "" || password == "" {
-		utils.PrintError(w, errors.New("Missing username and/ or password"), false)
+		utils.PrintError(w, user.ErrMissingCredentials, false)
 		return
 	}
 
-	err := user.Login(username, password)
+	err := userLogin(username, password)
 
 	if err != nil {
 		if err == user.ErrUnexpected {

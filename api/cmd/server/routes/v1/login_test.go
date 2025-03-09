@@ -1,78 +1,46 @@
 package v1
 
 import (
-	"database/sql"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
-	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/Dobefu/cms/api/cmd/database"
+	"github.com/Dobefu/cms/api/cmd/user"
 	"github.com/stretchr/testify/assert"
-	"golang.org/x/crypto/bcrypt"
 )
 
-func setupLoginTests(t *testing.T) (rr *httptest.ResponseRecorder, mock sqlmock.Sqlmock, cleanup func()) {
+func setupLoginTests() (rr *httptest.ResponseRecorder, cleanup func()) {
 	rr = httptest.NewRecorder()
-	db, mock, err := sqlmock.New()
-	assert.NoError(t, err)
 
-	oldDb := database.DB
-	database.DB = db
+	userLogin = func(username string, password string) (err error) {
+		return nil
+	}
 
-	return rr, mock, func() {
-		db.Close()
-		database.DB = oldDb
+	return rr, func() {
+		userLogin = user.Login
 	}
 }
 
 func TestLoginErrMissingCredentials(t *testing.T) {
-	rr, _, cleanup := setupLoginTests(t)
+	rr, cleanup := setupLoginTests()
 	defer cleanup()
 
 	req, err := http.NewRequest("POST", "", strings.NewReader(""))
 	assert.NoError(t, err)
 
 	Login(rr, req)
-	assert.JSONEq(t, `{"data": null, "error": "Missing username and/ or password"}`, rr.Body.String())
+	assert.JSONEq(t, fmt.Sprintf(`{"data": null, "error": "%s"}`, user.ErrMissingCredentials.Error()), rr.Body.String())
 }
 
-func TestLoginErrInternalServerError(t *testing.T) {
-	rr, mock, cleanup := setupLoginTests(t)
+func TestLoginErrLoginCredentials(t *testing.T) {
+	rr, cleanup := setupLoginTests()
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT password FROM users WHERE .+ LIMIT 1").WillReturnError(assert.AnError)
-
-	req, err := http.NewRequest("POST", "", strings.NewReader("username=bogus&password=bogus"))
-	assert.NoError(t, err)
-
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
-	Login(rr, req)
-	assert.JSONEq(t, `{"data": null, "error": "Internal server error"}`, rr.Body.String())
-}
-
-func TestLoginErrInvalidUser(t *testing.T) {
-	rr, mock, cleanup := setupLoginTests(t)
-	defer cleanup()
-
-	mock.ExpectQuery("SELECT password FROM users WHERE .+ LIMIT 1").WillReturnError(sql.ErrNoRows)
-
-	req, err := http.NewRequest("POST", "", strings.NewReader("username=bogus&password=bogus"))
-	assert.NoError(t, err)
-
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
-	Login(rr, req)
-	assert.JSONEq(t, `{"data": null, "error": "Invalid username or password"}`, rr.Body.String())
-}
-
-func TestLoginErrInvalidPassword(t *testing.T) {
-	rr, mock, cleanup := setupLoginTests(t)
-	defer cleanup()
-
-	mock.ExpectQuery("SELECT password FROM users WHERE .+ LIMIT 1").WillReturnRows(sqlmock.NewRows([]string{"password"}).AddRow(""))
+	userLogin = func(username string, password string) (err error) {
+		return user.ErrCredentials
+	}
 
 	req, err := http.NewRequest("POST", "", strings.NewReader("username=test&password=bogus"))
 	assert.NoError(t, err)
@@ -80,21 +48,16 @@ func TestLoginErrInvalidPassword(t *testing.T) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	Login(rr, req)
-	assert.JSONEq(t, `{"data": null, "error": "Invalid username or password"}`, rr.Body.String())
+	assert.JSONEq(t, fmt.Sprintf(`{"data": null, "error": "%s"}`, user.ErrCredentials.Error()), rr.Body.String())
 }
 
-func TestLoginErrSetLastUpdated(t *testing.T) {
-	rr, mock, cleanup := setupLoginTests(t)
+func TestLoginErrUnexpected(t *testing.T) {
+	rr, cleanup := setupLoginTests()
 	defer cleanup()
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte("test"), 12)
-	assert.NoError(t, err)
-
-	mock.ExpectQuery("SELECT password FROM users WHERE .+ LIMIT 1").WillReturnRows(
-		sqlmock.NewRows([]string{"password"}).AddRow(hashedPassword),
-	)
-
-	mock.ExpectExec("UPDATE users SET last_login = .+").WillReturnError(assert.AnError)
+	userLogin = func(username string, password string) (err error) {
+		return user.ErrUnexpected
+	}
 
 	req, err := http.NewRequest("POST", "", strings.NewReader("username=test&password=test"))
 	assert.NoError(t, err)
@@ -102,21 +65,12 @@ func TestLoginErrSetLastUpdated(t *testing.T) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	Login(rr, req)
-	assert.JSONEq(t, `{"data": null, "error": "Internal server error"}`, rr.Body.String())
+	assert.JSONEq(t, fmt.Sprintf(`{"data": null, "error": "%s"}`, user.ErrUnexpected.Error()), rr.Body.String())
 }
 
 func TestLoginSuccess(t *testing.T) {
-	rr, mock, cleanup := setupLoginTests(t)
+	rr, cleanup := setupLoginTests()
 	defer cleanup()
-
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte("test"), 12)
-	assert.NoError(t, err)
-
-	mock.ExpectQuery("SELECT password FROM users WHERE .+ LIMIT 1").WillReturnRows(
-		sqlmock.NewRows([]string{"password"}).AddRow(hashedPassword),
-	)
-
-	mock.ExpectExec("UPDATE users SET last_login = .+").WillReturnResult(sqlmock.NewResult(1, 1))
 
 	req, err := http.NewRequest("POST", "", strings.NewReader("username=test&password=test"))
 	assert.NoError(t, err)
@@ -124,5 +78,5 @@ func TestLoginSuccess(t *testing.T) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	Login(rr, req)
-	assert.JSONEq(t, `{"data":null,"error":null}`, rr.Body.String())
+	assert.JSONEq(t, `{"data": null, "error": null}`, rr.Body.String())
 }

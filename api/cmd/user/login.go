@@ -9,8 +9,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+var ErrMissingCredentials = errors.New("Missing username and/ or password")
+var ErrCredentials = errors.New("Invalid username or password")
 var ErrUnexpected = errors.New("Internal server error")
-var errCredentials = errors.New("Invalid username or password")
 
 func Login(username string, password string) (err error) {
 	if username == "" || password == "" {
@@ -27,7 +28,7 @@ func Login(username string, password string) (err error) {
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return errCredentials
+			return ErrCredentials
 		} else {
 			return ErrUnexpected
 		}
@@ -36,7 +37,7 @@ func Login(username string, password string) (err error) {
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 
 	if err != nil {
-		return errCredentials
+		return ErrCredentials
 	}
 
 	_, err = database.DB.Exec(
