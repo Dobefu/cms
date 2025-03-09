@@ -1,5 +1,6 @@
 'use server'
 
+import { getApiEndpoint } from '@/utils/get-api-endpoint'
 import { getQueryClient } from '@/utils/get-query-client'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -24,10 +25,9 @@ export async function login(
     return newState
   }
 
-  const apiEndpoint = process.env.API_ENDPOINT
+  const apiEndpoint = getApiEndpoint()
 
   if (!apiEndpoint) {
-    console.error('API_ENDPOINT is not set')
     return newState
   }
 
