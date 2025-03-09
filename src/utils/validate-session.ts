@@ -57,6 +57,28 @@ async function validateSession(): Promise<{ isAnonymous: boolean }> {
     return { isAnonymous: true }
   }
 
+  const loginData = await validateResponse.json()
+
+  if (
+    loginData &&
+    'data' in loginData &&
+    loginData?.data &&
+    'token' in loginData.data &&
+    loginData.data?.token
+  ) {
+    const cookieStore = await cookies()
+    cookieStore.set({
+      name: 'session',
+      value: loginData.data.token,
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: true,
+      maxAge: 86400 * 31,
+    })
+  } else {
+    return errResponse
+  }
+
   return { isAnonymous: false }
 }
 
