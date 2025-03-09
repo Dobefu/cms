@@ -31,7 +31,7 @@ export async function login(
     return newState
   }
 
-  const queryClient = getQueryClient()
+  const queryClient = getQueryClient(0)
   let loginResponse: Response = new Response()
   let isQuerySuccessful
 
