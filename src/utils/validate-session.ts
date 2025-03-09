@@ -57,9 +57,7 @@ async function validateSession(): Promise<{ isAnonymous: boolean }> {
     return { isAnonymous: true }
   }
 
-  console.log(await validateResponse.json())
-
-  return { isAnonymous: true }
+  return { isAnonymous: false }
 }
 
 export { validateSession }

@@ -46,19 +46,27 @@ vi.mock('next/navigation', async () => {
 
 vi.mock('next/headers', async () => {
   const actual = await vi.importActual('next/headers')
+  const cookies: Record<string, string> = {}
 
   return {
     ...(actual as object),
     cookies: vi.fn(() => ({
-      set: vi.fn(),
+      set: vi.fn(({ name, value }: { name: string; value: string }) => {
+        cookies[name] = value
+      }),
+      get: vi.fn((name: string) => {
+        if (!cookies[name]) {
+          return
+        }
+
+        return { name, value: cookies[name] }
+      }),
     })),
   }
 })
 
 vi.mock('next-view-transitions', async () => {
-  return {
-    Link,
-  }
+  return { Link }
 })
 
 const IntersectionObserverMock = vi.fn(() => ({

@@ -1,17 +1,44 @@
-import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { cleanup, render } from '@testing-library/react'
+import { cookies } from 'next/headers'
+import * as navigation from 'next/navigation'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import Login from './page'
 
 describe('login', () => {
-  afterEach(() => {
-    cleanup()
+  beforeEach(() => {
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ...new Response(),
+      json: () => Promise.resolve({ data: { token: 'test' }, error: null }),
+      ok: true,
+      status: 200,
+    })
   })
 
-  it('renders normally', () => {
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
+  it('renders normally for an anonymous user', async () => {
     expect.hasAssertions()
 
-    render(<Login />)
+    const spy = vi.spyOn(navigation, 'redirect')
 
-    expect(screen).toBeDefined()
+    render(await Login())
+
+    expect(spy).not.toHaveBeenCalled()
+  })
+
+  it('redirects for logged in users', async () => {
+    expect.hasAssertions()
+
+    const spy = vi.spyOn(navigation, 'redirect')
+
+    const cookieStore = await cookies()
+    cookieStore.set({ name: 'session', value: 'test' })
+
+    render(await Login())
+
+    expect(spy).toHaveBeenCalledWith('/user')
   })
 })
