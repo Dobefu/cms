@@ -26,6 +26,7 @@ export default function LoginForm() {
           defaultValue={state.username}
           name="username"
           placeholder="Username"
+          required
           type="text"
         />
         {!!state.errorUsername && <FormError>{state.errorUsername}</FormError>}
