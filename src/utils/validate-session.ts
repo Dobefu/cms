@@ -1,11 +1,13 @@
 import { cookies } from 'next/headers'
 import { getApiEndpoint } from './get-api-endpoint'
 import { getQueryClient } from './get-query-client'
-import { setSessionCookie } from './set-session-cookie'
 
 const errResponse = { isAnonymous: true }
 
-async function validateSession(): Promise<{ isAnonymous: boolean }> {
+async function validateSession(): Promise<{
+  isAnonymous: boolean
+  token?: string
+}> {
   const queryClient = getQueryClient(0)
   let validateResponse: Response = new Response()
   let isQuerySuccessful
@@ -67,12 +69,10 @@ async function validateSession(): Promise<{ isAnonymous: boolean }> {
     'token' in loginData.data &&
     loginData.data?.token
   ) {
-    await setSessionCookie(loginData.data.token)
+    return { isAnonymous: false, token: loginData.data.token }
   } else {
     return errResponse
   }
-
-  return { isAnonymous: false }
 }
 
 export { validateSession }

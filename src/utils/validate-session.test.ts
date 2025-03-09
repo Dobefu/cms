@@ -92,6 +92,6 @@ describe('validateSession', () => {
 
     const response = await validateSession()
 
-    expect(response).toStrictEqual({ isAnonymous: false })
+    expect(response).toStrictEqual({ isAnonymous: false, token: 'test' })
   })
 })
