@@ -34,7 +34,8 @@ describe('login', () => {
     formData.append('password', 'Password')
 
     await login(initialState, formData)
-    expect(spy).toHaveBeenCalled()
+
+    expect(spy).toHaveBeenCalledWith('/user')
   })
 
   it('returns early when the API endpoint is missing', async () => {
@@ -48,6 +49,7 @@ describe('login', () => {
     formData.append('password', 'Password')
 
     await login(initialState, formData)
+
     expect(spy).not.toHaveBeenCalled()
   })
 
@@ -68,6 +70,7 @@ describe('login', () => {
     formData.append('password', 'Password')
 
     await login(initialState, formData)
+
     expect(spy).not.toHaveBeenCalled()
   })
 
@@ -88,6 +91,7 @@ describe('login', () => {
     formData.append('password', 'Password')
 
     await login(initialState, formData)
+
     expect(spy).not.toHaveBeenCalled()
   })
 
@@ -99,6 +103,7 @@ describe('login', () => {
     const formData = new FormData()
 
     await login(initialState, formData)
+
     expect(spy).not.toHaveBeenCalled()
   })
 })

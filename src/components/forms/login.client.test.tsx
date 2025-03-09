@@ -57,7 +57,7 @@ describe('loginForm', () => {
 
     const paragraphs = screen.getAllByRole<HTMLParagraphElement>('paragraph')
 
-    expect(paragraphs.length).toBe(3)
+    expect(paragraphs).toHaveLength(3)
     expect(paragraphs[0].textContent).toBe('Username error')
     expect(paragraphs[1].textContent).toBe('Password error')
     expect(paragraphs[2].textContent).toBe('Generic error')
