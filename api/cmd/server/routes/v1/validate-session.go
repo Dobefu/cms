@@ -22,7 +22,7 @@ func ValidateSession(w http.ResponseWriter, r *http.Request) {
 	}
 
 	row := database.DB.QueryRow(
-		"SELECT user_id, token, updated_at FROM sessions WHERE token = $1",
+		"SELECT user_id, token, updated_at FROM sessions WHERE token = $1 AND updated_at >= NOW() - interval '1 month'",
 		oldToken,
 	)
 
