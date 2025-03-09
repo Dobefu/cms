@@ -26,7 +26,7 @@ export default async function Header() {
   }
 
   return (
-    <header className="sticky top-0 p-4">
+    <header className="sticky top-0 bg-inherit p-4">
       <nav aria-label="Navigation menu" className="flex items-center gap-4">
         <div className="flex-1 text-2xl font-medium">
           <Link aria-label="Homepage" href="/">
