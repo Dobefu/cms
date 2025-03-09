@@ -40,7 +40,8 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = database.DB.Exec(
-		"DELETE FROM sessions WHERE token = $1",
+		"DELETE FROM sessions WHERE user_id = $1 AND token = $2",
+		userId,
 		token,
 	)
 
