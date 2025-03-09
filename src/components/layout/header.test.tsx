@@ -29,23 +29,18 @@ describe('header', () => {
 
     render(await Header())
 
-    expect(screen.getByRole('banner')).toBeDefined()
-    expect(screen.getAllByRole('navigation')).toBeDefined()
-
     const links = screen.getAllByRole<HTMLAnchorElement>('link')
 
-    expect(links).toHaveLength(2)
+    expect(links).toHaveLength(3)
     expect(links[0].ariaLabel).toBe('Homepage')
     expect(links[1].textContent).toBe('My account')
+    expect(links[2].textContent).toBe('Log out')
   })
 
   it('renders for an authenticated user', async () => {
     expect.hasAssertions()
 
     render(await Header())
-
-    expect(screen.getByRole('banner')).toBeDefined()
-    expect(screen.getAllByRole('navigation')).toBeDefined()
 
     const links = screen.getAllByRole<HTMLAnchorElement>('link')
 

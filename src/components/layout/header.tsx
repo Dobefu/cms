@@ -18,6 +18,10 @@ export default async function Header() {
         title: 'My account',
         href: '/user',
       },
+      {
+        title: 'Log out',
+        href: '/logout',
+      },
     ]
   }
 
