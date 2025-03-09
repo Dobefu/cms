@@ -1,11 +1,31 @@
+import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { setSessionCookie } from './utils/set-session-cookie'
+import { validateSession } from './utils/validate-session'
 
 let cachedCspString: string | undefined
 
-export function middleware() {
+export async function middleware() {
+  await refreshSessionToken()
+
   const response = getCspResponse()
 
   return response
+}
+
+async function refreshSessionToken() {
+  const cookieStore = await cookies()
+  const tokenCookie = cookieStore.get('session')
+
+  if (!tokenCookie) {
+    return
+  }
+
+  const { token } = await validateSession()
+
+  if (token && tokenCookie.value !== token) {
+    setSessionCookie(token)
+  }
 }
 
 function getCspResponse(): NextResponse {
