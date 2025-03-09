@@ -3,19 +3,31 @@
 import { getQueryClient } from '@/utils/get-query-client'
 import { redirect } from 'next/navigation'
 
-export async function login(formData: FormData) {
-  const username = formData.get('username')
-  const password = formData.get('password')
+export interface FormState {
+  username: string
+  errorUsername?: string
+  errorPassword?: string
+  errorGeneric?: string
+}
 
-  if (!username || !password) {
-    return
+export async function login(
+  prevState: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const username = formData.get('username') as string
+  const password = formData.get('password') as string
+
+  const { isValid, newState } = validateForm(prevState, username, password)
+
+  if (!isValid) {
+    return newState
   }
 
   const apiEndpoint = process.env.API_ENDPOINT
 
   if (!apiEndpoint) {
     console.error('API_ENDPOINT is not set')
-    return
+    return newState
   }
 
   const queryClient = getQueryClient()
@@ -50,10 +62,39 @@ export async function login(formData: FormData) {
 
     isQuerySuccessful = true
   } catch (e) {
+    newState.errorGeneric = 'Login failed'
     console.error(`Login failed: ${e}`)
   }
 
   if (isQuerySuccessful) {
     redirect('/user')
   }
+
+  return newState
+}
+
+function validateForm(
+  prevState: FormState,
+  username: string,
+  password: string,
+): { isValid: boolean; newState: FormState } {
+  let isValid = true
+  const newState = { ...prevState }
+
+  newState.username = username
+  newState.errorUsername = undefined
+  newState.errorPassword = undefined
+  newState.errorGeneric = undefined
+
+  if (!username) {
+    newState.errorUsername = 'Please enter a username'
+    isValid = false
+  }
+
+  if (!password) {
+    newState.errorPassword = 'Please enter a password'
+    isValid = false
+  }
+
+  return { isValid, newState }
 }
