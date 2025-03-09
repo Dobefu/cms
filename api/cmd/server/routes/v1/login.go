@@ -1,16 +1,13 @@
 package v1
 
 import (
-	"database/sql"
 	"errors"
 	"fmt"
 	"net/http"
-	"time"
 
-	"github.com/Dobefu/cms/api/cmd/database"
 	"github.com/Dobefu/cms/api/cmd/logger"
 	"github.com/Dobefu/cms/api/cmd/server/utils"
-	"golang.org/x/crypto/bcrypt"
+	"github.com/Dobefu/cms/api/cmd/user"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -22,40 +19,16 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	row := database.DB.QueryRow(
-		"SELECT password FROM users WHERE username = $1 LIMIT 1",
-		username,
-	)
-
-	var hashedPassword string
-	err := row.Scan(&hashedPassword)
+	err := user.Login(username, password)
 
 	if err != nil {
-		if err == sql.ErrNoRows {
-			utils.PrintError(w, errors.New("Invalid username or password"), false)
-		} else {
+		if err == user.ErrUnexpected {
 			logger.Error(err.Error())
-			utils.PrintError(w, errors.New("Internal server error"), true)
+			utils.PrintError(w, err, true)
+		} else {
+			utils.PrintError(w, err, false)
 		}
-		return
-	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
-
-	if err != nil {
-		utils.PrintError(w, errors.New("Invalid username or password"), false)
-		return
-	}
-
-	_, err = database.DB.Exec(
-		"UPDATE users SET last_login = $1 WHERE username = $2",
-		time.Now().UTC(),
-		username,
-	)
-
-	if err != nil {
-		logger.Error(err.Error())
-		utils.PrintError(w, errors.New("Internal server error"), true)
 		return
 	}
 
