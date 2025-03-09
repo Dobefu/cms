@@ -21,7 +21,11 @@ async function refreshSessionToken() {
     return
   }
 
-  const { token } = await validateSession()
+  const { isAnonymous, token } = await validateSession()
+
+  if (isAnonymous) {
+    cookieStore.delete('session')
+  }
 
   if (token && tokenCookie.value !== token) {
     setSessionCookie(token)
