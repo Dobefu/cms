@@ -8,7 +8,7 @@ describe('Login', () => {
   })
 
   it('Renders normally', () => {
-    render(Login())
+    render(<Login />)
 
     expect(screen).toBeDefined()
   })

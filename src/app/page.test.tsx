@@ -8,7 +8,7 @@ describe('Homepage', () => {
   })
 
   it('Renders normally', () => {
-    render(Homepage())
+    render(<Homepage />)
 
     expect(screen).toBeDefined()
   })
