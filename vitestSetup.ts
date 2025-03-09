@@ -46,7 +46,7 @@ vi.mock('next/navigation', async () => {
 
 vi.mock('next/headers', async () => {
   const actual = await vi.importActual('next/headers')
-  const cookies: Record<string, string> = {}
+  let cookies: Record<string, string> = {}
 
   return {
     ...(actual as object),
@@ -61,6 +61,7 @@ vi.mock('next/headers', async () => {
 
         return { name, value: cookies[name] }
       }),
+      delete: vi.fn((name: string) => delete cookies[name]),
     })),
   }
 })

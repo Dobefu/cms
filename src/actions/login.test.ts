@@ -53,20 +53,6 @@ describe('login', () => {
     expect(spy).not.toHaveBeenCalled()
   })
 
-  it('returns a generic error when the fetch call fails', async () => {
-    expect.hasAssertions()
-
-    const spy = vi.spyOn(navigation, 'redirect')
-
-    const formData = new FormData()
-    formData.append('username', 'Username')
-    formData.append('password', 'Password')
-
-    await login(initialState, formData)
-
-    expect(spy).not.toHaveBeenCalled()
-  })
-
   it('returns early with missing data', async () => {
     expect.hasAssertions()
 

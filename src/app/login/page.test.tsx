@@ -14,9 +14,12 @@ describe('login', () => {
     })
   })
 
-  afterEach(() => {
+  afterEach(async () => {
     cleanup()
     vi.restoreAllMocks()
+
+    const cookieStore = await cookies()
+    cookieStore.delete('session')
   })
 
   it('renders normally for an anonymous user', async () => {

@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers'
 import { getApiEndpoint } from './get-api-endpoint'
 import { getQueryClient } from './get-query-client'
+import { setSessionCookie } from './set-session-cookie'
 
 const errResponse = { isAnonymous: true }
 
@@ -66,15 +67,7 @@ async function validateSession(): Promise<{ isAnonymous: boolean }> {
     'token' in loginData.data &&
     loginData.data?.token
   ) {
-    const cookieStore = await cookies()
-    cookieStore.set({
-      name: 'session',
-      value: loginData.data.token,
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: true,
-      maxAge: 86400 * 31,
-    })
+    await setSessionCookie(loginData.data.token)
   } else {
     return errResponse
   }
