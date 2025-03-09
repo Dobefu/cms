@@ -1,12 +1,25 @@
+import { validateSession } from '@/utils/validate-session'
 import Link from 'next/link'
 
-export default function Header() {
-  const links = [
-    {
-      title: 'Login',
-      href: '/login',
-    },
-  ]
+export default async function Header() {
+  const { isAnonymous } = await validateSession()
+  let links: { title: string; href: string }[]
+
+  if (isAnonymous) {
+    links = [
+      {
+        title: 'Login',
+        href: '/login',
+      },
+    ]
+  } else {
+    links = [
+      {
+        title: 'My account',
+        href: '/user',
+      },
+    ]
+  }
 
   return (
     <header className="sticky top-0 p-4">
