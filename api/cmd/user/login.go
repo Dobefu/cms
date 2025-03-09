@@ -10,6 +10,7 @@ import (
 )
 
 var ErrUnexpected = errors.New("Internal server error")
+var errCredentials = errors.New("Invalid username or password")
 
 func Login(username string, password string) (err error) {
 	if username == "" || password == "" {
@@ -26,7 +27,7 @@ func Login(username string, password string) (err error) {
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return errors.New("Invalid username or password")
+			return errCredentials
 		} else {
 			return ErrUnexpected
 		}
@@ -35,7 +36,7 @@ func Login(username string, password string) (err error) {
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 
 	if err != nil {
-		return errors.New("Invalid username or password")
+		return errCredentials
 	}
 
 	_, err = database.DB.Exec(
