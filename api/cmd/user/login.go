@@ -19,12 +19,13 @@ func Login(username string, password string) (err error) {
 	}
 
 	row := database.DB.QueryRow(
-		"SELECT password FROM users WHERE username = $1 LIMIT 1",
+		"SELECT id,password FROM users WHERE username = $1 LIMIT 1",
 		username,
 	)
 
+	var userId int
 	var hashedPassword string
-	err = row.Scan(&hashedPassword)
+	err = row.Scan(&userId, &hashedPassword)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -40,7 +41,13 @@ func Login(username string, password string) (err error) {
 		return ErrCredentials
 	}
 
-	err = SetLastLogin(username, time.Now().UTC())
+	err = SetLastLogin(userId, time.Now().UTC())
+
+	if err != nil {
+		return ErrUnexpected
+	}
+
+	_, err = UpdateSessionToken(userId)
 
 	if err != nil {
 		return ErrUnexpected
