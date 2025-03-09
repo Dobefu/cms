@@ -1,14 +1,23 @@
 import * as navigation from 'next/navigation'
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { login } from './login'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { type FormState, login } from './login'
+
+export const initialState: FormState = {
+  username: '',
+  errorUsername: undefined,
+  errorPassword: undefined,
+  errorGeneric: undefined,
+}
 
 describe('Login', () => {
-  global.fetch = vi.fn().mockResolvedValue({
-    ok: true,
-    status: 200,
-    json: () => {
-      return Promise.resolve(JSON.stringify(''))
-    },
+  beforeEach(() => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: () => {
+        return Promise.resolve(JSON.stringify(''))
+      },
+    })
   })
 
   afterEach(() => {
@@ -23,7 +32,7 @@ describe('Login', () => {
     formData.append('username', 'Username')
     formData.append('password', 'Password')
 
-    await login(formData)
+    await login(initialState, formData)
     expect(spy).toHaveBeenCalled()
   })
 
@@ -35,7 +44,7 @@ describe('Login', () => {
     formData.append('username', 'Username')
     formData.append('password', 'Password')
 
-    await login(formData)
+    await login(initialState, formData)
     expect(spy).not.toHaveBeenCalled()
   })
 
@@ -57,7 +66,7 @@ describe('Login', () => {
     formData.append('username', 'Username')
     formData.append('password', 'Password')
 
-    await login(formData)
+    await login(initialState, formData)
     expect(spy).not.toHaveBeenCalled()
   })
 
@@ -76,7 +85,7 @@ describe('Login', () => {
     formData.append('username', 'Username')
     formData.append('password', 'Password')
 
-    await login(formData)
+    await login(initialState, formData)
     expect(spy).not.toHaveBeenCalled()
   })
 
@@ -85,7 +94,7 @@ describe('Login', () => {
 
     const formData = new FormData()
 
-    await login(formData)
+    await login(initialState, formData)
     expect(spy).not.toHaveBeenCalled()
   })
 })
