@@ -29,6 +29,7 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 
 	apiRoute(mux, 1, "/login", "POST", routesV1Login)
 	apiRoute(mux, 1, "/validate-session", "POST", routesV1ValidateSession)
+	apiRoute(mux, 1, "/logout", "POST", routesV1Logout)
 
 	return mux
 }
