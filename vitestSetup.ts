@@ -44,6 +44,17 @@ vi.mock('next/navigation', async () => {
   }
 })
 
+vi.mock('next/headers', async () => {
+  const actual = await vi.importActual('next/headers')
+
+  return {
+    ...(actual as object),
+    cookies: vi.fn(() => ({
+      set: vi.fn(),
+    })),
+  }
+})
+
 vi.mock('next-view-transitions', async () => {
   return {
     Link,

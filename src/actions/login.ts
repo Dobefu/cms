@@ -1,6 +1,7 @@
 'use server'
 
 import { getQueryClient } from '@/utils/get-query-client'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export interface FormState {
@@ -31,10 +32,11 @@ export async function login(
   }
 
   const queryClient = getQueryClient()
+  let loginResponse: Response = new Response()
   let isQuerySuccessful
 
   try {
-    await queryClient.fetchQuery({
+    loginResponse = await queryClient.fetchQuery({
       queryKey: [apiEndpoint, username, password],
       queryFn: async () => {
         const formData = new FormData()
@@ -67,6 +69,22 @@ export async function login(
   }
 
   if (isQuerySuccessful) {
+    const loginData = await loginResponse.json()
+
+    if (
+      loginData &&
+      'data' in loginData &&
+      loginData?.data &&
+      'token' in loginData.data &&
+      loginData.data?.token
+    ) {
+      const cookieStore = await cookies()
+      cookieStore.set({ name: 'session', value: loginData.data.token })
+    } else {
+      newState.errorGeneric = 'Login failed'
+      return newState
+    }
+
     redirect('/user')
   }
 
