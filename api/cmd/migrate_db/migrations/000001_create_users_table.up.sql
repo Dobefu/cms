@@ -8,3 +8,5 @@ CREATE TABLE IF NOT EXISTS users(
   updated_at timestamp without time zone NOT NULL DEFAULT NOW(),
   last_login timestamp without time zone
 );
+
+CREATE UNIQUE INDEX ON users(id, username, email);
