@@ -40,11 +40,7 @@ func Login(username string, password string) (err error) {
 		return ErrCredentials
 	}
 
-	_, err = database.DB.Exec(
-		"UPDATE users SET last_login = $1 WHERE username = $2",
-		time.Now().UTC(),
-		username,
-	)
+	err = SetLastLogin(username, time.Now().UTC())
 
 	if err != nil {
 		return ErrUnexpected
