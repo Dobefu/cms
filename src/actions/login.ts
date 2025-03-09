@@ -2,7 +2,7 @@
 
 import { getApiEndpoint } from '@/utils/get-api-endpoint'
 import { getQueryClient } from '@/utils/get-query-client'
-import { cookies } from 'next/headers'
+import { setSessionCookie } from '@/utils/set-session-cookie'
 import { redirect } from 'next/navigation'
 
 export interface FormState {
@@ -78,15 +78,7 @@ export async function login(
       'token' in loginData.data &&
       loginData.data?.token
     ) {
-      const cookieStore = await cookies()
-      cookieStore.set({
-        name: 'session',
-        value: loginData.data.token,
-        httpOnly: true,
-        sameSite: 'strict',
-        secure: true,
-        maxAge: 86400 * 31,
-      })
+      await setSessionCookie(loginData.data.token)
     } else {
       newState.errorGeneric = 'Login failed'
       return newState
