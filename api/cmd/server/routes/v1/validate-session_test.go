@@ -14,7 +14,7 @@ import (
 func setupValidateSessionTests(t *testing.T) (rr *httptest.ResponseRecorder, cleanup func()) {
 	rr = httptest.NewRecorder()
 
-	userValidateSession = func(oldToken string) (newToken string, err error) {
+	userValidateSession = func(oldToken string, refresh bool) (newToken string, err error) {
 		return "new-token", nil
 	}
 
@@ -38,7 +38,7 @@ func TestValidateSessionErrInvalidSessionToken(t *testing.T) {
 	rr, cleanup := setupValidateSessionTests(t)
 	defer cleanup()
 
-	userValidateSession = func(oldToken string) (newToken string, err error) {
+	userValidateSession = func(oldToken string, refresh bool) (newToken string, err error) {
 		return "", assert.AnError
 	}
 

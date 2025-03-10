@@ -9,7 +9,7 @@ import (
 	"github.com/Dobefu/cms/api/cmd/logger"
 )
 
-func ValidateSession(oldToken string) (newToken string, err error) {
+func ValidateSession(oldToken string, refresh bool) (newToken string, err error) {
 	if oldToken == "" {
 		return "", errors.New("Missing session token")
 	}
@@ -35,7 +35,7 @@ func ValidateSession(oldToken string) (newToken string, err error) {
 
 	tokenAge := time.Now().Unix() - lastUpdated.Unix()
 
-	if tokenAge >= 360 {
+	if refresh && tokenAge >= 360 {
 		newToken, err = UpdateSessionToken(userId)
 
 		if err != nil {

@@ -11,13 +11,14 @@ import (
 
 func ValidateSession(w http.ResponseWriter, r *http.Request) {
 	oldToken := r.FormValue("session_token")
+	refresh := r.FormValue("refresh")
 
 	if oldToken == "" {
 		utils.PrintError(w, errors.New("Missing session_token"), false)
 		return
 	}
 
-	newToken, err := userValidateSession(oldToken)
+	newToken, err := userValidateSession(oldToken, refresh != "")
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)
