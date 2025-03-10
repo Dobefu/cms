@@ -4,7 +4,7 @@ import { getQueryClient } from './get-query-client'
 
 const errResponse = { isAnonymous: true }
 
-async function validateSession(): Promise<{
+async function validateSession(refresh: boolean = false): Promise<{
   isAnonymous: boolean
   token?: string
 }> {
@@ -27,10 +27,14 @@ async function validateSession(): Promise<{
 
   try {
     validateResponse = await queryClient.fetchQuery({
-      queryKey: [apiEndpoint, token.value],
+      queryKey: [apiEndpoint, token.value, refresh],
       queryFn: async () => {
         const formData = new FormData()
         formData.append('session_token', token.value)
+
+        if (refresh) {
+          formData.append('refresh', 'true')
+        }
 
         const response = await fetch(`${apiEndpoint}/validate-session`, {
           method: 'POST',
