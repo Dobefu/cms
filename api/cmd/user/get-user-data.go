@@ -6,25 +6,25 @@ import (
 
 	"github.com/Dobefu/cms/api/cmd/database"
 	"github.com/Dobefu/cms/api/cmd/logger"
+	user_structs "github.com/Dobefu/cms/api/cmd/user/structs"
 )
 
-func GetUserData(userId int) (err error) {
+func GetUserData(userId int) (userData user_structs.UserData, err error) {
 	row := database.DB.QueryRow(
 		"SELECT username FROM users WHERE id = $1 LIMIT 1",
 		userId,
 	)
 
-	var username string
-	err = row.Scan(&username)
+	err = row.Scan(&userData.Username)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return errors.New("Could not get user data")
+			return userData, errors.New("Could not get user data")
 		} else {
 			logger.Error(err.Error())
-			return ErrUnexpected
+			return userData, ErrUnexpected
 		}
 	}
 
-	return nil
+	return userData, nil
 }

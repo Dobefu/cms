@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -24,12 +25,19 @@ func GetUserData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = userGetUserData(userId)
+	userData, err := userGetUserData(userId)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)
 		return
 	}
 
-	fmt.Fprint(w, `{"data":{"user":{}},"error":null}`)
+	userDataJson, err := json.Marshal(userData)
+
+	if err != nil {
+		utils.PrintError(w, user.ErrUnexpected, true)
+		return
+	}
+
+	fmt.Fprint(w, fmt.Sprintf(`{"data":{"user":%s},"error":null}`, userDataJson))
 }
