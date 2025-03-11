@@ -57,7 +57,7 @@ async function validateSession(refresh: boolean = false): Promise<{
 
     isQuerySuccessful = true
   } catch (e) {
-    console.error(`Login failed: ${e}`)
+    console.error(`Session validation failed: ${e}`)
   }
 
   if (!isQuerySuccessful) {
