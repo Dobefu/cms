@@ -27,9 +27,10 @@ func TestValidateSessionErrMissingSessionToken(t *testing.T) {
 	_, cleanup := setupValidateSessionTests(t)
 	defer cleanup()
 
-	newToken, err := ValidateSession("", false)
+	newToken, userId, err := ValidateSession("", false)
 	assert.EqualError(t, err, "Missing session token")
 	assert.Equal(t, newToken, "")
+	assert.Equal(t, userId, 0)
 }
 
 func TestValidateSessionErrInvalidSessionToken(t *testing.T) {
@@ -38,9 +39,10 @@ func TestValidateSessionErrInvalidSessionToken(t *testing.T) {
 
 	mock.ExpectQuery("SELECT user_id, token, updated_at FROM sessions WHERE .+").WillReturnError(sql.ErrNoRows)
 
-	newToken, err := ValidateSession("bogus", false)
+	newToken, userId, err := ValidateSession("bogus", false)
 	assert.EqualError(t, err, "Could not validate session_token")
 	assert.Equal(t, newToken, "bogus")
+	assert.Equal(t, userId, 0)
 }
 
 func TestValidateSessionErrSessionTokenUnexpected(t *testing.T) {
@@ -49,9 +51,10 @@ func TestValidateSessionErrSessionTokenUnexpected(t *testing.T) {
 
 	mock.ExpectQuery("SELECT user_id, token, updated_at FROM sessions WHERE .+").WillReturnError(assert.AnError)
 
-	newToken, err := ValidateSession("test", false)
+	newToken, userId, err := ValidateSession("test", false)
 	assert.EqualError(t, err, ErrUnexpected.Error())
 	assert.Equal(t, newToken, "test")
+	assert.Equal(t, userId, 0)
 }
 
 func TestValidateSessionErrUpdateToken(t *testing.T) {
@@ -64,9 +67,10 @@ func TestValidateSessionErrUpdateToken(t *testing.T) {
 
 	mock.ExpectExec("INSERT INTO sessions .+ ON CONFLICT(.+) DO .+").WillReturnError(assert.AnError)
 
-	newToken, err := ValidateSession("test", true)
+	newToken, userId, err := ValidateSession("test", true)
 	assert.EqualError(t, err, ErrUnexpected.Error())
 	assert.Equal(t, newToken, "test")
+	assert.Equal(t, userId, 1)
 }
 
 func TestValidateSessionErrUpdateTokenDatabase(t *testing.T) {
@@ -80,9 +84,10 @@ func TestValidateSessionErrUpdateTokenDatabase(t *testing.T) {
 	mock.ExpectExec("INSERT INTO sessions .+ ON CONFLICT(.+) DO .+").WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectExec("UPDATE sessions SET .+").WillReturnError(assert.AnError)
 
-	newToken, err := ValidateSession("test", true)
+	newToken, userId, err := ValidateSession("test", true)
 	assert.EqualError(t, err, ErrUnexpected.Error())
 	assert.Equal(t, newToken, "test")
+	assert.Equal(t, userId, 1)
 }
 
 func TestValidateSessionSuccess(t *testing.T) {
@@ -96,7 +101,8 @@ func TestValidateSessionSuccess(t *testing.T) {
 	mock.ExpectExec("INSERT INTO sessions .+ ON CONFLICT(.+) DO .+").WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectExec("UPDATE sessions SET .+").WillReturnResult(sqlmock.NewResult(1, 1))
 
-	newToken, err := ValidateSession("test", true)
+	newToken, userId, err := ValidateSession("test", true)
 	assert.NoError(t, err)
 	assert.NotEqual(t, newToken, "test")
+	assert.Equal(t, userId, 1)
 }

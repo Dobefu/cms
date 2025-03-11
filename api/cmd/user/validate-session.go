@@ -9,9 +9,9 @@ import (
 	"github.com/Dobefu/cms/api/cmd/logger"
 )
 
-func ValidateSession(oldToken string, refresh bool) (newToken string, err error) {
+func ValidateSession(oldToken string, refresh bool) (newToken string, userId int, err error) {
 	if oldToken == "" {
-		return "", errors.New("Missing session token")
+		return "", 0, errors.New("Missing session token")
 	}
 
 	row := database.DB.QueryRow(
@@ -19,17 +19,16 @@ func ValidateSession(oldToken string, refresh bool) (newToken string, err error)
 		oldToken,
 	)
 
-	var userId int
 	var token string
 	var lastUpdated time.Time
 	err = row.Scan(&userId, &token, &lastUpdated)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return oldToken, errors.New("Could not validate session_token")
+			return oldToken, 0, errors.New("Could not validate session_token")
 		} else {
 			logger.Error(err.Error())
-			return oldToken, ErrUnexpected
+			return oldToken, 0, ErrUnexpected
 		}
 	}
 
@@ -40,7 +39,7 @@ func ValidateSession(oldToken string, refresh bool) (newToken string, err error)
 
 		if err != nil {
 			logger.Error(err.Error())
-			return token, ErrUnexpected
+			return token, userId, ErrUnexpected
 		}
 
 		_, err = database.DB.Exec(
@@ -52,11 +51,11 @@ func ValidateSession(oldToken string, refresh bool) (newToken string, err error)
 
 		if err != nil {
 			logger.Error(err.Error())
-			return token, ErrUnexpected
+			return token, userId, ErrUnexpected
 		}
 
 		token = newToken
 	}
 
-	return token, nil
+	return token, userId, nil
 }

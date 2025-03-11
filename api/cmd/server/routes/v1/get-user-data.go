@@ -17,7 +17,7 @@ func GetUserData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := userValidateSession(token, false)
+	_, _, err := userValidateSession(token, false)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)
