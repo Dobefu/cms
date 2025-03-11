@@ -17,7 +17,14 @@ func GetUserData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, _, err := userValidateSession(token, false)
+	_, userId, err := userValidateSession(token, false)
+
+	if err != nil {
+		utils.PrintError(w, err, err == user.ErrUnexpected)
+		return
+	}
+
+	err = userGetUserData(userId)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)

@@ -4,3 +4,4 @@ import "github.com/Dobefu/cms/api/cmd/user"
 
 var userLogin = user.Login
 var userValidateSession = user.ValidateSession
+var userGetUserData = user.GetUserData
