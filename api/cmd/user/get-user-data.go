@@ -10,7 +10,7 @@ import (
 
 func GetUserData(userId int) (err error) {
 	row := database.DB.QueryRow(
-		"SELECT username FROM users WHERE user_id = $1 LIMIT 1",
+		"SELECT username FROM users WHERE id = $1 LIMIT 1",
 		userId,
 	)
 
