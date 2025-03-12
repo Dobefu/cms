@@ -32,12 +32,10 @@ func GetUserData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userDataJson, err := json.Marshal(userData)
+	// The error check is omitted here,
+	// since a UserData struct will always be passed here.
+	// This struct has no channels or complex types.
+	userDataJson, _ := json.Marshal(userData)
 
-	if err != nil {
-		utils.PrintError(w, user.ErrUnexpected, true)
-		return
-	}
-
-	fmt.Fprint(w, fmt.Sprintf(`{"data":{"user":%s},"error":null}`, userDataJson))
+	fmt.Fprintf(w, `{"data":{"user":%s},"error":null}`, userDataJson)
 }
