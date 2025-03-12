@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/Dobefu/cms/api/cmd/user"
+	user_structs "github.com/Dobefu/cms/api/cmd/user/structs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,8 +19,8 @@ func setupGetUserDataTests() (rr *httptest.ResponseRecorder, cleanup func()) {
 		return "new-token", 1, nil
 	}
 
-	userGetUserData = func(userId int) (err error) {
-		return nil
+	userGetUserData = func(userId int) (userData user_structs.UserData, err error) {
+		return user_structs.UserData{Username: "test-user"}, nil
 	}
 
 	return rr, func() {
@@ -60,8 +61,8 @@ func TestGetUserDataErrGetUserData(t *testing.T) {
 	rr, cleanup := setupGetUserDataTests()
 	defer cleanup()
 
-	userGetUserData = func(userId int) (err error) {
-		return assert.AnError
+	userGetUserData = func(userId int) (userData user_structs.UserData, err error) {
+		return userData, assert.AnError
 	}
 
 	req, err := http.NewRequest("POST", "", strings.NewReader("session_token=bogus"))
@@ -83,5 +84,5 @@ func TestGetUserDataSuccess(t *testing.T) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	GetUserData(rr, req)
-	assert.JSONEq(t, `{"data": {"user":{}}, "error": null}`, rr.Body.String())
+	assert.JSONEq(t, `{"data": {"user":{"username":"test-user"}}, "error": null}`, rr.Body.String())
 }
