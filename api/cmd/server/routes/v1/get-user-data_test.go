@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -37,7 +38,11 @@ func TestGetUserDataErrMissingSessionToken(t *testing.T) {
 	assert.NoError(t, err)
 
 	GetUserData(rr, req)
-	assert.JSONEq(t, fmt.Sprintf(`{"data": null, "error": "%s"}`, "Missing session_token"), rr.Body.String())
+	assert.JSONEq(
+		t,
+		fmt.Sprintf(`{"data": null, "error": "%s"}`, "Missing session_token"),
+		rr.Body.String(),
+	)
 }
 
 func TestGetUserDataErrInvalidSessionToken(t *testing.T) {
@@ -54,7 +59,11 @@ func TestGetUserDataErrInvalidSessionToken(t *testing.T) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	GetUserData(rr, req)
-	assert.JSONEq(t, fmt.Sprintf(`{"data": null, "error": "%s"}`, assert.AnError), rr.Body.String())
+	assert.JSONEq(
+		t,
+		fmt.Sprintf(`{"data": null, "error": "%s"}`, assert.AnError),
+		rr.Body.String(),
+	)
 }
 
 func TestGetUserDataErrGetUserData(t *testing.T) {
@@ -71,7 +80,11 @@ func TestGetUserDataErrGetUserData(t *testing.T) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	GetUserData(rr, req)
-	assert.JSONEq(t, fmt.Sprintf(`{"data": null, "error": "%s"}`, assert.AnError), rr.Body.String())
+	assert.JSONEq(
+		t,
+		fmt.Sprintf(`{"data": null, "error": "%s"}`, assert.AnError),
+		rr.Body.String(),
+	)
 }
 
 func TestGetUserDataSuccess(t *testing.T) {
@@ -83,6 +96,14 @@ func TestGetUserDataSuccess(t *testing.T) {
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
+	userDataJson, _ := json.Marshal(
+		map[string]any{"user": user_structs.UserData{Username: "test-user"}},
+	)
+
 	GetUserData(rr, req)
-	assert.JSONEq(t, `{"data": {"user":{"username":"test-user"}}, "error": null}`, rr.Body.String())
+	assert.JSONEq(
+		t,
+		fmt.Sprintf(`{"data": %s, "error": null}`, string(userDataJson)),
+		rr.Body.String(),
+	)
 }

@@ -3,6 +3,7 @@ package user
 import (
 	"database/sql"
 	"testing"
+	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/Dobefu/cms/api/cmd/database"
@@ -48,9 +49,29 @@ func TestGetUserDataSuccess(t *testing.T) {
 	mock, cleanup := setupGetUserDataTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT username FROM users WHERE .+ LIMIT 1").WillReturnRows(sqlmock.NewRows([]string{"username"}).AddRow("test-username"))
+	mock.ExpectQuery("SELECT .+ FROM users WHERE .+ LIMIT 1").WillReturnRows(
+		sqlmock.NewRows(
+			[]string{
+				"id",
+				"username",
+				"email",
+				"status",
+				"created_at",
+				"updated_at",
+				"last_login",
+			},
+		).AddRow(
+			1,
+			"test-username",
+			"test-email",
+			true,
+			time.Time{},
+			time.Time{},
+			time.Time{},
+		),
+	)
 
 	userData, err := GetUserData(1)
 	assert.NoError(t, err)
-	assert.NotEmpty(t, userData)
+	assert.NotNil(t, userData)
 }
