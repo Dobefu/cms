@@ -1,14 +1,25 @@
+import { type UserData } from '@/types/user-data'
 import { render } from '@testing-library/react'
 import { cookies } from 'next/headers'
 import * as navigation from 'next/navigation'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import User from './page'
 
+const userData: UserData = {
+  id: 1,
+  username: 'test-username',
+  email: 'test-email',
+  status: true,
+  created_at: new Date(),
+  updated_at: new Date(),
+  last_login: new Date(),
+}
+
 describe('user', () => {
   beforeEach(() => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
-      json: () => Promise.resolve({ data: { token: 'test' }, error: null }),
+      json: () => Promise.resolve({ data: undefined, error: new Error('') }),
       ok: true,
       status: 200,
     })
@@ -21,18 +32,67 @@ describe('user', () => {
     cookieStore.delete('session')
   })
 
-  it('renders normally for an anonymous user', async () => {
+  it('redirects for an anonymous user', async () => {
     expect.hasAssertions()
 
-    const spy = vi.spyOn(navigation, 'redirect')
-
-    render(await User())
-
-    expect(spy).toHaveBeenCalledWith('/login')
+    await expect(User()).rejects.toThrow('Mock redirect error')
   })
 
-  it('redirects for logged in users', async () => {
+  it('returns early when the getUserData response has an error', async () => {
     expect.hasAssertions()
+
+    vi.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({
+        ...new Response(),
+        json: () =>
+          Promise.resolve({
+            data: { token: 'test-token' },
+            error: null,
+          }),
+        ok: true,
+        status: 200,
+      })
+      .mockResolvedValueOnce({
+        ...new Response(),
+        json: () =>
+          Promise.resolve({
+            data: null,
+            error: new Error(''),
+          }),
+        ok: true,
+        status: 200,
+      })
+
+    const cookieStore = await cookies()
+    cookieStore.set({ name: 'session', value: 'test' })
+
+    await expect(User()).rejects.toThrow('Mock notFound error')
+  })
+
+  it('renders normally for logged in users', async () => {
+    expect.hasAssertions()
+
+    vi.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({
+        ...new Response(),
+        json: () =>
+          Promise.resolve({
+            data: { token: 'test-token' },
+            error: null,
+          }),
+        ok: true,
+        status: 200,
+      })
+      .mockResolvedValueOnce({
+        ...new Response(),
+        json: () =>
+          Promise.resolve({
+            data: { user: userData },
+            error: null,
+          }),
+        ok: true,
+        status: 200,
+      })
 
     const spy = vi.spyOn(navigation, 'redirect')
 

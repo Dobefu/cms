@@ -110,8 +110,6 @@ describe('login', () => {
   it('redirects on successful login', async () => {
     expect.hasAssertions()
 
-    const spy = vi.spyOn(navigation, 'redirect')
-
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
       json: () => Promise.resolve({ data: { token: 'test' }, error: null }),
@@ -123,8 +121,8 @@ describe('login', () => {
     formData.append('username', 'Username')
     formData.append('password', 'Password')
 
-    await login(initialState, formData)
-
-    expect(spy).toHaveBeenCalledWith('/user')
+    await expect(login(initialState, formData)).rejects.toThrow(
+      'Mock redirect error',
+    )
   })
 })

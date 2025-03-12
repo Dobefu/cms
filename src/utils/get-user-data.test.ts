@@ -31,6 +31,15 @@ describe('getUserData', () => {
     expect(data).toBeUndefined()
   })
 
+  it('returns early when the session token is missing', async () => {
+    expect.hasAssertions()
+
+    const { data, error } = await getUserData()
+
+    expect(error).toStrictEqual(new Error('No session token cookie'))
+    expect(data).toBeUndefined()
+  })
+
   it('returns a JSON error when the fetch call fails', async () => {
     expect.hasAssertions()
 

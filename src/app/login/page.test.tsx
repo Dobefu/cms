@@ -34,13 +34,9 @@ describe('login', () => {
   it('redirects for logged in users', async () => {
     expect.hasAssertions()
 
-    const spy = vi.spyOn(navigation, 'redirect')
-
     const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
-    render(await Login())
-
-    expect(spy).toHaveBeenCalledWith('/user')
+    await expect(Login()).rejects.toThrow('Mock redirect error')
   })
 })

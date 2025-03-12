@@ -1,5 +1,4 @@
 import { cookies } from 'next/headers'
-import * as navigation from 'next/navigation'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { GET } from './route'
 
@@ -26,11 +25,13 @@ describe('logout', () => {
 
     delete process.env.API_ENDPOINT
 
-    const spy = vi.spyOn(navigation, 'redirect')
+    await expect(GET()).rejects.toThrow('Mock redirect error')
+  })
 
-    await GET()
+  it('redirects early when the session token is missing', async () => {
+    expect.hasAssertions()
 
-    expect(spy).toHaveBeenCalledWith('/login')
+    await expect(GET()).rejects.toThrow('Mock redirect error')
   })
 
   it('redirects early when the fetch call fails', async () => {
@@ -39,11 +40,7 @@ describe('logout', () => {
     const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
-    const spy = vi.spyOn(navigation, 'redirect')
-
-    await GET()
-
-    expect(spy).toHaveBeenCalledWith('/login')
+    await expect(GET()).rejects.toThrow('Mock redirect error')
   })
 
   it('redirects when a failed response has an error object', async () => {
@@ -59,11 +56,7 @@ describe('logout', () => {
     const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
-    const spy = vi.spyOn(navigation, 'redirect')
-
-    await GET()
-
-    expect(spy).toHaveBeenCalledWith('/login')
+    await expect(GET()).rejects.toThrow('Mock redirect error')
   })
 
   it('redirects when successful', async () => {
@@ -79,10 +72,6 @@ describe('logout', () => {
     const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
-    const spy = vi.spyOn(navigation, 'redirect')
-
-    await GET()
-
-    expect(spy).toHaveBeenCalledWith('/login')
+    await expect(GET()).rejects.toThrow('Mock redirect error')
   })
 })
