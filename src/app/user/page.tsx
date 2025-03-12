@@ -17,15 +17,13 @@ export default async function User() {
 
   const { data, error } = await getUserData()
 
-  if (error) {
+  if (!data || error) {
     notFound()
   }
 
   return (
     <div>
-      <Heading level={1}>My account</Heading>
-
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <Heading level={1}>{data.user.username}</Heading>
     </div>
   )
 }

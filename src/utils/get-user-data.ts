@@ -1,9 +1,10 @@
+import { type UserData } from '@/types/user-data'
 import { cookies } from 'next/headers'
 import { getApiEndpoint } from './get-api-endpoint'
 import { getQueryClient } from './get-query-client'
 
 async function getUserData(): Promise<{
-  data?: boolean
+  data?: { user: UserData }
   error?: Error
 }> {
   const queryClient = getQueryClient(0)
