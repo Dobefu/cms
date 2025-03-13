@@ -5,11 +5,15 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/Dobefu/cms/api/cmd/color"
 )
 
 func ReadLine(question string) (string, error) {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf("%s:\n", question)
+
+	color.PrintfColor(color.FgGreen, color.BgBlack, " %s", question)
+	fmt.Printf(":\n ➤ ")
 
 	key, err := reader.ReadString('\n')
 
