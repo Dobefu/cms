@@ -5,6 +5,12 @@ import { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 
 export async function generateMetadata(): Promise<Metadata> {
+  const { isAnonymous } = await validateSession()
+
+  if (isAnonymous) {
+    return {}
+  }
+
   const { data, error } = await getUserData()
 
   if (!data || error) {
