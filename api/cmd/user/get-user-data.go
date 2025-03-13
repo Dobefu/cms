@@ -14,7 +14,7 @@ func GetUserData(userId int, includeInactive bool) (userData user_structs.UserDa
 	var whereClause string
 
 	if !includeInactive {
-		whereClause = fmt.Sprintf("AND status = true")
+		whereClause = "AND status = true"
 	}
 
 	row := database.DB.QueryRow(
