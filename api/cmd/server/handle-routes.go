@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/Dobefu/cms/api/cmd/database"
 	"github.com/Dobefu/cms/api/cmd/server/middleware"
 )
 
@@ -20,6 +21,20 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 			}
 
 			w.WriteHeader(404)
+		}),
+	)
+
+	mux.Handle(
+		"GET /health",
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			err := database.DB.Ping()
+
+			if err != nil {
+				fmt.Fprintf(w, `{"ok": false, "error": "%s"}`, err.Error())
+				return
+			}
+
+			fmt.Fprint(w, `{"ok": true, "error": null}`)
 		}),
 	)
 
