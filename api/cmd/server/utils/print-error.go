@@ -1,9 +1,9 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/Dobefu/cms/api/cmd/logger"
 )
@@ -17,5 +17,11 @@ func PrintError(w http.ResponseWriter, err error, isServerError bool) {
 	}
 
 	w.WriteHeader(statusCode)
-	fmt.Fprintf(w, `{"data": null, "error": "%s"}`, strings.ReplaceAll(err.Error(), `"`, `\"`))
+
+	response, _ := json.Marshal(map[string]any{
+		"data":  nil,
+		"error": err.Error(),
+	})
+
+	fmt.Fprint(w, string(response))
 }
