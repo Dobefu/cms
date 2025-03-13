@@ -25,7 +25,7 @@ func GetUserData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userData, err := userGetUserData(userId)
+	userData, err := userGetUserData(userId, false)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)
