@@ -20,12 +20,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	token, err := userLogin(username, password)
 
 	if err != nil {
-		if err == user.ErrUnexpected {
-			utils.PrintError(w, err, true)
-		} else {
-			utils.PrintError(w, err, false)
-		}
-
+		utils.PrintError(w, err, err == user.ErrUnexpected)
 		return
 	}
 
