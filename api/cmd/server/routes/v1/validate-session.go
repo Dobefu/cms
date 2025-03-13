@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -25,5 +26,12 @@ func ValidateSession(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, `{"data":{"token":"%s"},"error":null}`, newToken)
+	response, _ := json.Marshal(map[string]any{
+		"data": map[string]any{
+			"token": newToken,
+		},
+		"error": nil,
+	})
+
+	fmt.Fprint(w, string(response))
 }
