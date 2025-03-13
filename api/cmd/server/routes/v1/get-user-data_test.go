@@ -20,7 +20,7 @@ func setupGetUserDataTests() (rr *httptest.ResponseRecorder, cleanup func()) {
 		return "new-token", 1, nil
 	}
 
-	userGetUserData = func(userId int) (userData user_structs.UserData, err error) {
+	userGetUserData = func(userId int, includeInactive bool) (userData user_structs.UserData, err error) {
 		return user_structs.UserData{Username: "test-user"}, nil
 	}
 
@@ -70,7 +70,7 @@ func TestGetUserDataErrGetUserData(t *testing.T) {
 	rr, cleanup := setupGetUserDataTests()
 	defer cleanup()
 
-	userGetUserData = func(userId int) (userData user_structs.UserData, err error) {
+	userGetUserData = func(userId int, includeInactive bool) (userData user_structs.UserData, err error) {
 		return userData, assert.AnError
 	}
 

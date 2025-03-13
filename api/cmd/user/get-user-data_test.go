@@ -29,7 +29,7 @@ func TestGetUserDataErrNoUser(t *testing.T) {
 
 	mock.ExpectQuery("SELECT .+ FROM users WHERE .+ LIMIT 1").WillReturnError(sql.ErrNoRows)
 
-	userData, err := GetUserData(-1)
+	userData, err := GetUserData(-1, false)
 	assert.EqualError(t, err, "Could not get user data")
 	assert.Empty(t, userData)
 }
@@ -40,7 +40,7 @@ func TestGetUserDataErrUnexpected(t *testing.T) {
 
 	mock.ExpectQuery("SELECT .+ FROM users WHERE .+ LIMIT 1").WillReturnError(assert.AnError)
 
-	userData, err := GetUserData(1)
+	userData, err := GetUserData(1, false)
 	assert.EqualError(t, err, ErrUnexpected.Error())
 	assert.Empty(t, userData)
 }
@@ -71,7 +71,7 @@ func TestGetUserDataSuccess(t *testing.T) {
 		),
 	)
 
-	userData, err := GetUserData(1)
+	userData, err := GetUserData(1, false)
 	assert.NoError(t, err)
 	assert.NotNil(t, userData)
 }
