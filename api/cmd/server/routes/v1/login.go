@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -24,5 +25,12 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, `{"data":{"token":"%s"},"error":null}`, token)
+	response, _ := json.Marshal(map[string]any{
+		"data": map[string]any{
+			"token": token,
+		},
+		"error": nil,
+	})
+
+	fmt.Fprint(w, string(response))
 }
