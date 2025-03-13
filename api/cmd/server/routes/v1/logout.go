@@ -2,6 +2,7 @@ package v1
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -52,5 +53,10 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprint(w, `{"data":null,"error":null}`)
+	response, _ := json.Marshal(map[string]any{
+		"data":  nil,
+		"error": nil,
+	})
+
+	fmt.Fprint(w, string(response))
 }
