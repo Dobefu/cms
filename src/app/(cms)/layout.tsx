@@ -9,7 +9,10 @@ export default function RootLayout({
     <div className="flex flex-1">
       <Sidebar />
 
-      <main className="flex flex-1 flex-col gap-4 px-4" id="main-content">
+      <main
+        className="flex flex-1 flex-col gap-4 rounded-l-xl bg-zinc-100 p-4 shadow-inner dark:bg-zinc-800"
+        id="main-content"
+      >
         {children}
       </main>
     </div>

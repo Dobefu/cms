@@ -2,7 +2,7 @@ import Heading from '@/components/elements/heading'
 
 export default function NotFound() {
   return (
-    <main className="flex flex-1 flex-col gap-4 px-4" id="main-content">
+    <main className="flex flex-1 flex-col gap-4 p-4" id="main-content">
       <div className="flex flex-col gap-4">
         <Heading level={1}>404</Heading>
         <p>This page could not be found.</p>
