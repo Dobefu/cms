@@ -1,15 +1,20 @@
 import { validateSession } from '@/utils/validate-session'
+import iconAccount from '@iconify/icons-mdi/account'
+import iconLogin from '@iconify/icons-mdi/login'
+import iconLogout from '@iconify/icons-mdi/logout'
+import { Icon, type IconifyIcon } from '@iconify/react'
 import Link from 'next/link'
 
 export default async function Header() {
   const { isAnonymous } = await validateSession()
-  let links: { title: string; href: string }[]
+  let links: { title: string; href: string; icon: IconifyIcon | string }[]
 
   if (isAnonymous) {
     links = [
       {
         title: 'Login',
         href: '/login',
+        icon: iconLogin,
       },
     ]
   } else {
@@ -17,10 +22,12 @@ export default async function Header() {
       {
         title: 'My account',
         href: '/user',
+        icon: iconAccount,
       },
       {
         title: 'Log out',
         href: '/logout',
+        icon: iconLogout,
       },
     ]
   }
@@ -36,7 +43,13 @@ export default async function Header() {
 
         <div className="flex gap-4">
           {links.map((link) => (
-            <Link className="py-2 font-medium" href={link.href} key={link.href}>
+            <Link
+              className="flex items-center gap-1 py-2 font-medium"
+              href={link.href}
+              key={link.href}
+            >
+              <Icon className="size-4" icon={link.icon} ssr />
+
               {link.title}
             </Link>
           ))}
