@@ -10,7 +10,7 @@ export default function RootLayout({
       <Sidebar />
 
       <main
-        className="flex flex-1 flex-col gap-4 rounded-l-xl bg-zinc-100 p-4 shadow-inner dark:bg-zinc-800"
+        className="flex flex-1 flex-col gap-4 rounded-s-xl bg-zinc-100 p-4 shadow-inner dark:bg-zinc-800"
         id="main-content"
       >
         {children}
