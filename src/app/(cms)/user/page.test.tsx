@@ -20,8 +20,8 @@ describe('user', () => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
       json: () => Promise.resolve({ data: undefined, error: new Error('') }),
-      ok: true,
-      status: 200,
+      ok: false,
+      status: 500,
     })
   })
 
@@ -32,27 +32,8 @@ describe('user', () => {
     cookieStore.delete('session')
   })
 
-  it('returns an empty metadata object for anonymous users', async () => {
-    expect.hasAssertions()
-
-    const metadata = await generateMetadata()
-
-    expect(metadata).toStrictEqual({})
-  })
-
   it('returns an empty metadata object when the getUserData response has an error', async () => {
     expect.hasAssertions()
-
-    vi.spyOn(global, 'fetch').mockResolvedValueOnce({
-      ...new Response(),
-      json: () =>
-        Promise.resolve({
-          data: { token: 'test-token' },
-          error: null,
-        }),
-      ok: true,
-      status: 200,
-    })
 
     const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
@@ -65,27 +46,16 @@ describe('user', () => {
   it('returns metadata when logged in', async () => {
     expect.hasAssertions()
 
-    vi.spyOn(global, 'fetch')
-      .mockResolvedValueOnce({
-        ...new Response(),
-        json: () =>
-          Promise.resolve({
-            data: { token: 'test-token' },
-            error: null,
-          }),
-        ok: true,
-        status: 200,
-      })
-      .mockResolvedValueOnce({
-        ...new Response(),
-        json: () =>
-          Promise.resolve({
-            data: { user: userData },
-            error: null,
-          }),
-        ok: true,
-        status: 200,
-      })
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ...new Response(),
+      json: () =>
+        Promise.resolve({
+          data: { user: userData },
+          error: null,
+        }),
+      ok: true,
+      status: 200,
+    })
 
     const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
@@ -96,25 +66,8 @@ describe('user', () => {
     expect(metadata).not.toStrictEqual({})
   })
 
-  it('redirects for an anonymous user', async () => {
-    expect.hasAssertions()
-
-    await expect(User()).rejects.toThrow('Mock redirect error')
-  })
-
   it('returns early when the getUserData response has an error', async () => {
     expect.hasAssertions()
-
-    vi.spyOn(global, 'fetch').mockResolvedValueOnce({
-      ...new Response(),
-      json: () =>
-        Promise.resolve({
-          data: { token: 'test-token' },
-          error: null,
-        }),
-      ok: true,
-      status: 200,
-    })
 
     const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
@@ -125,27 +78,16 @@ describe('user', () => {
   it('renders normally for logged in users', async () => {
     expect.hasAssertions()
 
-    vi.spyOn(global, 'fetch')
-      .mockResolvedValueOnce({
-        ...new Response(),
-        json: () =>
-          Promise.resolve({
-            data: { token: 'test-token' },
-            error: null,
-          }),
-        ok: true,
-        status: 200,
-      })
-      .mockResolvedValueOnce({
-        ...new Response(),
-        json: () =>
-          Promise.resolve({
-            data: { user: userData },
-            error: null,
-          }),
-        ok: true,
-        status: 200,
-      })
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ...new Response(),
+      json: () =>
+        Promise.resolve({
+          data: { user: userData },
+          error: null,
+        }),
+      ok: true,
+      status: 200,
+    })
 
     const spy = vi.spyOn(navigation, 'redirect')
 
