@@ -1,10 +1,18 @@
 import Sidebar from '@/components/layout/sidebar'
+import { validateSession } from '@/utils/validate-session'
+import { redirect } from 'next/navigation'
 
-export default function RootLayout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const { isAnonymous } = await validateSession()
+
+  if (isAnonymous) {
+    redirect('/login')
+  }
+
   return (
     <div className="flex flex-1">
       <Sidebar />

@@ -1,16 +1,9 @@
 import Heading from '@/components/elements/heading'
 import { getUserData } from '@/utils/get-user-data'
-import { validateSession } from '@/utils/validate-session'
 import { Metadata } from 'next'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { isAnonymous } = await validateSession()
-
-  if (isAnonymous) {
-    return {}
-  }
-
   const { data, error } = await getUserData()
 
   if (!data || error) {
@@ -23,12 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function User() {
-  const { isAnonymous } = await validateSession()
-
-  if (isAnonymous) {
-    redirect('/login')
-  }
-
   const { data, error } = await getUserData()
 
   if (!data || error) {
