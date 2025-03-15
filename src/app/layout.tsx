@@ -1,5 +1,6 @@
 import Footer from '@/components/layout/footer'
 import Header from '@/components/layout/header'
+import { cn } from '@/utils/cn'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './css/globals.css'
@@ -31,7 +32,11 @@ export default function RootLayout({
   return (
     <html className="h-full" lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-full flex-col text-gray-800 antialiased dark:bg-zinc-900 dark:text-white`}
+        className={cn(
+          geistSans.variable,
+          geistMono.variable,
+          'flex min-h-full flex-col text-gray-800 antialiased dark:bg-zinc-900 dark:text-white',
+        )}
       >
         <Header />
 

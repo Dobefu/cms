@@ -18,7 +18,7 @@ export default async function Layout({
       <Sidebar />
 
       <main
-        className="flex flex-1 flex-col gap-4 rounded-s-xl bg-zinc-100 p-4 shadow-inner dark:bg-zinc-800"
+        className="flex flex-1 flex-col gap-4 rounded-s-xl bg-zinc-100 p-4 shadow-inner dark:bg-zinc-700"
         id="main-content"
       >
         {children}
