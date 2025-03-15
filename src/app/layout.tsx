@@ -34,7 +34,7 @@ export default function RootLayout({
         className={cn(
           geistSans.variable,
           geistMono.variable,
-          'flex min-h-full flex-col text-gray-800 antialiased dark:bg-zinc-900 dark:text-white',
+          'flex h-full flex-col text-gray-800 antialiased dark:bg-zinc-900 dark:text-white',
         )}
       >
         <Header />

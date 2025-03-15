@@ -14,11 +14,11 @@ export default async function Layout({
   }
 
   return (
-    <div className="flex flex-1">
+    <div className="flex flex-1 overflow-hidden">
       <Sidebar />
 
       <main
-        className="flex flex-1 flex-col gap-4 rounded-s-xl bg-zinc-100 p-4 shadow-inner dark:bg-zinc-700"
+        className="flex flex-1 flex-col gap-4 overflow-auto rounded-s-xl bg-zinc-100 p-4 shadow-inner dark:bg-zinc-700"
         id="main-content"
       >
         {children}
