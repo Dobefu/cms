@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "predev": "cd ./api && go build",
-    "dev": "concurrently --names \"CMS,API\" -c white.dim,cyan --hide 2 \"next dev --turbopack\" \"sleep 2 && cd ./api && air\" \"docker compose up\"",
-    "postdev": "docker compose down",
+    "dev": "concurrently --names \"CMS,API\" -c white.dim,cyan \"next dev --turbopack\" \"sleep 2 && cd ./api && air\"",
+    "db:start": "docker compose up -d",
+    "db:stop": "docker compose down",
     "build": "next build",
     "start": "next start",
     "lint": "next lint && prettier . --check",

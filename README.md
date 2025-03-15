@@ -7,19 +7,28 @@
 
 ## Getting Started
 
-Run the development server:
+- Start the database server:
 
-```bash
-pnpm dev
-```
+  ```bash
+  pnpm db:start
+  ```
 
-In a different terminal, navigate to `./api` and run:
+- Navigate to `./api` and run:
 
-```bash
-./api migrate
-```
+  ```bash
+  go build
+  ./api migrate
+  ```
 
-This will perform migrations on an empty database, and only needs to be done once.
+  This will perform migrations on an empty database, and only needs to be done once.
+
+- Go back to the root directory and run the development server:
+
+  ```bash
+  cd ..
+  pnpm dev
+  ```
+
 By default, there are no users. To create one, run `./api user:create`.
 
 Open [http://localhost:3000](http://localhost:3000) in a browser.
