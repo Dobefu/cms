@@ -7,13 +7,18 @@ import Link from 'next/link'
 import { useCallback, useState } from 'react'
 
 export type Props = Readonly<{
+  isCollapsedInitial: boolean
   links: { title: string; href: string; icon: IconifyIcon | string }[]
 }>
 
-export default function Sidebar({ links }: Props) {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+export default function Sidebar({ isCollapsedInitial, links }: Props) {
+  const [isCollapsed, setIsCollapsed] = useState(isCollapsedInitial)
 
   const toggleCollapse = useCallback(() => {
+    const date = new Date()
+    date.setTime(date.getTime() + 30 * 86400000) // 30 days.
+
+    document.cookie = `sidebar-collapsed=${!isCollapsed}; expires=${date.toUTCString()}; path=/`
     setIsCollapsed(!isCollapsed)
   }, [isCollapsed])
 

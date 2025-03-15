@@ -4,7 +4,11 @@ import iconDashboard from '@iconify/icons-mdi/view-dashboard'
 import { type IconifyIcon } from '@iconify/react/dist/iconify.js'
 import Client from './sidebar.client'
 
-export default function Sidebar() {
+export type Props = Readonly<{
+  isCollapsedInitial: boolean
+}>
+
+export default async function Sidebar({ isCollapsedInitial }: Props) {
   const links: { title: string; href: string; icon: IconifyIcon | string }[] = [
     {
       title: 'Dashboard',
@@ -23,5 +27,5 @@ export default function Sidebar() {
     },
   ]
 
-  return <Client links={links} />
+  return <Client isCollapsedInitial={isCollapsedInitial} links={links} />
 }

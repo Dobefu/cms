@@ -1,5 +1,6 @@
 import Sidebar from '@/components/layout/sidebar'
 import { validateSession } from '@/utils/validate-session'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export default async function Layout({
@@ -13,9 +14,12 @@ export default async function Layout({
     redirect('/login')
   }
 
+  const cookieStore = await cookies()
+  const isSidebarCollapsed = cookieStore.get('sidebar-collapsed')
+
   return (
     <div className="flex flex-1 overflow-hidden">
-      <Sidebar />
+      <Sidebar isCollapsedInitial={isSidebarCollapsed?.value === 'true'} />
 
       <main
         className="flex flex-1 flex-col gap-4 overflow-auto rounded-s-xl bg-zinc-100 p-4 shadow-inner dark:bg-zinc-700"
