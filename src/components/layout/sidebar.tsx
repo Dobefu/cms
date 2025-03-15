@@ -1,4 +1,5 @@
 import iconContent from '@iconify/icons-mdi/document'
+import iconContentTypes from '@iconify/icons-mdi/flowchart'
 import iconDashboard from '@iconify/icons-mdi/view-dashboard'
 import { Icon, type IconifyIcon } from '@iconify/react/dist/iconify.js'
 import Link from 'next/link'
@@ -14,6 +15,11 @@ export default function Sidebar() {
       title: 'Content',
       href: '/content',
       icon: iconContent,
+    },
+    {
+      title: 'Content Types',
+      href: '/content-types',
+      icon: iconContentTypes,
     },
   ]
 
