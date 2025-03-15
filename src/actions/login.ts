@@ -84,7 +84,7 @@ export async function login(
       return newState
     }
 
-    redirect('/user')
+    redirect('/dashboard')
   }
 
   return newState

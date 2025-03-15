@@ -1,10 +1,18 @@
 import Footer from '@/components/layout/footer'
+import { validateSession } from '@/utils/validate-session'
+import { redirect } from 'next/navigation'
 
-export default function Layout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const { isAnonymous } = await validateSession()
+
+  if (!isAnonymous) {
+    redirect('/dashboard')
+  }
+
   return (
     <>
       <main
