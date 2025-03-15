@@ -23,9 +23,5 @@ export default function Sidebar() {
     },
   ]
 
-  return (
-    <nav className="flex max-w-xs flex-1 flex-col py-4">
-      <Client links={links} />
-    </nav>
-  )
+  return <Client links={links} />
 }
