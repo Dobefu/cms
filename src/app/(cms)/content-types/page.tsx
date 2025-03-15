@@ -15,7 +15,7 @@ export default async function User() {
       <div className="flex items-center justify-between">
         <Heading level={1}>Content Types</Heading>
 
-        <Link className="button" href="/content-types/create">
+        <Link className="btn btn--primary" href="/content-types/create">
           <Icon className="size-4 shrink-0" icon={iconPlus} ssr />
           Create
         </Link>

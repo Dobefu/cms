@@ -45,7 +45,7 @@ export default function Sidebar({ isCollapsedInitial, links }: Props) {
       <div className="px-4">
         <button
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="ms-auto block cursor-pointer rounded-md border border-zinc-300 p-3 shadow max-md:hidden dark:border-zinc-600"
+          className="btn ms-auto p-3 max-md:hidden"
           onClick={toggleCollapse}
         >
           <Icon

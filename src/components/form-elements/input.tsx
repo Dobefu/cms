@@ -8,7 +8,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
     switch (type) {
       case 'button':
       case 'submit':
-        typeClasses = 'button'
+        typeClasses = 'btn btn--primary'
         break
       default:
         typeClasses =
