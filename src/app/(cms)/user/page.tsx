@@ -1,4 +1,5 @@
 import Heading from '@/components/elements/heading'
+import Label from '@/components/form-elements/label'
 import Container from '@/components/layout/container'
 import { getUserData } from '@/utils/get-user-data'
 import { Metadata } from 'next'
@@ -23,9 +24,26 @@ export default async function User() {
     notFound()
   }
 
+  const fields: Record<string, string> = {
+    Username: data.user.username,
+    Email: data.user.email,
+    'Last login': new Date(data.user.last_login).toLocaleString(),
+  }
+
   return (
-    <Container>
-      <Heading level={1}>{data.user.username}</Heading>
+    <Container className="flex flex-col gap-8">
+      <Heading level={1}>My Account</Heading>
+
+      <table className="me-auto">
+        <tbody>
+          {Object.entries(fields).map(([key, value]) => (
+            <tr key={key}>
+              <td className="p-1 font-medium">{key}:</td>
+              <td className="p-1">{value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </Container>
   )
 }

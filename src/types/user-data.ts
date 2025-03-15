@@ -3,7 +3,7 @@ export type UserData = {
   username: string
   email: string
   status: boolean
-  created_at: Date
-  updated_at: Date
-  last_login: Date
+  created_at: string
+  updated_at: string
+  last_login: string
 }
