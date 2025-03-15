@@ -1,5 +1,4 @@
 import Heading from '@/components/elements/heading'
-import Label from '@/components/form-elements/label'
 import Container from '@/components/layout/container'
 import { getUserData } from '@/utils/get-user-data'
 import { Metadata } from 'next'
