@@ -8,7 +8,7 @@ export type Props = Readonly<{
   isCollapsedInitial: boolean
 }>
 
-export default async function Sidebar({ isCollapsedInitial }: Props) {
+export default function Sidebar({ isCollapsedInitial }: Props) {
   const links: { title: string; href: string; icon: IconifyIcon | string }[] = [
     {
       title: 'Dashboard',

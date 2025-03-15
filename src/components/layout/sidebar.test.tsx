@@ -6,7 +6,7 @@ describe('sidebar', () => {
   it('renders normally', () => {
     expect.hasAssertions()
 
-    render(<Sidebar />)
+    render(<Sidebar isCollapsedInitial={false} />)
 
     expect(screen.getByRole('navigation')).toBeDefined()
   })
