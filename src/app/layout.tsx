@@ -1,4 +1,3 @@
-import Footer from '@/components/layout/footer'
 import Header from '@/components/layout/header'
 import { cn } from '@/utils/cn'
 import type { Metadata } from 'next'
@@ -41,8 +40,6 @@ export default function RootLayout({
         <Header />
 
         {children}
-
-        <Footer />
       </body>
     </html>
   )
