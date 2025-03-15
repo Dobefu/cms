@@ -1,4 +1,5 @@
 import Heading from '@/components/elements/heading'
+import Container from '@/components/layout/container'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -7,8 +8,8 @@ export const metadata: Metadata = {
 
 export default async function User() {
   return (
-    <div>
+    <Container>
       <Heading level={1}>DASHBOARD</Heading>
-    </div>
+    </Container>
   )
 }

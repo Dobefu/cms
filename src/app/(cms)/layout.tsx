@@ -22,7 +22,7 @@ export default async function Layout({
       <Sidebar isCollapsedInitial={isSidebarCollapsed?.value === 'true'} />
 
       <main
-        className="flex flex-1 flex-col gap-4 overflow-auto rounded-s-xl bg-zinc-100 p-4 shadow-inner dark:bg-zinc-700"
+        className="flex flex-1 flex-col gap-4 overflow-auto rounded-ss-xl bg-zinc-100 p-8 shadow-inner transition-all max-md:p-4 max-sm:p-2 dark:bg-zinc-700"
         id="main-content"
       >
         {children}

@@ -1,4 +1,5 @@
 import Heading from '@/components/elements/heading'
+import Container from '@/components/layout/container'
 import { getUserData } from '@/utils/get-user-data'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -23,8 +24,8 @@ export default async function User() {
   }
 
   return (
-    <div>
+    <Container>
       <Heading level={1}>{data.user.username}</Heading>
-    </div>
+    </Container>
   )
 }
