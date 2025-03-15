@@ -10,3 +10,9 @@
     color-scheme: light dark;
   }
 }
+
+@layer base {
+  .button {
+    @apply flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white shadow-xs outline-offset-4 transition-colors not-disabled:cursor-pointer not-disabled:hover:bg-blue-700 not-disabled:active:bg-blue-800 disabled:opacity-75 dark:bg-blue-700 dark:not-disabled:hover:bg-blue-600 dark:not-disabled:active:bg-blue-800;
+  }
+}
