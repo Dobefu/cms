@@ -2,7 +2,6 @@
 
 import { getApiEndpoint } from '@/utils/get-api-endpoint'
 import { getQueryClient } from '@/utils/get-query-client'
-import { setSessionCookie } from '@/utils/set-session-cookie'
 import { validateForm } from '@/utils/validate-form'
 import { redirect } from 'next/navigation'
 import * as v from 'valibot'
@@ -91,7 +90,7 @@ export async function submitContentType(
       'id' in submitContentTypeData.data &&
       submitContentTypeData.data?.id
     ) {
-      // redirect(`/content-types/edit/${submitContentTypeData.data.id}`)
+      redirect(`/content-types/edit/${submitContentTypeData.data.id}`)
     } else {
       newState.errors.generic = ['Content type submission failed']
       return newState
