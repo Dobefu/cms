@@ -1,3 +1,4 @@
+import { init } from 'next/dist/compiled/webpack/webpack'
 import * as navigation from 'next/navigation'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { type FormState, submitContentType } from './submit-content-type'
@@ -108,9 +109,11 @@ describe('submitContentType', () => {
   it('redirects on successful form submission', async () => {
     expect.hasAssertions()
 
+    initialState.type = 'update'
+
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
-      json: () => Promise.resolve({ data: { token: 'test' }, error: null }),
+      json: () => Promise.resolve({ data: { id: 1 }, error: null }),
       ok: true,
       status: 200,
     })
