@@ -7,6 +7,9 @@ import {
 } from '@/actions/submit-content-type'
 import Input from '@/components/form-elements/input'
 import Label from '@/components/form-elements/label'
+import iconSave from '@iconify/icons-mdi/floppy'
+import iconDelete from '@iconify/icons-mdi/trash'
+import { Icon } from '@iconify/react/dist/iconify.js'
 import Form from 'next/form'
 import { redirect } from 'next/navigation'
 import { useActionState } from 'react'
@@ -57,6 +60,7 @@ export default function ContentTypeForm({ contentTypeId, initialData }: Props) {
       <div className="flex items-center justify-between gap-4">
         <Input
           disabled={pending}
+          icon={iconSave}
           type="submit"
           value={submitMessages[+!!contentTypeId][+pending]}
         />
@@ -77,6 +81,7 @@ export default function ContentTypeForm({ contentTypeId, initialData }: Props) {
             }}
             /* v8 ignore stop */
           >
+            <Icon className="size-4 shrink-0" icon={iconDelete} ssr />
             Delete
           </button>
         ) : undefined}
