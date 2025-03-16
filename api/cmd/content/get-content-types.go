@@ -7,9 +7,7 @@ import (
 )
 
 func GetContentTypes() (contentTypes []content_structs.ContentType, err error) {
-	rows, err := database.DB.Query(
-		`SELECT id,title FROM content_types`,
-	)
+	rows, err := database.DB.Query(`SELECT id,title FROM content_types`)
 
 	if err != nil {
 		return contentTypes, user.ErrUnexpected
