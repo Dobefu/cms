@@ -1,5 +1,6 @@
 'use client'
 
+import { deleteContentType } from '@/actions/delete-content-type'
 import {
   type FormState,
   submitContentType,
@@ -7,6 +8,7 @@ import {
 import Input from '@/components/form-elements/input'
 import Label from '@/components/form-elements/label'
 import Form from 'next/form'
+import { redirect } from 'next/navigation'
 import { useActionState } from 'react'
 import FormError from '../form-elements/form-error'
 
@@ -61,6 +63,21 @@ export default function ContentTypeForm({ contentTypeId, initialData }: Props) {
         {!!state.errors?.generic && (
           <FormError>{state.errors.generic}</FormError>
         )}
+
+        {state.id ? (
+          <button
+            className="btn btn--danger"
+            // eslint-disable-next-line react/jsx-no-bind
+            onClick={async () => {
+              if (!state.id) return
+
+              await deleteContentType(state.id)
+              redirect('/content-types')
+            }}
+          >
+            Delete
+          </button>
+        ) : undefined}
       </div>
     </Form>
   )
