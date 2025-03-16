@@ -29,5 +29,5 @@ func UpdateContentType(userId int, title string) (id int, err error) {
 		return 0, user.ErrUnexpected
 	}
 
-	return 1, nil
+	return id, nil
 }
