@@ -9,17 +9,20 @@ type InputProps = React.ComponentProps<'input'> &
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, icon, type, ...props }, ref) => {
-    if ((type === 'button' || type === 'submit') && icon) {
+    if (type === 'button' || type === 'submit') {
       return (
         <div className="relative">
-          <Icon
-            className="pointer-events-none absolute start-5 top-3.5 size-4 shrink-0"
-            icon={icon}
-            ssr
-          />
+          {icon ? (
+            <Icon
+              className="pointer-events-none absolute start-5 top-3.5 size-4 shrink-0"
+              icon={icon}
+              ssr
+            />
+          ) : undefined}
 
           <input
-            className={cn('btn btn--primary ps-11', className)}
+            className={cn('btn btn--primary data-icon:ps-11', className)}
+            data-icon={icon ? '' : undefined}
             ref={ref}
             type={type}
             {...props}
