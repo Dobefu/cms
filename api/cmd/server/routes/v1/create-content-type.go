@@ -5,20 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/Dobefu/cms/api/cmd/server/utils"
 	"github.com/Dobefu/cms/api/cmd/user"
 )
 
-func UpdateContentType(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.PathValue("id"))
-
-	if err != nil {
-		w.WriteHeader(404)
-		return
-	}
-
+func CreateContentType(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get("Session-Token")
 
 	if token == "" {
@@ -40,7 +32,7 @@ func UpdateContentType(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = contentUpdateContentType(id, userId, title)
+	id, err := contentCreateContentType(userId, title)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)
