@@ -1,6 +1,7 @@
 import Heading from '@/components/elements/heading'
 import ContentTypeForm from '@/components/forms/content-type.client'
 import Container from '@/components/layout/container'
+import TitleContainer from '@/components/layout/title-container'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -10,7 +11,9 @@ export const metadata: Metadata = {
 export default async function CreateContentType() {
   return (
     <Container className="flex flex-col gap-8">
-      <Heading level={1}>Create Content Type</Heading>
+      <TitleContainer>
+        <Heading level={1}>Create Content Type</Heading>
+      </TitleContainer>
 
       <ContentTypeForm />
     </Container>

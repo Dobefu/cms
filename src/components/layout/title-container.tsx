@@ -4,7 +4,7 @@ export type Props = Readonly<{
 
 export default function TitleContainer({ children }: Props) {
   return (
-    <div className="flex flex-wrap items-center justify-between">
+    <div className="flex min-h-11 flex-wrap items-center justify-between">
       {children}
     </div>
   )

@@ -1,5 +1,6 @@
 import Heading from '@/components/elements/heading'
 import Container from '@/components/layout/container'
+import TitleContainer from '@/components/layout/title-container'
 import { getUserData } from '@/utils/get-user-data'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -31,7 +32,9 @@ export default async function User() {
 
   return (
     <Container className="flex flex-col gap-8">
-      <Heading level={1}>My Account</Heading>
+      <TitleContainer>
+        <Heading level={1}>My Account</Heading>
+      </TitleContainer>
 
       <table className="me-auto">
         <tbody>

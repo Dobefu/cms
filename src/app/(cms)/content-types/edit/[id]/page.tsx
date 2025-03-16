@@ -1,6 +1,7 @@
 import Heading from '@/components/elements/heading'
 import ContentTypeForm from '@/components/forms/content-type.client'
 import Container from '@/components/layout/container'
+import TitleContainer from '@/components/layout/title-container'
 import { getContentType } from '@/utils/get-content-type'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -24,7 +25,9 @@ export default async function EditContentType({ params }: Props) {
 
   return (
     <Container className="flex flex-col gap-8">
-      <Heading level={1}>Edit Content Type</Heading>
+      <TitleContainer>
+        <Heading level={1}>Edit Content Type</Heading>
+      </TitleContainer>
 
       <ContentTypeForm
         contentTypeId={data.content_type.id}

@@ -1,5 +1,6 @@
 import Heading from '@/components/elements/heading'
 import Container from '@/components/layout/container'
+import TitleContainer from '@/components/layout/title-container'
 import { getContentTypes } from '@/utils/get-content-types'
 import iconPlus from '@iconify/icons-mdi/plus'
 import { Icon } from '@iconify/react/dist/iconify.js'
@@ -10,19 +11,19 @@ export const metadata: Metadata = {
   title: 'Content Types',
 }
 
-export default async function User() {
+export default async function ContentTypes() {
   const { data, error } = await getContentTypes()
 
   return (
     <Container className="flex flex-col gap-8">
-      <div className="flex items-center justify-between">
+      <TitleContainer>
         <Heading level={1}>Content Types</Heading>
 
         <Link className="btn btn--primary" href="/content-types/create">
           <Icon className="size-4 shrink-0" icon={iconPlus} ssr />
           Create
         </Link>
-      </div>
+      </TitleContainer>
 
       <table>
         <thead>
