@@ -27,7 +27,7 @@ func TestLoginErrMissingCredentials(t *testing.T) {
 	rr, cleanup := setupLoginTests()
 	defer cleanup()
 
-	req, err := http.NewRequest("POST", "", strings.NewReader(""))
+	req, err := http.NewRequest("POST", "", nil)
 	assert.NoError(t, err)
 
 	Login(rr, req)
