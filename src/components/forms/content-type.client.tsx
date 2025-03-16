@@ -48,7 +48,13 @@ export default function ContentTypeForm({ type }: Props) {
           disabled={pending}
           type="submit"
           value={
-            pending ? 'Submitting' : type === 'create' ? 'Create' : 'Update'
+            pending
+              ? type === 'create'
+                ? 'Creating'
+                : 'Updating'
+              : type === 'create'
+                ? 'Create'
+                : 'Update'
           }
         />
         {!!state.errorGeneric && <FormError>{state.errorGeneric}</FormError>}
