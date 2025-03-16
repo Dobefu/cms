@@ -29,6 +29,11 @@ export default function ContentTypeForm({ type }: Props) {
     type,
   })
 
+  const submitMessages = {
+    create: ['Create', 'Creating'],
+    update: ['Update', 'Updating'],
+  }
+
   return (
     <Form action={formAction} className="flex flex-col gap-8">
       <Label>
@@ -49,15 +54,7 @@ export default function ContentTypeForm({ type }: Props) {
         <Input
           disabled={pending}
           type="submit"
-          value={
-            pending
-              ? type === 'create'
-                ? 'Creating'
-                : 'Updating'
-              : type === 'create'
-                ? 'Create'
-                : 'Update'
-          }
+          value={submitMessages[type][+pending]}
         />
         {!!state.errors?.generic && (
           <FormError>{state.errors.generic}</FormError>
