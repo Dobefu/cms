@@ -1,7 +1,7 @@
 'use server'
 
+import { fetchApiData } from '@/utils/fetch-api-data'
 import { getApiEndpoint } from '@/utils/get-api-endpoint'
-import { getQueryClient } from '@/utils/get-query-client'
 import { validateForm } from '@/utils/validate-form'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -52,61 +52,23 @@ export async function submitContentType(
     return newState
   }
 
-  const queryClient = getQueryClient(0)
-  let submitContentTypeResponse: Response = new Response()
-  let isQuerySuccessful
+  const { data, error } = await fetchApiData<{ id: string }>({
+    path: '/content-type',
+    method: prevState.type === 'create' ? 'PUT' : 'POST',
+    body: formData,
+    queryKeyParts: [title, prevState.type],
+  })
 
-  try {
-    submitContentTypeResponse = await queryClient.fetchQuery({
-      queryKey: [apiEndpoint, token.value, title, prevState.type],
-      queryFn: async () => {
-        const formData = new FormData()
-        formData.append('title', title)
-
-        const response = await fetch(`${apiEndpoint}/content-type`, {
-          method: prevState.type === 'create' ? 'PUT' : 'POST',
-          body: formData,
-          headers: {
-            'Session-Token': token.value,
-          },
-        })
-
-        if (!response.ok) {
-          const errJson = await response.json()
-
-          if (errJson && 'error' in errJson) {
-            throw new Error(errJson.error)
-          }
-
-          throw new Error(`response returned status code ${response.status}`)
-        }
-
-        return response
-      },
-    })
-
-    isQuerySuccessful = true
-  } catch (e) {
+  if (error) {
     newState.errors.generic = ['Content type submission failed']
-    console.error(`Content type submission failed: ${e}`)
+    console.error(`Content type submission failed: ${error.message}`)
+    return newState
   }
 
-  if (isQuerySuccessful) {
-    const submitContentTypeData = await submitContentTypeResponse.json()
-
-    if (
-      submitContentTypeData &&
-      'data' in submitContentTypeData &&
-      submitContentTypeData?.data &&
-      'id' in submitContentTypeData.data &&
-      submitContentTypeData.data?.id
-    ) {
-      redirect(`/content-types/edit/${submitContentTypeData.data.id}`)
-    } else {
-      newState.errors.generic = ['Content type submission failed']
-      return newState
-    }
+  if (data && data.id) {
+    redirect(`/content-types/edit/${data.id}`)
+  } else {
+    newState.errors.generic = ['Content type submission failed']
+    return newState
   }
-
-  return newState
 }

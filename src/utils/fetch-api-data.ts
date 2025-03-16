@@ -6,7 +6,7 @@ type ApiRequestOptions = {
   path: string
   method: 'GET' | 'POST' | 'PUT' | 'DELETE'
   additionalHeaders?: Record<string, string>
-  body?: object
+  body?: FormData
   queryKeyParts?: unknown[]
 }
 
@@ -60,10 +60,10 @@ async function fetchApiData<T>({
         }
 
         if (body && (method === 'POST' || method === 'PUT')) {
-          requestOptions.body = JSON.stringify(body)
+          requestOptions.body = body
 
           if (!headers['Content-Type']) {
-            headers['Content-Type'] = 'application/json'
+            headers['Content-Type'] = 'application/x-www-form-urlencoded'
           }
         }
 
