@@ -1,17 +1,17 @@
 import * as navigation from 'next/navigation'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { type FormState, login } from './login'
+import { type FormState, submitContentType } from './submit-content-type'
 
 export const initialState: FormState = {
-  username: '',
+  type: 'create',
+  title: '',
   errors: {
-    username: undefined,
-    password: undefined,
+    title: undefined,
     generic: undefined,
   },
 }
 
-describe('login', () => {
+describe('submitContentType', () => {
   beforeEach(() => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
@@ -33,10 +33,9 @@ describe('login', () => {
     const spy = vi.spyOn(navigation, 'redirect')
 
     const formData = new FormData()
-    formData.append('username', 'Username')
-    formData.append('password', 'Password')
+    formData.append('title', 'Title')
 
-    await login(initialState, formData)
+    await submitContentType(initialState, formData)
 
     expect(spy).not.toHaveBeenCalled()
   })
@@ -47,10 +46,9 @@ describe('login', () => {
     const spy = vi.spyOn(navigation, 'redirect')
 
     const formData = new FormData()
-    formData.append('username', 'Username')
-    formData.append('password', 'Password')
+    formData.append('title', 'Title')
 
-    await login(initialState, formData)
+    await submitContentType(initialState, formData)
 
     expect(spy).not.toHaveBeenCalled()
   })
@@ -62,7 +60,7 @@ describe('login', () => {
 
     const formData = new FormData()
 
-    await login(initialState, formData)
+    await submitContentType(initialState, formData)
 
     expect(spy).not.toHaveBeenCalled()
   })
@@ -80,10 +78,9 @@ describe('login', () => {
     })
 
     const formData = new FormData()
-    formData.append('username', 'Username')
-    formData.append('password', 'Password')
+    formData.append('title', 'Title')
 
-    await login(initialState, formData)
+    await submitContentType(initialState, formData)
 
     expect(spy).not.toHaveBeenCalled()
   })
@@ -101,15 +98,14 @@ describe('login', () => {
     })
 
     const formData = new FormData()
-    formData.append('username', 'Username')
-    formData.append('password', 'Password')
+    formData.append('title', 'Title')
 
-    await login(initialState, formData)
+    await submitContentType(initialState, formData)
 
     expect(spy).not.toHaveBeenCalled()
   })
 
-  it('redirects on successful login', async () => {
+  it('redirects on successful form submission', async () => {
     expect.hasAssertions()
 
     vi.spyOn(global, 'fetch').mockResolvedValue({
@@ -120,10 +116,9 @@ describe('login', () => {
     })
 
     const formData = new FormData()
-    formData.append('username', 'Username')
-    formData.append('password', 'Password')
+    formData.append('title', 'Title')
 
-    await expect(login(initialState, formData)).rejects.toThrow(
+    await expect(submitContentType(initialState, formData)).rejects.toThrow(
       'Mock redirect error',
     )
   })
