@@ -34,8 +34,7 @@ describe('contentTypeForm', () => {
 
     expect(titleInput).toBeDefined()
 
-    fireEvent.change(titleInput, { target: { value: 'Title' } })
-
+    fireEvent.change(titleInput, { target: { value: 'test' } })
     fireEvent.click(screen.getByRole<HTMLInputElement>('button'))
 
     expect(screen).toBeDefined()
@@ -51,7 +50,6 @@ describe('contentTypeForm', () => {
     expect(titleInput).toBeDefined()
 
     fireEvent.change(titleInput, { target: { value: 'Title' } })
-
     fireEvent.click(screen.getByRole<HTMLInputElement>('button'))
 
     expect(screen).toBeDefined()

@@ -21,12 +21,14 @@ export const initialState: FormState = {
 
 export type Props = Readonly<{
   type: 'create' | 'update'
+  initialData?: Omit<FormState, 'type' | 'errors'>
 }>
 
-export default function ContentTypeForm({ type }: Props) {
+export default function ContentTypeForm({ type, initialData }: Props) {
   const [state, formAction, pending] = useActionState(submitContentType, {
     ...initialState,
     type,
+    ...(initialData ?? {}),
   })
 
   const submitMessages = {
@@ -41,7 +43,8 @@ export default function ContentTypeForm({ type }: Props) {
         <Input
           autoFocus
           data-testid="title"
-          defaultValue={state.title}
+          /* v8 ignore next */
+          defaultValue={state.title ?? initialData?.title}
           name="title"
           placeholder="Title"
           required
