@@ -65,7 +65,7 @@ export async function submitContentType(
     return newState
   }
 
-  if (data && data.id) {
+  if (data?.id) {
     redirect(`/content-types/edit/${data.id}`)
   } else {
     newState.errors.generic = ['Content type submission failed']
