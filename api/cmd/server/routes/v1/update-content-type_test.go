@@ -27,6 +27,18 @@ func setupUpdateContentTypeTests() (rr *httptest.ResponseRecorder, cleanup func(
 	}
 }
 
+func TestUpdateContentTypeErrInvalidId(t *testing.T) {
+	rr, cleanup := setupUpdateContentTypeTests()
+	defer cleanup()
+
+	req, err := http.NewRequest("POST", "", nil)
+	req.SetPathValue("id", "bogus")
+	assert.NoError(t, err)
+
+	UpdateContentType(rr, req)
+	assert.Equal(t, "", rr.Body.String())
+}
+
 func TestUpdateContentTypeErrInvalidSessionToken(t *testing.T) {
 	rr, cleanup := setupUpdateContentTypeTests()
 	defer cleanup()
