@@ -23,7 +23,8 @@
     "next": "15.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwind-merge": "^3.0.2"
+    "tailwind-merge": "^3.0.2",
+    "valibot": "1.0.0-rc.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
