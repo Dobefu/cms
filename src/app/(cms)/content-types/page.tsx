@@ -24,11 +24,12 @@ export default async function User() {
         </Link>
       </div>
 
-      <table className="me-auto">
+      <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Title</th>
+            <th className="text-left">ID</th>
+            <th className="text-left">Title</th>
+            <th className="text-left"></th>
           </tr>
         </thead>
         <tbody>
@@ -36,7 +37,15 @@ export default async function User() {
             ? data.content_types.map((contentType) => (
                 <tr key={contentType.id}>
                   <td className="p-1">{contentType.id}</td>
-                  <td className="p-1">{contentType.title}</td>
+                  <td className="w-full p-1">{contentType.title}</td>
+                  <td className="p-1">
+                    <Link
+                      className="btn"
+                      href={`/content-types/edit/${contentType.id}`}
+                    >
+                      Edit
+                    </Link>
+                  </td>
                 </tr>
               ))
             : undefined}
