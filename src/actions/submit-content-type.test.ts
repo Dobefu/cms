@@ -1,4 +1,3 @@
-import { init } from 'next/dist/compiled/webpack/webpack'
 import * as navigation from 'next/navigation'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { type FormState, submitContentType } from './submit-content-type'
