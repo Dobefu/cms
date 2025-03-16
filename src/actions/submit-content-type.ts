@@ -4,13 +4,24 @@ import { getApiEndpoint } from '@/utils/get-api-endpoint'
 import { getQueryClient } from '@/utils/get-query-client'
 import { setSessionCookie } from '@/utils/set-session-cookie'
 import { redirect } from 'next/navigation'
+import * as v from 'valibot'
 
 export interface FormState {
   type: 'create' | 'update'
   title: string
-  errorTitle?: string
-  errorGeneric?: string
+  errors: {
+    title?: string[]
+    generic?: string[]
+  }
 }
+
+const ContentTypeSchema = v.object({
+  title: v.pipe(
+    v.string('The title must be a string'),
+    v.nonEmpty('Please enter a title'),
+    v.minLength(3, 'Please enter a title of at least 3 characters'),
+  ),
+})
 
 export async function submitContentType(
   prevState: FormState,
@@ -62,7 +73,7 @@ export async function submitContentType(
 
     isQuerySuccessful = true
   } catch (e) {
-    newState.errorGeneric = 'Content type submission failed'
+    newState.errors.generic = ['Content type submission failed']
     console.error(`Content type submission failed: ${e}`)
   }
 
@@ -78,7 +89,7 @@ export async function submitContentType(
     ) {
       await setSessionCookie(submitContentTypeData.data.token)
     } else {
-      newState.errorGeneric = 'Content type submission failed'
+      newState.errors.generic = ['Content type submission failed']
       return newState
     }
 
@@ -92,17 +103,27 @@ function validateForm(
   prevState: FormState,
   title: string,
 ): { isValid: boolean; newState: FormState } {
-  let isValid = true
-  const newState = { ...prevState }
+  const { success, output, issues } = v.safeParse(ContentTypeSchema, {
+    ...prevState,
+    title,
+  })
 
-  newState.title = title
-  newState.errorTitle = undefined
-  newState.errorGeneric = undefined
-
-  if (!title) {
-    newState.errorTitle = 'Please enter a title'
-    isValid = false
+  if (success) {
+    return {
+      isValid: success,
+      newState: { ...prevState, ...output, errors: {} },
+    }
   }
 
-  return { isValid, newState }
+  const { nested: validationIssues } =
+    v.flatten<typeof ContentTypeSchema>(issues)
+
+  return {
+    isValid: false,
+    newState: {
+      ...prevState,
+      ...(output as object),
+      errors: validationIssues ?? {},
+    },
+  }
 }

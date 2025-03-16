@@ -13,8 +13,10 @@ import FormError from '../form-elements/form-error'
 export const initialState: FormState = {
   type: 'create',
   title: '',
-  errorTitle: undefined,
-  errorGeneric: undefined,
+  errors: {
+    title: undefined,
+    generic: undefined,
+  },
 }
 
 export type Props = Readonly<{
@@ -40,7 +42,7 @@ export default function ContentTypeForm({ type }: Props) {
           required
           type="text"
         />
-        {!!state.errorTitle && <FormError>{state.errorTitle}</FormError>}
+        {!!state.errors?.title && <FormError>{state.errors.title}</FormError>}
       </Label>
 
       <div className="flex items-center justify-between gap-4">
@@ -57,7 +59,9 @@ export default function ContentTypeForm({ type }: Props) {
                 : 'Update'
           }
         />
-        {!!state.errorGeneric && <FormError>{state.errorGeneric}</FormError>}
+        {!!state.errors?.generic && (
+          <FormError>{state.errors.generic}</FormError>
+        )}
       </div>
     </Form>
   )
