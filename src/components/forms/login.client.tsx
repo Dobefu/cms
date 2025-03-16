@@ -3,6 +3,7 @@
 import { type FormState, login } from '@/actions/login'
 import Input from '@/components/form-elements/input'
 import Label from '@/components/form-elements/label'
+import iconLogin from '@iconify/icons-mdi/login'
 import Form from 'next/form'
 import { useActionState } from 'react'
 import FormError from '../form-elements/form-error'
@@ -54,6 +55,7 @@ export default function LoginForm() {
       <div className="flex items-center justify-between gap-4">
         <Input
           disabled={pending}
+          icon={iconLogin}
           type="submit"
           value={pending ? 'Logging in' : 'Log in'}
         />
