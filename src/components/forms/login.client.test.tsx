@@ -48,9 +48,9 @@ describe('loginForm', () => {
     expect.hasAssertions()
 
     initialState.username = 'Username'
-    initialState.errorUsername = 'Username error'
-    initialState.errorPassword = 'Password error'
-    initialState.errorGeneric = 'Generic error'
+    initialState.errors.username = ['Username error']
+    initialState.errors.password = ['Password error']
+    initialState.errors.generic = ['Generic error']
 
     render(<LoginForm />)
 
