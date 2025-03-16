@@ -61,7 +61,7 @@ async function fetchApiData<T>({
 
         if (body && (method === 'POST' || method === 'PUT')) {
           requestOptions.body = JSON.stringify(body)
-          // Add Content-Type header if not already present
+
           if (!headers['Content-Type']) {
             headers['Content-Type'] = 'application/json'
           }
@@ -87,9 +87,7 @@ async function fetchApiData<T>({
 
     isQuerySuccessful = true
   } catch (e) {
-    console.error(
-      `API request to ${path} failed: ${e instanceof Error ? e.message : String(e)}`,
-    )
+    console.error(`API request to ${path} failed: ${e}`)
   }
 
   if (!isQuerySuccessful) {
@@ -101,9 +99,7 @@ async function fetchApiData<T>({
     return { data }
   } catch (e) {
     return {
-      error: new Error(
-        `Failed to parse response JSON: ${e instanceof Error ? e.message : String(e)}`,
-      ),
+      error: new Error(`Failed to parse response JSON: ${e}`),
     }
   }
 }
