@@ -88,16 +88,14 @@ export async function submitContentType(
       submitContentTypeData &&
       'data' in submitContentTypeData &&
       submitContentTypeData?.data &&
-      'token' in submitContentTypeData.data &&
-      submitContentTypeData.data?.token
+      'id' in submitContentTypeData.data &&
+      submitContentTypeData.data?.id
     ) {
-      await setSessionCookie(submitContentTypeData.data.token)
+      redirect(`/content-types/edit/${submitContentTypeData.data.id}`)
     } else {
       newState.errors.generic = ['Content type submission failed']
       return newState
     }
-
-    redirect('/dashboard')
   }
 
   return newState
