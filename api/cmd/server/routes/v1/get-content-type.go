@@ -26,6 +26,13 @@ func GetContentType(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	_, _, err = userValidateSession(token, false)
+
+	if err != nil {
+		utils.PrintError(w, err, err == user.ErrUnexpected)
+		return
+	}
+
 	contentType, err := contentGetContentType(id)
 
 	if err != nil {
