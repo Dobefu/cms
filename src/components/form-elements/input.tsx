@@ -19,7 +19,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
     return (
       <input
         className={cn(
-          'rounded-lg px-3 py-2.5 shadow-xs disabled:opacity-75',
+          'rounded-lg px-5 py-2.5 shadow-xs disabled:opacity-75',
           typeClasses,
           className,
         )}
