@@ -11,7 +11,6 @@ import { useActionState } from 'react'
 import FormError from '../form-elements/form-error'
 
 export const initialState: FormState = {
-  type: 'create',
   title: '',
   errors: {
     title: undefined,
@@ -20,21 +19,21 @@ export const initialState: FormState = {
 }
 
 export type Props = Readonly<{
-  type: 'create' | 'update'
-  initialData?: Omit<FormState, 'type' | 'errors'>
+  contentTypeId?: number
+  initialData?: Omit<FormState, 'errors'>
 }>
 
-export default function ContentTypeForm({ type, initialData }: Props) {
+export default function ContentTypeForm({ contentTypeId, initialData }: Props) {
   const [state, formAction, pending] = useActionState(submitContentType, {
     ...initialState,
-    type,
+    id: contentTypeId,
     ...(initialData ?? {}),
   })
 
-  const submitMessages = {
-    create: ['Create', 'Creating'],
-    update: ['Update', 'Updating'],
-  }
+  const submitMessages = [
+    ['Create', 'Creating'],
+    ['Update', 'Updating'],
+  ]
 
   return (
     <Form action={formAction} className="flex flex-col gap-8">
@@ -57,7 +56,7 @@ export default function ContentTypeForm({ type, initialData }: Props) {
         <Input
           disabled={pending}
           type="submit"
-          value={submitMessages[type][+pending]}
+          value={submitMessages[+!!contentTypeId][+pending]}
         />
         {!!state.errors?.generic && (
           <FormError>{state.errors.generic}</FormError>

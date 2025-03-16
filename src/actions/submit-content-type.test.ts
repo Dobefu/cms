@@ -4,7 +4,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { type FormState, submitContentType } from './submit-content-type'
 
 export const initialState: FormState = {
-  type: 'create',
   title: '',
   errors: {
     title: undefined,
@@ -142,7 +141,7 @@ describe('submitContentType', () => {
     const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
-    initialState.type = 'update'
+    initialState.id = 1
 
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),

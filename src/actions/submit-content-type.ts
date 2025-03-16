@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation'
 import * as v from 'valibot'
 
 export interface FormState {
-  type: 'create' | 'update'
+  id?: number
   title: string
   errors: {
     title?: string[]
@@ -53,10 +53,10 @@ export async function submitContentType(
   }
 
   const { data, error } = await fetchApiData<{ id: string }>({
-    path: '/content-type',
-    method: prevState.type === 'create' ? 'PUT' : 'POST',
+    path: prevState.id ? `/content-type/${prevState.id}` : '/content-type',
+    method: prevState.id ? 'POST' : 'PUT',
     body: formData,
-    queryKeyParts: [title, prevState.type],
+    queryKeyParts: [title, prevState.id],
   })
 
   if (error) {

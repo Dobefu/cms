@@ -7,7 +7,7 @@ describe('content-types/edit/[id]', () => {
   vi.mock('@/utils/fetch-api-data', async () => ({
     fetchApiData: ({ path }: (typeof fetchApiData)['arguments']) => {
       if (path === '/content-type/1') {
-        return { data: {}, error: undefined }
+        return { data: { content_type: { id: 1 } }, error: undefined }
       }
 
       return { data: undefined, error: new Error('') }
