@@ -10,3 +10,4 @@ var userValidateSession = user.ValidateSession
 var userGetUserData = user.GetUserData
 var contentUpdateContentType = content.UpdateContentType
 var contentGetContentTypes = content.GetContentTypes
+var contentGetContentType = content.GetContentType
