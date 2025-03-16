@@ -16,4 +16,5 @@ var routesV1GetUserData = routes_v1.GetUserData
 var routesV1GetContentType = routes_v1.GetContentType
 var routesV1CreateContentType = routes_v1.CreateContentType
 var routesV1UpdateContentType = routes_v1.UpdateContentType
+var routesV1DeleteContentType = routes_v1.DeleteContentType
 var routesV1GetContentTypes = routes_v1.GetContentTypes
