@@ -30,7 +30,7 @@ function validateForm<
     newState: {
       ...prevState,
       ...(output as object),
-      errors: validationIssues ?? {},
+      errors: validationIssues,
     },
   }
 }
