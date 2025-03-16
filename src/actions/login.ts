@@ -4,13 +4,27 @@ import { getApiEndpoint } from '@/utils/get-api-endpoint'
 import { getQueryClient } from '@/utils/get-query-client'
 import { setSessionCookie } from '@/utils/set-session-cookie'
 import { redirect } from 'next/navigation'
+import * as v from 'valibot'
 
 export interface FormState {
   username: string
-  errorUsername?: string
-  errorPassword?: string
-  errorGeneric?: string
+  errors: {
+    username?: string[]
+    password?: string[]
+    generic?: string[]
+  }
 }
+
+const LoginSchema = v.object({
+  username: v.pipe(
+    v.string('The username must be a string'),
+    v.nonEmpty('Please enter a username'),
+  ),
+  password: v.pipe(
+    v.string('The password must be a string'),
+    v.nonEmpty('Please enter a password'),
+  ),
+})
 
 export async function login(
   prevState: FormState,
@@ -64,7 +78,7 @@ export async function login(
 
     isQuerySuccessful = true
   } catch (e) {
-    newState.errorGeneric = 'Login failed'
+    newState.errors.generic = ['Login failed']
     console.error(`Login failed: ${e}`)
   }
 
@@ -80,7 +94,7 @@ export async function login(
     ) {
       await setSessionCookie(loginData.data.token)
     } else {
-      newState.errorGeneric = 'Login failed'
+      newState.errors.generic = ['Login failed']
       return newState
     }
 
@@ -95,23 +109,27 @@ function validateForm(
   username: string,
   password: string,
 ): { isValid: boolean; newState: FormState } {
-  let isValid = true
-  const newState = { ...prevState }
+  const { success, output, issues } = v.safeParse(LoginSchema, {
+    ...prevState,
+    username,
+    password,
+  })
 
-  newState.username = username
-  newState.errorUsername = undefined
-  newState.errorPassword = undefined
-  newState.errorGeneric = undefined
-
-  if (!username) {
-    newState.errorUsername = 'Please enter a username'
-    isValid = false
+  if (success) {
+    return {
+      isValid: success,
+      newState: { ...prevState, ...output, errors: {} },
+    }
   }
 
-  if (!password) {
-    newState.errorPassword = 'Please enter a password'
-    isValid = false
-  }
+  const { nested: validationIssues } = v.flatten<typeof LoginSchema>(issues)
 
-  return { isValid, newState }
+  return {
+    isValid: false,
+    newState: {
+      ...prevState,
+      ...(output as object),
+      errors: validationIssues ?? {},
+    },
+  }
 }

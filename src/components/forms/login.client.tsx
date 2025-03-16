@@ -9,9 +9,11 @@ import FormError from '../form-elements/form-error'
 
 export const initialState: FormState = {
   username: '',
-  errorUsername: undefined,
-  errorPassword: undefined,
-  errorGeneric: undefined,
+  errors: {
+    username: undefined,
+    password: undefined,
+    generic: undefined,
+  },
 }
 
 export default function LoginForm() {
@@ -30,7 +32,9 @@ export default function LoginForm() {
           required
           type="text"
         />
-        {!!state.errorUsername && <FormError>{state.errorUsername}</FormError>}
+        {!!state.errors.username && (
+          <FormError>{state.errors.username}</FormError>
+        )}
       </Label>
 
       <Label>
@@ -42,7 +46,9 @@ export default function LoginForm() {
           required
           type="password"
         />
-        {!!state.errorPassword && <FormError>{state.errorPassword}</FormError>}
+        {!!state.errors.password && (
+          <FormError>{state.errors.password}</FormError>
+        )}
       </Label>
 
       <div className="flex items-center justify-between gap-4">
@@ -51,7 +57,9 @@ export default function LoginForm() {
           type="submit"
           value={pending ? 'Logging in' : 'Log in'}
         />
-        {!!state.errorGeneric && <FormError>{state.errorGeneric}</FormError>}
+        {!!state.errors.generic && (
+          <FormError>{state.errors.generic}</FormError>
+        )}
       </div>
     </Form>
   )
