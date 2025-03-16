@@ -6,6 +6,7 @@ import iconPlus from '@iconify/icons-mdi/plus'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Client from './page.client'
 
 export const metadata: Metadata = {
   title: 'Content Types',
@@ -25,33 +26,11 @@ export default async function ContentTypes() {
         </Link>
       </TitleContainer>
 
-      <table>
-        <thead>
-          <tr>
-            <th className="text-left">ID</th>
-            <th className="text-left">Title</th>
-            <th className="text-left"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {!error && data?.content_types
-            ? data.content_types.map((contentType) => (
-                <tr key={contentType.id}>
-                  <td className="p-1">{contentType.id}</td>
-                  <td className="w-full p-1">{contentType.title}</td>
-                  <td className="p-1">
-                    <Link
-                      className="btn"
-                      href={`/content-types/edit/${contentType.id}`}
-                    >
-                      Edit
-                    </Link>
-                  </td>
-                </tr>
-              ))
-            : undefined}
-        </tbody>
-      </table>
+      <Client
+        contentTypes={
+          !error && data?.content_types ? data.content_types : undefined
+        }
+      />
     </Container>
   )
 }
