@@ -11,7 +11,7 @@ import (
 )
 
 func GetUserData(w http.ResponseWriter, r *http.Request) {
-	token := r.FormValue("session_token")
+	token := r.Header.Get("Session-Token")
 
 	if token == "" {
 		utils.PrintError(w, errors.New("Missing session_token"), false)

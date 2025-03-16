@@ -28,12 +28,11 @@ async function getUserData(): Promise<{
     userDataResponse = await queryClient.fetchQuery({
       queryKey: [apiEndpoint, token.value],
       queryFn: async () => {
-        const formData = new FormData()
-        formData.append('session_token', token.value)
-
         const response = await fetch(`${apiEndpoint}/get-user-data`, {
-          method: 'POST',
-          body: formData,
+          method: 'GET',
+          headers: {
+            'Session-Token': token.value,
+          },
         })
 
         if (!response.ok) {

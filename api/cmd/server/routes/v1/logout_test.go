@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -33,7 +32,7 @@ func TestLogoutErrMissingSessionToken(t *testing.T) {
 	rr, _, cleanup := setupLogoutTests(t)
 	defer cleanup()
 
-	req, err := http.NewRequest("GET", "", strings.NewReader(""))
+	req, err := http.NewRequest("GET", "", nil)
 	assert.NoError(t, err)
 
 	Logout(rr, req)

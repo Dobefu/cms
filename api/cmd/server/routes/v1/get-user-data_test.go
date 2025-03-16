@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/Dobefu/cms/api/cmd/user"
@@ -34,7 +33,7 @@ func TestGetUserDataErrMissingSessionToken(t *testing.T) {
 	rr, cleanup := setupGetUserDataTests()
 	defer cleanup()
 
-	req, err := http.NewRequest("POST", "", strings.NewReader(""))
+	req, err := http.NewRequest("GET", "", nil)
 	assert.NoError(t, err)
 
 	GetUserData(rr, req)
@@ -53,7 +52,8 @@ func TestGetUserDataErrInvalidSessionToken(t *testing.T) {
 		return "", 0, assert.AnError
 	}
 
-	req, err := http.NewRequest("POST", "", strings.NewReader("session_token=bogus"))
+	req, err := http.NewRequest("GET", "", nil)
+	req.Header.Add("Session-Token", "bogus")
 	assert.NoError(t, err)
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -74,7 +74,8 @@ func TestGetUserDataErrGetUserData(t *testing.T) {
 		return userData, assert.AnError
 	}
 
-	req, err := http.NewRequest("POST", "", strings.NewReader("session_token=bogus"))
+	req, err := http.NewRequest("GET", "", nil)
+	req.Header.Add("Session-Token", "bogus")
 	assert.NoError(t, err)
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -91,7 +92,8 @@ func TestGetUserDataSuccess(t *testing.T) {
 	rr, cleanup := setupGetUserDataTests()
 	defer cleanup()
 
-	req, err := http.NewRequest("POST", "", strings.NewReader("session_token=test"))
+	req, err := http.NewRequest("GET", "", nil)
+	req.Header.Add("Session-Token", "test")
 	assert.NoError(t, err)
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
