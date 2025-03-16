@@ -13,7 +13,7 @@
 
 @layer base {
   .btn {
-    @apply flex items-center gap-2 rounded-lg border border-zinc-300 px-5 py-2 font-medium shadow-sm outline-offset-4 transition-colors not-disabled:cursor-pointer disabled:opacity-75 dark:border-zinc-600;
+    @apply flex items-center gap-2 rounded-lg border border-zinc-300 px-5 py-2.5 font-medium shadow-sm outline-offset-4 transition-colors not-disabled:cursor-pointer disabled:opacity-75 dark:border-zinc-600;
   }
 
   .btn--primary {
