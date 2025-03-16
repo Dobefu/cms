@@ -14,7 +14,11 @@ import (
 func setupUpdateContentTypeTests() (rr *httptest.ResponseRecorder, cleanup func()) {
 	rr = httptest.NewRecorder()
 
-	contentUpdateContentType = func(title string) (id int, err error) {
+	userValidateSession = func(oldToken string, refresh bool) (newToken string, userId int, err error) {
+		return "", 1, nil
+	}
+
+	contentUpdateContentType = func(userId int, title string) (id int, err error) {
 		return 1, nil
 	}
 
@@ -28,6 +32,7 @@ func TestUpdateContentTypeErrMissingTitle(t *testing.T) {
 	defer cleanup()
 
 	req, err := http.NewRequest("PUT", "", nil)
+	req.Header.Add("Session-Token", "test")
 	assert.NoError(t, err)
 
 	UpdateContentType(rr, req)
@@ -38,11 +43,12 @@ func TestUpdateContentTypeErrUpdateContentType(t *testing.T) {
 	rr, cleanup := setupUpdateContentTypeTests()
 	defer cleanup()
 
-	contentUpdateContentType = func(title string) (id int, err error) {
+	contentUpdateContentType = func(userId int, title string) (id int, err error) {
 		return 0, assert.AnError
 	}
 
 	req, err := http.NewRequest("PUT", "", strings.NewReader("title=Title"))
+	req.Header.Add("Session-Token", "test")
 	assert.NoError(t, err)
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -56,6 +62,7 @@ func TestUpdateContentTypeSuccess(t *testing.T) {
 	defer cleanup()
 
 	req, err := http.NewRequest("PUT", "", strings.NewReader("title=Title"))
+	req.Header.Add("Session-Token", "test")
 	assert.NoError(t, err)
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")

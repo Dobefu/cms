@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers'
 import * as navigation from 'next/navigation'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { type FormState, submitContentType } from './submit-content-type'
@@ -21,9 +22,12 @@ describe('submitContentType', () => {
     })
   })
 
-  afterEach(() => {
+  afterEach(async () => {
     process.env.API_ENDPOINT = 'http://api-endpoint'
     vi.restoreAllMocks()
+
+    const cookieStore = await cookies()
+    cookieStore.delete('session')
   })
 
   it('returns early when the API endpoint is missing', async () => {
@@ -107,6 +111,9 @@ describe('submitContentType', () => {
 
   it('redirects on successful form submission', async () => {
     expect.hasAssertions()
+
+    const cookieStore = await cookies()
+    cookieStore.set({ name: 'session', value: 'test' })
 
     initialState.type = 'update'
 
