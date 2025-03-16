@@ -51,13 +51,13 @@ export async function submitContentType(
 
   try {
     submitContentTypeResponse = await queryClient.fetchQuery({
-      queryKey: [apiEndpoint, title],
+      queryKey: [apiEndpoint, title, prevState.type],
       queryFn: async () => {
         const formData = new FormData()
         formData.append('title', title)
 
         const response = await fetch(`${apiEndpoint}/content-type`, {
-          method: 'POST',
+          method: prevState.type === 'create' ? 'PUT' : 'POST',
           body: formData,
         })
 
