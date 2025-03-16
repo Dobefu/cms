@@ -3,6 +3,7 @@
 import { getApiEndpoint } from '@/utils/get-api-endpoint'
 import { getQueryClient } from '@/utils/get-query-client'
 import { setSessionCookie } from '@/utils/set-session-cookie'
+import { validateForm } from '@/utils/validate-form'
 import { redirect } from 'next/navigation'
 import * as v from 'valibot'
 
@@ -33,7 +34,14 @@ export async function login(
   const username = formData.get('username') as string
   const password = formData.get('password') as string
 
-  const { isValid, newState } = validateForm(prevState, username, password)
+  const { isValid, newState } = validateForm<typeof LoginSchema, FormState>(
+    LoginSchema,
+    prevState,
+    {
+      username,
+      password,
+    },
+  )
 
   if (!isValid) {
     return newState
@@ -102,34 +110,4 @@ export async function login(
   }
 
   return newState
-}
-
-function validateForm(
-  prevState: FormState,
-  username: string,
-  password: string,
-): { isValid: boolean; newState: FormState } {
-  const { success, output, issues } = v.safeParse(LoginSchema, {
-    ...prevState,
-    username,
-    password,
-  })
-
-  if (success) {
-    return {
-      isValid: success,
-      newState: { ...prevState, ...output, errors: {} },
-    }
-  }
-
-  const { nested: validationIssues } = v.flatten<typeof LoginSchema>(issues)
-
-  return {
-    isValid: false,
-    newState: {
-      ...prevState,
-      ...(output as object),
-      errors: validationIssues ?? {},
-    },
-  }
 }

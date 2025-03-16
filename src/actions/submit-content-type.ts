@@ -3,6 +3,7 @@
 import { getApiEndpoint } from '@/utils/get-api-endpoint'
 import { getQueryClient } from '@/utils/get-query-client'
 import { setSessionCookie } from '@/utils/set-session-cookie'
+import { validateForm } from '@/utils/validate-form'
 import { redirect } from 'next/navigation'
 import * as v from 'valibot'
 
@@ -29,7 +30,10 @@ export async function submitContentType(
 ): Promise<FormState> {
   const title = formData.get('title') as string
 
-  const { isValid, newState } = validateForm(prevState, title)
+  const { isValid, newState } = validateForm<
+    typeof ContentTypeSchema,
+    FormState
+  >(ContentTypeSchema, prevState, { title })
 
   if (!isValid) {
     return newState
@@ -97,33 +101,4 @@ export async function submitContentType(
   }
 
   return newState
-}
-
-function validateForm(
-  prevState: FormState,
-  title: string,
-): { isValid: boolean; newState: FormState } {
-  const { success, output, issues } = v.safeParse(ContentTypeSchema, {
-    ...prevState,
-    title,
-  })
-
-  if (success) {
-    return {
-      isValid: success,
-      newState: { ...prevState, ...output, errors: {} },
-    }
-  }
-
-  const { nested: validationIssues } =
-    v.flatten<typeof ContentTypeSchema>(issues)
-
-  return {
-    isValid: false,
-    newState: {
-      ...prevState,
-      ...(output as object),
-      errors: validationIssues ?? {},
-    },
-  }
 }
