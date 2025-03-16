@@ -11,8 +11,8 @@ import (
 )
 
 func ValidateSession(w http.ResponseWriter, r *http.Request) {
-	oldToken := r.FormValue("session_token")
-	refresh := r.FormValue("refresh")
+	oldToken := r.Header.Get("Session-Token")
+	refresh := r.Header.Get("Refresh")
 
 	if oldToken == "" {
 		utils.PrintError(w, errors.New("Missing session_token"), false)

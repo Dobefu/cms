@@ -29,16 +29,12 @@ async function validateSession(refresh: boolean = false): Promise<{
     validateResponse = await queryClient.fetchQuery({
       queryKey: [apiEndpoint, token.value, refresh],
       queryFn: async () => {
-        const formData = new FormData()
-        formData.append('session_token', token.value)
-
-        if (refresh) {
-          formData.append('refresh', 'true')
-        }
-
         const response = await fetch(`${apiEndpoint}/validate-session`, {
-          method: 'POST',
-          body: formData,
+          method: 'GET',
+          headers: {
+            'Session-Token': token.value,
+            Refresh: refresh ? 'true' : '',
+          },
         })
 
         if (!response.ok) {

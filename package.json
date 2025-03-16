@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "predev": "cd ./api && go build",
-    "dev": "concurrently --names \"CMS,API\" -c white.dim,cyan \"next dev --turbopack\" \"sleep 2 && cd ./api && air\"",
+    "dev": "concurrently --names \"CMS,API\" -c white.dim,cyan \"next dev --turbopack\" \"cd ./api && air\"",
     "db:start": "docker compose up -d",
     "db:stop": "docker compose down",
     "build": "next build",
