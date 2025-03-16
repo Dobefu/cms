@@ -30,8 +30,23 @@ describe('submitContentType', () => {
     cookieStore.delete('session')
   })
 
+  it('returns early when the session token cookie is missing', async () => {
+    expect.hasAssertions()
+
+    const spy = vi.spyOn(navigation, 'redirect')
+
+    const formData = new FormData()
+
+    await submitContentType(initialState, formData)
+
+    expect(spy).not.toHaveBeenCalled()
+  })
+
   it('returns early when the API endpoint is missing', async () => {
     expect.hasAssertions()
+
+    const cookieStore = await cookies()
+    cookieStore.set({ name: 'session', value: 'test' })
 
     delete process.env.API_ENDPOINT
     const spy = vi.spyOn(navigation, 'redirect')
@@ -47,6 +62,9 @@ describe('submitContentType', () => {
   it('returns a JSON error when the fetch call fails', async () => {
     expect.hasAssertions()
 
+    const cookieStore = await cookies()
+    cookieStore.set({ name: 'session', value: 'test' })
+
     const spy = vi.spyOn(navigation, 'redirect')
 
     const formData = new FormData()
@@ -57,8 +75,11 @@ describe('submitContentType', () => {
     expect(spy).not.toHaveBeenCalled()
   })
 
-  it('returns early with missing data', async () => {
+  it('returns early when there is missing data', async () => {
     expect.hasAssertions()
+
+    const cookieStore = await cookies()
+    cookieStore.set({ name: 'session', value: 'test' })
 
     const spy = vi.spyOn(navigation, 'redirect')
 
@@ -71,6 +92,9 @@ describe('submitContentType', () => {
 
   it('returns early when a failed response has an error object', async () => {
     expect.hasAssertions()
+
+    const cookieStore = await cookies()
+    cookieStore.set({ name: 'session', value: 'test' })
 
     const spy = vi.spyOn(navigation, 'redirect')
 
@@ -91,6 +115,9 @@ describe('submitContentType', () => {
 
   it('returns early when a response token is missing', async () => {
     expect.hasAssertions()
+
+    const cookieStore = await cookies()
+    cookieStore.set({ name: 'session', value: 'test' })
 
     const spy = vi.spyOn(navigation, 'redirect')
 
