@@ -46,6 +46,7 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 	apiRoute(mux, 1, "/validate-session", "GET", routesV1ValidateSession)
 	apiRoute(mux, 1, "/logout", "GET", routesV1Logout)
 	apiRoute(mux, 1, "/get-user-data", "GET", routesV1GetUserData)
+	apiRoute(mux, 1, "/content-types", "GET", routesV1GetContentTypes)
 	apiRoute(mux, 1, "/content-type", "PUT", routesV1UpdateContentType)
 
 	return mux
