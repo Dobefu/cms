@@ -19,4 +19,8 @@
   .btn--primary {
     @apply border-none bg-blue-600 text-white not-disabled:hover:bg-blue-700 not-disabled:active:bg-blue-800 dark:bg-blue-700 dark:not-disabled:hover:bg-blue-600 dark:not-disabled:active:bg-blue-800;
   }
+
+  .btn--danger {
+    @apply border-none bg-red-600 text-white not-disabled:hover:bg-red-700 not-disabled:active:bg-red-800 dark:bg-red-700 dark:not-disabled:hover:bg-red-600 dark:not-disabled:active:bg-red-800;
+  }
 }
