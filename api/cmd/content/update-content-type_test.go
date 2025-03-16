@@ -25,14 +25,16 @@ func TestUpdateContentTypeErrMissingTitle(t *testing.T) {
 	_, cleanup := setupUpdateContentTypeTests(t)
 	defer cleanup()
 
-	err := UpdateContentType("")
+	id, err := UpdateContentType("")
 	assert.EqualError(t, err, "Missing title")
+	assert.Equal(t, 0, id)
 }
 
 func TestUpdateContentTypeSuccess(t *testing.T) {
 	_, cleanup := setupUpdateContentTypeTests(t)
 	defer cleanup()
 
-	err := UpdateContentType("Title")
+	id, err := UpdateContentType("Title")
 	assert.NoError(t, err)
+	assert.Equal(t, 1, id)
 }

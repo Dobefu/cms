@@ -18,7 +18,7 @@ func UpdateContentType(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := contentUpdateContentType(title)
+	id, err := contentUpdateContentType(title)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)
@@ -27,7 +27,7 @@ func UpdateContentType(w http.ResponseWriter, r *http.Request) {
 
 	response, _ := json.Marshal(map[string]any{
 		"data": map[string]any{
-			"id": 1,
+			"id": id,
 		},
 		"error": nil,
 	})

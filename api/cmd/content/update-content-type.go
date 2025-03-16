@@ -4,10 +4,10 @@ import (
 	"errors"
 )
 
-func UpdateContentType(title string) (err error) {
+func UpdateContentType(title string) (id int, err error) {
 	if title == "" {
-		return errors.New("Missing title")
+		return 0, errors.New("Missing title")
 	}
 
-	return nil
+	return 1, nil
 }

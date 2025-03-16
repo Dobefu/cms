@@ -14,8 +14,8 @@ import (
 func setupUpdateContentTypeTests() (rr *httptest.ResponseRecorder, cleanup func()) {
 	rr = httptest.NewRecorder()
 
-	contentUpdateContentType = func(title string) (err error) {
-		return nil
+	contentUpdateContentType = func(title string) (id int, err error) {
+		return 1, nil
 	}
 
 	return rr, func() {
@@ -38,8 +38,8 @@ func TestUpdateContentTypeErrUpdateContentType(t *testing.T) {
 	rr, cleanup := setupUpdateContentTypeTests()
 	defer cleanup()
 
-	contentUpdateContentType = func(title string) (err error) {
-		return assert.AnError
+	contentUpdateContentType = func(title string) (id int, err error) {
+		return 0, assert.AnError
 	}
 
 	req, err := http.NewRequest("PUT", "", strings.NewReader("title=Title"))
