@@ -12,7 +12,7 @@ export default async function CreateContentType() {
     <Container className="flex flex-col gap-8">
       <Heading level={1}>Create Content Type</Heading>
 
-      <ContentTypeForm type="create" />
+      <ContentTypeForm />
     </Container>
   )
 }
