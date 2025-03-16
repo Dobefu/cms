@@ -59,12 +59,8 @@ export async function login(
 
   try {
     loginResponse = await queryClient.fetchQuery({
-      queryKey: [apiEndpoint, username, password],
+      queryKey: [apiEndpoint, username, password, formData],
       queryFn: async () => {
-        const formData = new FormData()
-        formData.append('username', username)
-        formData.append('password', password)
-
         const response = await fetch(`${apiEndpoint}/login`, {
           method: 'POST',
           body: formData,
