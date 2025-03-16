@@ -2,6 +2,9 @@
 
 import { deleteContentType } from '@/actions/delete-content-type'
 import { ContentType } from '@/types/content-type'
+import iconEdit from '@iconify/icons-mdi/edit'
+import iconDelete from '@iconify/icons-mdi/trash'
+import { Icon } from '@iconify/react/dist/iconify.js'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
@@ -30,6 +33,7 @@ export default function Client({ contentTypes }: Props) {
                   className="btn"
                   href={`/content-types/edit/${contentType.id}`}
                 >
+                  <Icon className="size-4 shrink-0" icon={iconEdit} ssr />
                   Edit
                 </Link>
 
@@ -43,6 +47,7 @@ export default function Client({ contentTypes }: Props) {
                   }}
                   /* v8 ignore stop */
                 >
+                  <Icon className="size-4 shrink-0" icon={iconDelete} ssr />
                   Delete
                 </button>
               </td>
