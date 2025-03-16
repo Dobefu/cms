@@ -3,6 +3,7 @@
 import { getApiEndpoint } from '@/utils/get-api-endpoint'
 import { getQueryClient } from '@/utils/get-query-client'
 import { validateForm } from '@/utils/validate-form'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import * as v from 'valibot'
 
@@ -27,6 +28,13 @@ export async function submitContentType(
   prevState: FormState,
   formData: FormData,
 ): Promise<FormState> {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('session')
+
+  if (!token) {
+    return prevState
+  }
+
   const title = formData.get('title') as string
 
   const { isValid, newState } = validateForm<
@@ -50,7 +58,7 @@ export async function submitContentType(
 
   try {
     submitContentTypeResponse = await queryClient.fetchQuery({
-      queryKey: [apiEndpoint, title, prevState.type],
+      queryKey: [apiEndpoint, token.value, title, prevState.type],
       queryFn: async () => {
         const formData = new FormData()
         formData.append('title', title)
@@ -58,6 +66,9 @@ export async function submitContentType(
         const response = await fetch(`${apiEndpoint}/content-type`, {
           method: prevState.type === 'create' ? 'PUT' : 'POST',
           body: formData,
+          headers: {
+            'Session-Token': token.value,
+          },
         })
 
         if (!response.ok) {

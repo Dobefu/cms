@@ -4,7 +4,7 @@ import (
 	"errors"
 )
 
-func UpdateContentType(title string) (id int, err error) {
+func UpdateContentType(userId int, title string) (id int, err error) {
 	if title == "" {
 		return 0, errors.New("Missing title")
 	}
