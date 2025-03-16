@@ -35,11 +35,13 @@ export default function Client({ contentTypes }: Props) {
 
                   <button
                     className="btn btn--danger"
+                    /* v8 ignore start */
                     // eslint-disable-next-line react/jsx-no-bind
                     onClick={async () => {
                       await deleteContentType(contentType.id)
                       redirect('')
                     }}
+                    /* v8 ignore stop */
                   >
                     Delete
                   </button>

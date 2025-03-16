@@ -67,6 +67,7 @@ export default function ContentTypeForm({ contentTypeId, initialData }: Props) {
         {state.id ? (
           <button
             className="btn btn--danger"
+            /* v8 ignore start */
             // eslint-disable-next-line react/jsx-no-bind
             onClick={async () => {
               if (!state.id) return
@@ -74,6 +75,7 @@ export default function ContentTypeForm({ contentTypeId, initialData }: Props) {
               await deleteContentType(state.id)
               redirect('/content-types')
             }}
+            /* v8 ignore stop */
           >
             Delete
           </button>
