@@ -27,6 +27,33 @@ func setupUpdateContentTypeTests() (rr *httptest.ResponseRecorder, cleanup func(
 	}
 }
 
+func TestUpdateContentTypeErrInvalidSessionToken(t *testing.T) {
+	rr, cleanup := setupUpdateContentTypeTests()
+	defer cleanup()
+
+	userValidateSession = func(oldToken string, refresh bool) (newToken string, userId int, err error) {
+		return "", 0, assert.AnError
+	}
+
+	req, err := http.NewRequest("PUT", "", nil)
+	req.Header.Add("Session-Token", "bogus")
+	assert.NoError(t, err)
+
+	UpdateContentType(rr, req)
+	assert.JSONEq(t, fmt.Sprintf(`{"data": null, "error": "%s"}`, assert.AnError), rr.Body.String())
+}
+
+func TestUpdateContentTypeErrMissingSessionToken(t *testing.T) {
+	rr, cleanup := setupUpdateContentTypeTests()
+	defer cleanup()
+
+	req, err := http.NewRequest("PUT", "", nil)
+	assert.NoError(t, err)
+
+	UpdateContentType(rr, req)
+	assert.JSONEq(t, fmt.Sprintf(`{"data": null, "error": "%s"}`, "Missing session_token"), rr.Body.String())
+}
+
 func TestUpdateContentTypeErrMissingTitle(t *testing.T) {
 	rr, cleanup := setupUpdateContentTypeTests()
 	defer cleanup()
