@@ -22,19 +22,11 @@ func setupDeleteContentTypeTests(t *testing.T) (mock sqlmock.Sqlmock, cleanup fu
 	}
 }
 
-func TestDeleteContentTypeErrMissingTitle(t *testing.T) {
+func TestDeleteContentTypeErrDelete(t *testing.T) {
 	_, cleanup := setupDeleteContentTypeTests(t)
 	defer cleanup()
 
-	err := DeleteContentType(1, 1, "")
-	assert.EqualError(t, err, "Missing title")
-}
-
-func TestDeleteContentTypeErrInsert(t *testing.T) {
-	_, cleanup := setupDeleteContentTypeTests(t)
-	defer cleanup()
-
-	err := DeleteContentType(1, 1, "Title")
+	err := DeleteContentType(1)
 	assert.EqualError(t, err, user.ErrUnexpected.Error())
 }
 
@@ -46,6 +38,6 @@ func TestDeleteContentTypeSuccess(t *testing.T) {
 		sqlmock.NewResult(1, 1),
 	)
 
-	err := DeleteContentType(1, 1, "Title")
+	err := DeleteContentType(1)
 	assert.NoError(t, err)
 }

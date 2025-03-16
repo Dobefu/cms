@@ -26,21 +26,14 @@ func DeleteContentType(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, userId, err := userValidateSession(token, false)
+	_, _, err = userValidateSession(token, false)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)
 		return
 	}
 
-	title := r.FormValue("title")
-
-	if title == "" {
-		utils.PrintError(w, errors.New("Missing title"), false)
-		return
-	}
-
-	err = contentDeleteContentType(id, userId, title)
+	err = contentDeleteContentType(id)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)

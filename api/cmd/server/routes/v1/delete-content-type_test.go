@@ -18,7 +18,7 @@ func setupDeleteContentTypeTests() (rr *httptest.ResponseRecorder, cleanup func(
 		return "", 1, nil
 	}
 
-	contentDeleteContentType = func(id int, userId int, title string) (err error) {
+	contentDeleteContentType = func(id int) (err error) {
 		return nil
 	}
 
@@ -68,24 +68,11 @@ func TestDeleteContentTypeErrMissingSessionToken(t *testing.T) {
 	assert.JSONEq(t, fmt.Sprintf(`{"data": null, "error": "%s"}`, "Missing session_token"), rr.Body.String())
 }
 
-func TestDeleteContentTypeErrMissingTitle(t *testing.T) {
-	rr, cleanup := setupDeleteContentTypeTests()
-	defer cleanup()
-
-	req, err := http.NewRequest("POST", "", nil)
-	req.SetPathValue("id", "1")
-	req.Header.Add("Session-Token", "test")
-	assert.NoError(t, err)
-
-	DeleteContentType(rr, req)
-	assert.JSONEq(t, fmt.Sprintf(`{"data": null, "error": "%s"}`, "Missing title"), rr.Body.String())
-}
-
 func TestDeleteContentTypeErrDeleteContentType(t *testing.T) {
 	rr, cleanup := setupDeleteContentTypeTests()
 	defer cleanup()
 
-	contentDeleteContentType = func(id int, userId int, title string) (err error) {
+	contentDeleteContentType = func(id int) (err error) {
 		return assert.AnError
 	}
 
