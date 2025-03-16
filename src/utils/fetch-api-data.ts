@@ -61,10 +61,6 @@ async function fetchApiData<T>({
 
         if (body && (method === 'POST' || method === 'PUT')) {
           requestOptions.body = body
-
-          if (!headers['Content-Type']) {
-            headers['Content-Type'] = 'application/x-www-form-urlencoded'
-          }
         }
 
         const response = await fetch(`${apiEndpoint}${path}`, requestOptions)
