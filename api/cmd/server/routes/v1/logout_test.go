@@ -33,7 +33,7 @@ func TestLogoutErrMissingSessionToken(t *testing.T) {
 	rr, _, cleanup := setupLogoutTests(t)
 	defer cleanup()
 
-	req, err := http.NewRequest("POST", "", strings.NewReader(""))
+	req, err := http.NewRequest("GET", "", strings.NewReader(""))
 	assert.NoError(t, err)
 
 	Logout(rr, req)
@@ -46,7 +46,8 @@ func TestLogoutErrInvalidSessionToken(t *testing.T) {
 
 	mock.ExpectQuery("SELECT user_id FROM sessions WHERE .+").WillReturnError(sql.ErrNoRows)
 
-	req, err := http.NewRequest("POST", "", strings.NewReader("session_token=bogus"))
+	req, err := http.NewRequest("GET", "", nil)
+	req.Header.Add("Session-Token", "bogus")
 	assert.NoError(t, err)
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -61,7 +62,8 @@ func TestLogoutErrSessionTokenUnexpected(t *testing.T) {
 
 	mock.ExpectQuery("SELECT user_id FROM sessions WHERE .+").WillReturnError(assert.AnError)
 
-	req, err := http.NewRequest("POST", "", strings.NewReader("session_token=test"))
+	req, err := http.NewRequest("GET", "", nil)
+	req.Header.Add("Session-Token", "test")
 	assert.NoError(t, err)
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -80,7 +82,8 @@ func TestLogoutErrDeleteToken(t *testing.T) {
 
 	mock.ExpectExec("DELETE FROM sessions WHERE .+").WillReturnError(assert.AnError)
 
-	req, err := http.NewRequest("POST", "", strings.NewReader("session_token=test"))
+	req, err := http.NewRequest("GET", "", nil)
+	req.Header.Add("Session-Token", "test")
 	assert.NoError(t, err)
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -99,7 +102,8 @@ func TestLogoutSuccess(t *testing.T) {
 
 	mock.ExpectExec("DELETE FROM sessions WHERE .+").WillReturnResult(sqlmock.NewResult(1, 1))
 
-	req, err := http.NewRequest("POST", "", strings.NewReader("session_token=test"))
+	req, err := http.NewRequest("GET", "", nil)
+	req.Header.Add("Session-Token", "test")
 	assert.NoError(t, err)
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
