@@ -1,6 +1,7 @@
 import Heading from '@/components/elements/heading'
 import ContentTypeForm from '@/components/forms/content-type.client'
 import Container from '@/components/layout/container'
+import ReturnLink from '@/components/layout/return-link'
 import TitleContainer from '@/components/layout/title-container'
 import { getContentType } from '@/utils/get-content-type'
 import { Metadata } from 'next'
@@ -24,15 +25,19 @@ export default async function EditContentType({ params }: Props) {
   }
 
   return (
-    <Container className="flex flex-col gap-8">
-      <TitleContainer>
-        <Heading level={1}>Edit Content Type</Heading>
-      </TitleContainer>
+    <>
+      <ReturnLink href="/content-types">Back to overview</ReturnLink>
 
-      <ContentTypeForm
-        contentTypeId={data.content_type.id}
-        initialData={data.content_type}
-      />
-    </Container>
+      <Container className="flex flex-col gap-8">
+        <TitleContainer>
+          <Heading level={1}>Edit Content Type</Heading>
+        </TitleContainer>
+
+        <ContentTypeForm
+          contentTypeId={data.content_type.id}
+          initialData={data.content_type}
+        />
+      </Container>
+    </>
   )
 }
