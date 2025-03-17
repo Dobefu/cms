@@ -28,7 +28,7 @@ export default function Client({ contentTypes }: Props) {
             <tr key={contentType.id}>
               <td className="p-1">{contentType.id}</td>
               <td className="w-full p-1">{contentType.title}</td>
-              <td className="flex gap-1 p-1">
+              <td className="flex gap-4 p-1 max-sm:gap-2">
                 <Link
                   className="btn"
                   href={`/content-types/edit/${contentType.id}`}
