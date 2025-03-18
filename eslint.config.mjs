@@ -27,6 +27,7 @@ const eslintConfig = [
     rules: {
       ...pluginVitest.configs.all.rules,
 
+      'require-await': ['error'],
       'react/boolean-prop-naming': ['warn'],
       'react/forward-ref-uses-ref': ['warn'],
       'react/hook-use-state': ['warn'],

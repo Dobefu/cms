@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { deleteContentType } from './delete-content-type'
 
 describe('deleteContentType', () => {
-  vi.mock('@/utils/fetch-api-data', async () => ({
+  vi.mock('@/utils/fetch-api-data', () => ({
     fetchApiData: ({ path }: (typeof fetchApiData)['arguments']) => {
       if (path === '/content-type/1') {
         return { data: { content_type: { id: 1 } }, error: undefined }

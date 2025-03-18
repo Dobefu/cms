@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import EditContentType from './page'
 
 describe('content-types/edit/[id]', () => {
-  vi.mock('@/utils/fetch-api-data', async () => ({
+  vi.mock('@/utils/fetch-api-data', () => ({
     fetchApiData: ({ path }: (typeof fetchApiData)['arguments']) => {
       if (path === '/content-type/1') {
         return { data: { content_type: { id: 1 } }, error: undefined }

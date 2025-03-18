@@ -2,14 +2,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { validateSession } from './validate-session'
 
 describe('getUserData', () => {
-  afterEach(async () => {
+  afterEach(() => {
     vi.restoreAllMocks()
   })
 
   it('validates the user session', async () => {
     expect.hasAssertions()
 
-    vi.mock('@/utils/fetch-api-data', async () => {
+    vi.mock('@/utils/fetch-api-data', () => {
       return {
         fetchApiData: () => {
           return { data: {}, error: undefined }

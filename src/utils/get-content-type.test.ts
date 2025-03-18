@@ -2,14 +2,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { getContentType } from './get-content-type'
 
 describe('getContentType', () => {
-  afterEach(async () => {
+  afterEach(() => {
     vi.restoreAllMocks()
   })
 
   it('fetches the content type', async () => {
     expect.hasAssertions()
 
-    vi.mock('@/utils/fetch-api-data', async () => {
+    vi.mock('@/utils/fetch-api-data', () => {
       return {
         fetchApiData: () => {
           return { data: {}, error: undefined }

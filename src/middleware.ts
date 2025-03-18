@@ -28,7 +28,7 @@ async function refreshSessionToken() {
   }
 
   if (token && tokenCookie.value !== token) {
-    setSessionCookie(token)
+    await setSessionCookie(token)
   }
 }
 

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Dashboard',
 }
 
-export default async function Dashboard() {
+export default function Dashboard() {
   return (
     <Container>
       <TitleContainer>

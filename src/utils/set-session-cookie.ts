@@ -2,6 +2,7 @@ import { cookies } from 'next/headers'
 
 async function setSessionCookie(token: string) {
   const cookieStore = await cookies()
+
   cookieStore.set({
     name: 'session',
     value: token,

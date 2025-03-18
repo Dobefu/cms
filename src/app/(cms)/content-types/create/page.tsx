@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: 'Create Content Type',
 }
 
-export default async function CreateContentType() {
+export default function CreateContentType() {
   return (
     <>
       <ReturnLink href="/content-types">Back to overview</ReturnLink>

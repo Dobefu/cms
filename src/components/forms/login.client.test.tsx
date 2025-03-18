@@ -25,7 +25,7 @@ describe('loginForm', () => {
     expect(screen.getByRole<HTMLInputElement>('button').type).toBe('submit')
   })
 
-  it('can submit', async () => {
+  it('can submit', () => {
     expect.hasAssertions()
 
     render(<LoginForm />)

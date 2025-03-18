@@ -19,16 +19,16 @@ describe('contentTypeForm', () => {
   it('renders normally', () => {
     expect.hasAssertions()
 
-    render(<ContentTypeForm type="create" />)
+    render(<ContentTypeForm />)
 
     expect(screen.getByRole<HTMLInputElement>('textbox').name).toBe('title')
     expect(screen.getByRole<HTMLInputElement>('button').type).toBe('submit')
   })
 
-  it('can submit (type: create)', async () => {
+  it('can submit (type: create)', () => {
     expect.hasAssertions()
 
-    render(<ContentTypeForm type="create" />)
+    render(<ContentTypeForm />)
 
     const titleInput = screen.getByTestId('title')
 
@@ -40,10 +40,10 @@ describe('contentTypeForm', () => {
     expect(screen).toBeDefined()
   })
 
-  it('can submit (type: update)', async () => {
+  it('can submit (type: update)', () => {
     expect.hasAssertions()
 
-    render(<ContentTypeForm type="update" />)
+    render(<ContentTypeForm />)
 
     const titleInput = screen.getByTestId('title')
 
@@ -62,7 +62,7 @@ describe('contentTypeForm', () => {
     initialState.errors.title = ['Title error']
     initialState.errors.generic = ['Generic error']
 
-    render(<ContentTypeForm type="create" />)
+    render(<ContentTypeForm />)
 
     const paragraphs = screen.getAllByRole<HTMLParagraphElement>('paragraph')
 

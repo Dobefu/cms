@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Content',
 }
 
-export default async function Content() {
+export default function Content() {
   return (
     <Container>
       <TitleContainer>
