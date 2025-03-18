@@ -1,9 +1,11 @@
 import { FlatCompat } from '@eslint/eslintrc'
+import pluginEslint from '@eslint/js'
 import pluginQuery from '@tanstack/eslint-plugin-query'
 import pluginVitest from '@vitest/eslint-plugin'
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 import pluginReact from 'eslint-plugin-react'
 import pluginTestingLibrary from 'eslint-plugin-testing-library'
+import pluginTsEslint from 'typescript-eslint'
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
@@ -19,15 +21,26 @@ const eslintConfig = [
     ],
   }),
   ...pluginQuery.configs['flat/recommended'],
+  ...pluginTsEslint.configs.recommended,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
   {
     ...pluginJsxA11y.flatConfigs.strict,
     ...pluginReact.configs.flat.recommended,
     ...pluginTestingLibrary.configs['flat/react'],
+    ...pluginEslint.configs.recommended,
     plugins: { vitest: pluginVitest },
     rules: {
       ...pluginVitest.configs.all.rules,
 
       'require-await': ['error'],
+      '@typescript-eslint/no-floating-promises': ['error'],
       'react/boolean-prop-naming': ['warn'],
       'react/forward-ref-uses-ref': ['warn'],
       'react/hook-use-state': ['warn'],
