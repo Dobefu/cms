@@ -28,7 +28,7 @@ func TestValidateSessionErrMissingSessionToken(t *testing.T) {
 	defer cleanup()
 
 	newToken, userId, err := ValidateSession("", false)
-	assert.EqualError(t, err, "Missing session token")
+	assert.EqualError(t, err, "Missing session_token")
 	assert.Equal(t, newToken, "")
 	assert.Equal(t, userId, 0)
 }
@@ -37,19 +37,34 @@ func TestValidateSessionErrInvalidSessionToken(t *testing.T) {
 	mock, cleanup := setupValidateSessionTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT user_id, token, updated_at FROM sessions WHERE .+").WillReturnError(sql.ErrNoRows)
+	mock.ExpectQuery("SELECT user_id,token,updated_at FROM sessions WHERE .+").WillReturnError(sql.ErrNoRows)
 
-	newToken, userId, err := ValidateSession("bogus", false)
+	newToken, userId, err := ValidateSession("expired", false)
 	assert.EqualError(t, err, "Could not validate session_token")
-	assert.Equal(t, newToken, "bogus")
+	assert.Equal(t, newToken, "expired")
 	assert.Equal(t, userId, 0)
+}
+
+func TestValidateSessionErrScanOldToken(t *testing.T) {
+	mock, cleanup := setupValidateSessionTests(t)
+	defer cleanup()
+
+	mock.ExpectQuery("SELECT user_id,token,updated_at FROM sessions WHERE .+").WillReturnError(sql.ErrNoRows)
+	mock.ExpectQuery("SELECT user_id,token FROM sessions WHERE .+").WillReturnRows(
+		sqlmock.NewRows([]string{"user_id", "token"}).AddRow(1, "test"),
+	)
+
+	newToken, userId, err := ValidateSession("expired", false)
+	assert.NoError(t, err)
+	assert.Equal(t, newToken, "test")
+	assert.Equal(t, userId, 1)
 }
 
 func TestValidateSessionErrSessionTokenUnexpected(t *testing.T) {
 	mock, cleanup := setupValidateSessionTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT user_id, token, updated_at FROM sessions WHERE .+").WillReturnError(assert.AnError)
+	mock.ExpectQuery("SELECT user_id,token,updated_at FROM sessions WHERE .+").WillReturnError(assert.AnError)
 
 	newToken, userId, err := ValidateSession("test", false)
 	assert.EqualError(t, err, ErrUnexpected.Error())
@@ -61,7 +76,7 @@ func TestValidateSessionErrUpdateToken(t *testing.T) {
 	mock, cleanup := setupValidateSessionTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT user_id, token, updated_at FROM sessions WHERE .+").WillReturnRows(
+	mock.ExpectQuery("SELECT user_id,token,updated_at FROM sessions WHERE .+").WillReturnRows(
 		sqlmock.NewRows([]string{"user_id", "token", "updated_at"}).AddRow(1, "test", time.Now().Add(-360*time.Second)),
 	)
 
@@ -77,7 +92,7 @@ func TestValidateSessionErrUpdateTokenDatabase(t *testing.T) {
 	mock, cleanup := setupValidateSessionTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT user_id, token, updated_at FROM sessions WHERE .+").WillReturnRows(
+	mock.ExpectQuery("SELECT user_id,token,updated_at FROM sessions WHERE .+").WillReturnRows(
 		sqlmock.NewRows([]string{"user_id", "token", "updated_at"}).AddRow(1, "test", time.Now().Add(-360*time.Second)),
 	)
 
@@ -94,7 +109,7 @@ func TestValidateSessionSuccess(t *testing.T) {
 	mock, cleanup := setupValidateSessionTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT user_id, token, updated_at FROM sessions WHERE .+").WillReturnRows(
+	mock.ExpectQuery("SELECT user_id,token,updated_at FROM sessions WHERE .+").WillReturnRows(
 		sqlmock.NewRows([]string{"user_id", "token", "updated_at"}).AddRow(1, "test", time.Now().Add(-360*time.Second)),
 	)
 

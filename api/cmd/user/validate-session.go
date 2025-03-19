@@ -33,11 +33,11 @@ func ValidateSession(oldToken string, refresh bool) (newToken string, userId int
 			var currentToken string
 			oldTokenErr := oldTokenRow.Scan(&userId, &currentToken)
 
-			if oldTokenErr == nil {
-				return currentToken, userId, nil
+			if oldTokenErr != nil {
+				return oldToken, 0, errors.New("Could not validate session_token")
 			}
 
-			return oldToken, 0, errors.New("Could not validate session_token")
+			return currentToken, userId, nil
 		}
 
 		logger.Error(err.Error())

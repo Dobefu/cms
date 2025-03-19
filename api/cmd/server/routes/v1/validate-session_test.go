@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setupValidateSessionTests(t *testing.T) (rr *httptest.ResponseRecorder, cleanup func()) {
+func setupValidateSessionTests() (rr *httptest.ResponseRecorder, cleanup func()) {
 	rr = httptest.NewRecorder()
 
 	userValidateSession = func(oldToken string, refresh bool) (newToken string, userId int, err error) {
@@ -23,7 +23,7 @@ func setupValidateSessionTests(t *testing.T) (rr *httptest.ResponseRecorder, cle
 }
 
 func TestValidateSessionErrMissingSessionToken(t *testing.T) {
-	rr, cleanup := setupValidateSessionTests(t)
+	rr, cleanup := setupValidateSessionTests()
 	defer cleanup()
 
 	req, err := http.NewRequest("GET", "", nil)
@@ -34,7 +34,7 @@ func TestValidateSessionErrMissingSessionToken(t *testing.T) {
 }
 
 func TestValidateSessionErrInvalidSessionToken(t *testing.T) {
-	rr, cleanup := setupValidateSessionTests(t)
+	rr, cleanup := setupValidateSessionTests()
 	defer cleanup()
 
 	userValidateSession = func(oldToken string, refresh bool) (newToken string, userId int, err error) {
@@ -52,7 +52,7 @@ func TestValidateSessionErrInvalidSessionToken(t *testing.T) {
 }
 
 func TestValidateSessionSuccess(t *testing.T) {
-	rr, cleanup := setupValidateSessionTests(t)
+	rr, cleanup := setupValidateSessionTests()
 	defer cleanup()
 
 	req, err := http.NewRequest("GET", "", nil)
