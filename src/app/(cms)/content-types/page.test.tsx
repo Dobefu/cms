@@ -3,11 +3,12 @@ import { cookies } from 'next/headers'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import ContentTypes from './page'
 
+const cookieStore = await cookies()
+
 describe('content-types', () => {
-  afterEach(async () => {
+  afterEach(() => {
     vi.restoreAllMocks()
 
-    const cookieStore = await cookies()
     cookieStore.delete('session')
   })
 
@@ -27,7 +28,6 @@ describe('content-types', () => {
       status: 200,
     })
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     render(await ContentTypes())

@@ -2,6 +2,8 @@ import { cookies } from 'next/headers'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { GET } from './route'
 
+const cookieStore = await cookies()
+
 describe('logout', () => {
   const oldApiEndpoint = process.env.API_ENDPOINT
   const oldApiKey = process.env.API_KEY
@@ -15,13 +17,12 @@ describe('logout', () => {
     })
   })
 
-  afterEach(async () => {
+  afterEach(() => {
     process.env.API_ENDPOINT = oldApiEndpoint
     process.env.API_KEY = oldApiKey
 
     vi.restoreAllMocks()
 
-    const cookieStore = await cookies()
     cookieStore.delete('session')
   })
 
@@ -50,7 +51,6 @@ describe('logout', () => {
   it('redirects early when the fetch call fails', async () => {
     expect.hasAssertions()
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     await expect(GET()).rejects.toThrow('Mock redirect error')
@@ -66,7 +66,6 @@ describe('logout', () => {
       status: 422,
     })
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     await expect(GET()).rejects.toThrow('Mock redirect error')
@@ -82,7 +81,6 @@ describe('logout', () => {
       status: 200,
     })
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     await expect(GET()).rejects.toThrow('Mock redirect error')

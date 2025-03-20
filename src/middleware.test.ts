@@ -2,29 +2,29 @@ import { cookies } from 'next/headers'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { middleware } from './middleware'
 
+const cookieStore = await cookies()
+
 describe('middleware', () => {
   beforeEach(() => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
-      json: async () => {
-        const cookieStore = await cookies()
+      json: () => {
         const token = cookieStore.get('session')
 
         if (!token || !token?.value || token.value === 'bogus') {
-          return { data: null, error: '' }
+          return Promise.resolve({ data: null, error: '' })
         }
 
-        return { data: { token: 'test-new' }, error: null }
+        return Promise.resolve({ data: { token: 'test-new' }, error: null })
       },
       ok: true,
       status: 200,
     })
   })
 
-  afterEach(async () => {
+  afterEach(() => {
     vi.restoreAllMocks()
 
-    const cookieStore = await cookies()
     cookieStore.delete('session')
   })
 
@@ -44,10 +44,9 @@ describe('middleware', () => {
     expect(response).toBeDefined()
   })
 
-  it("deletes the session token if it's invalid", async () => {
+  it("deletes the session token if it's invalid", () => {
     expect.hasAssertions()
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'bogus' })
 
     const response = middleware()
@@ -55,10 +54,9 @@ describe('middleware', () => {
     expect(response).toBeDefined()
   })
 
-  it('refreshes the session token when there is a new one', async () => {
+  it('refreshes the session token when there is a new one', () => {
     expect.hasAssertions()
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     const response = middleware()

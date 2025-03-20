@@ -4,6 +4,8 @@ import * as navigation from 'next/navigation'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import Login from './page'
 
+const cookieStore = await cookies()
+
 describe('login', () => {
   beforeEach(() => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
@@ -14,10 +16,9 @@ describe('login', () => {
     })
   })
 
-  afterEach(async () => {
+  afterEach(() => {
     vi.restoreAllMocks()
 
-    const cookieStore = await cookies()
     cookieStore.delete('session')
   })
 
@@ -34,7 +35,6 @@ describe('login', () => {
   it('redirects for logged in users', async () => {
     expect.hasAssertions()
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     await expect(Login()).rejects.toThrow('Mock redirect error')
