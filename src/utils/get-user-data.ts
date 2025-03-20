@@ -7,7 +7,7 @@ async function getUserData(): Promise<{
 }> {
   return await fetchApiData<{ user: UserData }>({
     method: 'GET',
-    path: '/get-user-data',
+    path: '/user-data',
   })
 }
 
