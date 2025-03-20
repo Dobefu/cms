@@ -10,10 +10,12 @@ const userData: UserData = {
   username: 'test-username',
   email: 'test-email',
   status: true,
-  created_at: new Date(),
-  updated_at: new Date(),
-  last_login: new Date(),
+  created_at: '0',
+  updated_at: '0',
+  last_login: '0',
 }
+
+const cookieStore = await cookies()
 
 describe('user', () => {
   beforeEach(() => {
@@ -25,17 +27,15 @@ describe('user', () => {
     })
   })
 
-  afterEach(async () => {
+  afterEach(() => {
     vi.restoreAllMocks()
 
-    const cookieStore = await cookies()
     cookieStore.delete('session')
   })
 
   it('returns an empty metadata object when the getUserData response has an error', async () => {
     expect.hasAssertions()
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     const metadata = await generateMetadata()
@@ -57,7 +57,6 @@ describe('user', () => {
       status: 200,
     })
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     const metadata = await generateMetadata()
@@ -69,7 +68,6 @@ describe('user', () => {
   it('returns early when the getUserData response has an error', async () => {
     expect.hasAssertions()
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     await expect(User()).rejects.toThrow('Mock notFound error')
@@ -91,7 +89,6 @@ describe('user', () => {
 
     const spy = vi.spyOn(navigation, 'redirect')
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     render(await User())
