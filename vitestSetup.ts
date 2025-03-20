@@ -4,6 +4,7 @@ import { vi } from 'vitest'
 
 process.env.MOCK_PATHNAME = '/'
 process.env.API_ENDPOINT = 'http://api-endpoint'
+process.env.API_KEY = 'test-api-key'
 
 vi.mock('react', async () => {
   const actual = await vi.importActual('react')
