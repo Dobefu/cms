@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setupAddResponseHeaders() *httptest.ResponseRecorder {
-	rr := httptest.NewRecorder()
+func setupAddResponseHeaders() (rr *httptest.ResponseRecorder) {
+	rr = httptest.NewRecorder()
 
 	return rr
 }
