@@ -30,6 +30,12 @@ async function fetchApiData<T>({
     return { error: new Error('API_ENDPOINT is not set') }
   }
 
+  const apiKey = process.env.API_KEY
+
+  if (!apiKey) {
+    return { error: new Error('API_KEY is not set') }
+  }
+
   const cookieStore = await cookies()
   const token = cookieStore.get('session')
 
@@ -41,6 +47,7 @@ async function fetchApiData<T>({
     apiResponse = await queryClient.fetchQuery({
       queryKey: [
         apiEndpoint,
+        apiKey,
         path,
         method,
         additionalHeaders,
@@ -50,6 +57,7 @@ async function fetchApiData<T>({
       ],
       queryFn: async () => {
         const headers: Record<string, string> = {
+          'X-Api-Key': apiKey,
           'Session-Token': token.value,
           ...additionalHeaders,
         }

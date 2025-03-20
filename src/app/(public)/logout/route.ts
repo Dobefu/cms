@@ -11,6 +11,12 @@ export async function GET() {
     redirect('/login')
   }
 
+  const apiKey = process.env.API_KEY
+
+  if (!apiKey) {
+    redirect('/login')
+  }
+
   const cookieStore = await cookies()
   const token = cookieStore.get('session')
 
@@ -20,11 +26,12 @@ export async function GET() {
 
   try {
     await queryClient.fetchQuery({
-      queryKey: [apiEndpoint, token.value],
+      queryKey: [apiEndpoint, apiKey, token.value],
       queryFn: async () => {
         const response = await fetch(`${apiEndpoint}/logout`, {
           method: 'GET',
           headers: {
+            'X-Api-Key': apiKey,
             'Session-Token': token.value,
           },
         })

@@ -53,17 +53,26 @@ export async function login(
     return newState
   }
 
+  const apiKey = process.env.API_KEY
+
+  if (!apiKey) {
+    return newState
+  }
+
   const queryClient = getQueryClient(0)
   let loginResponse: Response = new Response()
   let isQuerySuccessful
 
   try {
     loginResponse = await queryClient.fetchQuery({
-      queryKey: [apiEndpoint, username, password, formData],
+      queryKey: [apiEndpoint, apiKey, username, password, formData],
       queryFn: async () => {
         const response = await fetch(`${apiEndpoint}/login`, {
           method: 'POST',
           body: formData,
+          headers: {
+            'X-Api-Key': apiKey,
+          },
         })
 
         if (!response.ok) {
