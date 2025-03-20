@@ -8,6 +8,7 @@ import {
 import Input from '@/components/form-elements/input'
 import Label from '@/components/form-elements/label'
 import iconSave from '@iconify/icons-mdi/floppy'
+import iconPlus from '@iconify/icons-mdi/plus'
 import iconDelete from '@iconify/icons-mdi/trash'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import Form from 'next/form'
@@ -60,7 +61,7 @@ export default function ContentTypeForm({ contentTypeId, initialData }: Props) {
       <div className="flex items-center justify-between gap-4">
         <Input
           disabled={pending}
-          icon={iconSave}
+          icon={state.id ? iconSave : iconPlus}
           type="submit"
           value={submitMessages[+!!contentTypeId][+pending]}
         />
