@@ -1,20 +1,20 @@
 package server
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/Dobefu/cms/api/cmd/database"
-	routes_v1 "github.com/Dobefu/cms/api/cmd/server/routes/v1"
 	"github.com/stretchr/testify/assert"
 )
 
 func setupHandleRoutesTests() (mux *http.ServeMux, cleanup func()) {
 	dbPing = func() error { return nil }
 
-	routesV1Login = func(w http.ResponseWriter, r *http.Request) { fmt.Fprint(w, "{}") }
+	oldApiKey := os.Getenv("API_KEY")
+	os.Setenv("API_KEY", "test-api-key")
 
 	mux = http.NewServeMux()
 	handleRoutes(mux)
@@ -22,7 +22,7 @@ func setupHandleRoutesTests() (mux *http.ServeMux, cleanup func()) {
 	return mux, func() {
 		dbPing = func() error { return database.DB.Ping() }
 
-		routesV1Login = routes_v1.Login
+		os.Setenv("API_KEY", oldApiKey)
 	}
 }
 
@@ -80,7 +80,7 @@ func TestHandleRoutesHealthSuccess(t *testing.T) {
 	assert.Equal(t, http.StatusOK, rr.Code)
 }
 
-func TestHandleRoutesApiV1(t *testing.T) {
+func TestHandleRoutesAPIErrNoApiKey(t *testing.T) {
 	mux, cleanup := setupHandleRoutesTests()
 	defer cleanup()
 
@@ -90,14 +90,15 @@ func TestHandleRoutesApiV1(t *testing.T) {
 	rr := httptest.NewRecorder()
 	mux.ServeHTTP(rr, req)
 
-	assert.Equal(t, http.StatusOK, rr.Code)
+	assert.Equal(t, http.StatusUnauthorized, rr.Code)
 }
 
-func TestHandleRoutesApiV1Login(t *testing.T) {
+func TestHandleRoutesAPIErrInvalidApiKey(t *testing.T) {
 	mux, cleanup := setupHandleRoutesTests()
 	defer cleanup()
 
-	req, err := http.NewRequest("POST", "/api/v1/login", nil)
+	req, err := http.NewRequest("GET", "/api/v1", nil)
+	req.Header.Add("X-Api-Key", "test-api-key")
 	assert.NoError(t, err)
 
 	rr := httptest.NewRecorder()
