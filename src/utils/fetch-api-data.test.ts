@@ -3,6 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { fetchApiData } from './fetch-api-data'
 
 describe('fetchApiData', () => {
+  const oldApiEndpoint = process.env.API_ENDPOINT
+  const oldApiKey = process.env.API_KEY
+
   beforeEach(() => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
@@ -13,7 +16,9 @@ describe('fetchApiData', () => {
   })
 
   afterEach(async () => {
-    process.env.API_ENDPOINT = 'http://api-endpoint'
+    process.env.API_ENDPOINT = oldApiEndpoint
+    process.env.API_KEY = oldApiKey
+
     vi.restoreAllMocks()
 
     const cookieStore = await cookies()
@@ -28,6 +33,17 @@ describe('fetchApiData', () => {
     const { data, error } = await fetchApiData({ method: 'GET', path: '/' })
 
     expect(error).toStrictEqual(new Error('API_ENDPOINT is not set'))
+    expect(data).toBeUndefined()
+  })
+
+  it('returns early when the API key is missing', async () => {
+    expect.hasAssertions()
+
+    delete process.env.API_KEY
+
+    const { data, error } = await fetchApiData({ method: 'GET', path: '/' })
+
+    expect(error).toStrictEqual(new Error('API_KEY is not set'))
     expect(data).toBeUndefined()
   })
 

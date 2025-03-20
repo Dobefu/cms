@@ -12,6 +12,8 @@ export const initialState: FormState = {
 }
 
 describe('submitContentType', () => {
+  const oldApiEndpoint = process.env.API_ENDPOINT
+
   beforeEach(() => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
@@ -22,7 +24,7 @@ describe('submitContentType', () => {
   })
 
   afterEach(async () => {
-    process.env.API_ENDPOINT = 'http://api-endpoint'
+    process.env.API_ENDPOINT = oldApiEndpoint
     vi.restoreAllMocks()
 
     const cookieStore = await cookies()

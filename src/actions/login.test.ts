@@ -12,6 +12,9 @@ export const initialState: FormState = {
 }
 
 describe('login', () => {
+  const oldApiEndpoint = process.env.API_ENDPOINT
+  const oldApiKey = process.env.API_KEY
+
   beforeEach(() => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
@@ -22,7 +25,9 @@ describe('login', () => {
   })
 
   afterEach(() => {
-    process.env.API_ENDPOINT = 'http://api-endpoint'
+    process.env.API_ENDPOINT = oldApiEndpoint
+    process.env.API_KEY = oldApiKey
+
     vi.restoreAllMocks()
   })
 
@@ -30,6 +35,21 @@ describe('login', () => {
     expect.hasAssertions()
 
     delete process.env.API_ENDPOINT
+    const spy = vi.spyOn(navigation, 'redirect')
+
+    const formData = new FormData()
+    formData.append('username', 'Username')
+    formData.append('password', 'Password')
+
+    await login(initialState, formData)
+
+    expect(spy).not.toHaveBeenCalled()
+  })
+
+  it('returns early when the API key is missing', async () => {
+    expect.hasAssertions()
+
+    delete process.env.API_KEY
     const spy = vi.spyOn(navigation, 'redirect')
 
     const formData = new FormData()

@@ -3,6 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { GET } from './route'
 
 describe('logout', () => {
+  const oldApiEndpoint = process.env.API_ENDPOINT
+  const oldApiKey = process.env.API_KEY
+
   beforeEach(() => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
@@ -13,7 +16,9 @@ describe('logout', () => {
   })
 
   afterEach(async () => {
-    process.env.API_ENDPOINT = 'http://api-endpoint'
+    process.env.API_ENDPOINT = oldApiEndpoint
+    process.env.API_KEY = oldApiKey
+
     vi.restoreAllMocks()
 
     const cookieStore = await cookies()
@@ -24,6 +29,14 @@ describe('logout', () => {
     expect.hasAssertions()
 
     delete process.env.API_ENDPOINT
+
+    await expect(GET()).rejects.toThrow('Mock redirect error')
+  })
+
+  it('redirects early when the API key is missing', async () => {
+    expect.hasAssertions()
+
+    delete process.env.API_KEY
 
     await expect(GET()).rejects.toThrow('Mock redirect error')
   })
