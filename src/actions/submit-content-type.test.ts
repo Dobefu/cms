@@ -137,13 +137,11 @@ describe('submitContentType', () => {
     expect(spy).not.toHaveBeenCalled()
   })
 
-  it('redirects on successful form submission', async () => {
+  it('redirects when creating a new content type', async () => {
     expect.hasAssertions()
 
     const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
-
-    initialState.id = 1
 
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
@@ -158,5 +156,29 @@ describe('submitContentType', () => {
     await expect(submitContentType(initialState, formData)).rejects.toThrow(
       'Mock redirect error',
     )
+  })
+
+  it('does not redirect when updating a content type', async () => {
+    expect.hasAssertions()
+
+    const cookieStore = await cookies()
+    cookieStore.set({ name: 'session', value: 'test' })
+
+    initialState.id = 1
+    const spy = vi.spyOn(navigation, 'redirect')
+
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ...new Response(),
+      json: () => Promise.resolve({ data: { id: 1 }, error: null }),
+      ok: true,
+      status: 200,
+    })
+
+    const formData = new FormData()
+    formData.append('title', 'Title')
+
+    await submitContentType(initialState, formData)
+
+    expect(spy).not.toHaveBeenCalled()
   })
 })
