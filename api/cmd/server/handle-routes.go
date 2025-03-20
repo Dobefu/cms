@@ -73,8 +73,10 @@ func apiRoute(
 
 	mux.Handle(
 		fullPath,
-		middleware.AddResponseHeaders(
-			http.HandlerFunc(handler),
+		middleware.RequireApiKey(
+			middleware.AddResponseHeaders(
+				http.HandlerFunc(handler),
+			),
 		),
 	)
 }
