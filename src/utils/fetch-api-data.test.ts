@@ -2,6 +2,8 @@ import { cookies } from 'next/headers'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { fetchApiData } from './fetch-api-data'
 
+const cookieStore = await cookies()
+
 describe('fetchApiData', () => {
   const oldApiEndpoint = process.env.API_ENDPOINT
   const oldApiKey = process.env.API_KEY
@@ -15,13 +17,12 @@ describe('fetchApiData', () => {
     })
   })
 
-  afterEach(async () => {
+  afterEach(() => {
     process.env.API_ENDPOINT = oldApiEndpoint
     process.env.API_KEY = oldApiKey
 
     vi.restoreAllMocks()
 
-    const cookieStore = await cookies()
     cookieStore.delete('session')
   })
 
@@ -59,7 +60,6 @@ describe('fetchApiData', () => {
   it('returns a JSON error when the fetch call fails', async () => {
     expect.hasAssertions()
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     const { data, error } = await fetchApiData({ method: 'GET', path: '/' })
@@ -71,7 +71,6 @@ describe('fetchApiData', () => {
   it('can have a body when the method is POST', async () => {
     expect.hasAssertions()
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     const { data } = await fetchApiData({ method: 'POST', path: '/', body: {} })
@@ -82,7 +81,6 @@ describe('fetchApiData', () => {
   it('can have a body when the method is PUT', async () => {
     expect.hasAssertions()
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     const { data } = await fetchApiData({ method: 'PUT', path: '/', body: {} })
@@ -100,7 +98,6 @@ describe('fetchApiData', () => {
       status: 422,
     })
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     const { data, error } = await fetchApiData({ method: 'GET', path: '/' })
@@ -119,7 +116,6 @@ describe('fetchApiData', () => {
       status: 200,
     })
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     const { data, error } = await fetchApiData({ method: 'GET', path: '/' })
@@ -138,7 +134,6 @@ describe('fetchApiData', () => {
       status: 200,
     })
 
-    const cookieStore = await cookies()
     cookieStore.set({ name: 'session', value: 'test' })
 
     const { data, error } = await fetchApiData({ method: 'GET', path: '/' })
