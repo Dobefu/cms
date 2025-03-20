@@ -1,21 +1,36 @@
 import * as navigation from 'next/navigation'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import {
+  type MockInstance,
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest'
 import { type FormState, login } from './login'
 
-export const initialState: FormState = {
-  username: '',
-  errors: {
-    username: undefined,
-    password: undefined,
-    generic: undefined,
-  },
-}
+let initialState: FormState
+let spy: MockInstance
+let formData: FormData
 
 describe('login', () => {
   const oldApiEndpoint = process.env.API_ENDPOINT
   const oldApiKey = process.env.API_KEY
 
   beforeEach(() => {
+    spy = vi.spyOn(navigation, 'redirect')
+    formData = new FormData()
+
+    initialState = {
+      username: '',
+      errors: {
+        username: undefined,
+        password: undefined,
+        generic: undefined,
+      },
+    }
+
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
       json: () => Promise.resolve({}),
@@ -35,9 +50,7 @@ describe('login', () => {
     expect.hasAssertions()
 
     delete process.env.API_ENDPOINT
-    const spy = vi.spyOn(navigation, 'redirect')
 
-    const formData = new FormData()
     formData.append('username', 'Username')
     formData.append('password', 'Password')
 
@@ -50,9 +63,7 @@ describe('login', () => {
     expect.hasAssertions()
 
     delete process.env.API_KEY
-    const spy = vi.spyOn(navigation, 'redirect')
 
-    const formData = new FormData()
     formData.append('username', 'Username')
     formData.append('password', 'Password')
 
@@ -64,9 +75,6 @@ describe('login', () => {
   it('returns a JSON error when the fetch call fails', async () => {
     expect.hasAssertions()
 
-    const spy = vi.spyOn(navigation, 'redirect')
-
-    const formData = new FormData()
     formData.append('username', 'Username')
     formData.append('password', 'Password')
 
@@ -78,10 +86,6 @@ describe('login', () => {
   it('returns early with missing data', async () => {
     expect.hasAssertions()
 
-    const spy = vi.spyOn(navigation, 'redirect')
-
-    const formData = new FormData()
-
     await login(initialState, formData)
 
     expect(spy).not.toHaveBeenCalled()
@@ -90,8 +94,6 @@ describe('login', () => {
   it('returns early when a failed response has an error object', async () => {
     expect.hasAssertions()
 
-    const spy = vi.spyOn(navigation, 'redirect')
-
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
       json: () => Promise.resolve({ data: null, error: 'test error' }),
@@ -99,7 +101,6 @@ describe('login', () => {
       status: 422,
     })
 
-    const formData = new FormData()
     formData.append('username', 'Username')
     formData.append('password', 'Password')
 
@@ -111,8 +112,6 @@ describe('login', () => {
   it('returns early when a response token is missing', async () => {
     expect.hasAssertions()
 
-    const spy = vi.spyOn(navigation, 'redirect')
-
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
       json: () => Promise.resolve({ data: null, error: null }),
@@ -120,7 +119,6 @@ describe('login', () => {
       status: 200,
     })
 
-    const formData = new FormData()
     formData.append('username', 'Username')
     formData.append('password', 'Password')
 
@@ -139,7 +137,6 @@ describe('login', () => {
       status: 200,
     })
 
-    const formData = new FormData()
     formData.append('username', 'Username')
     formData.append('password', 'Password')
 
