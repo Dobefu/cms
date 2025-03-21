@@ -11,7 +11,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, icon, type, ...props }, ref) => {
     if (type === 'button' || type === 'submit') {
       return (
-        <div className="relative">
+        <div className="relative text-white">
           {icon ? (
             <Icon
               className="pointer-events-none absolute start-5 top-3.5 size-4 shrink-0"
