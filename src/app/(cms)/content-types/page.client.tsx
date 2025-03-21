@@ -1,15 +1,17 @@
 'use client'
 
-import { deleteContentType } from '@/actions/delete-content-type'
 import { getContentTypes } from '@/actions/get-content-types'
 import { ContentType } from '@/types/content-type'
 import iconEdit from '@iconify/icons-mdi/edit'
 import iconDelete from '@iconify/icons-mdi/trash'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import Link from 'next/link'
-import { MouseEvent, useCallback, useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 export default function Client() {
+  const pathname = usePathname()
+
   const [isLoading, setIsLoading] = useState(true)
   const [contentTypes, setContentTypes] = useState<ContentType[] | undefined>(
     undefined,
@@ -28,15 +30,11 @@ export default function Client() {
   // Fetch all content types as soon as the page loads.
   useEffect(() => void actionGetContentTypes(), [])
 
-  const deleteContentTypeById = useCallback(
-    async (e: MouseEvent<HTMLButtonElement>) => {
-      const id = (e.target as HTMLButtonElement).dataset.id!
-
-      await deleteContentType(+id)
-      await actionGetContentTypes()
-    },
-    [],
-  )
+  useEffect(() => {
+    if (pathname === '/content-types') {
+      void actionGetContentTypes()
+    }
+  }, [pathname])
 
   return (
     <table>
@@ -62,14 +60,14 @@ export default function Client() {
                   Edit
                 </Link>
 
-                <button
+                <Link
                   className="btn btn--danger"
-                  data-id={contentType.id}
-                  onClick={deleteContentTypeById}
+                  href={`/content-types/delete/${contentType.id}`}
+                  scroll={false}
                 >
                   <Icon className="size-4 shrink-0" icon={iconDelete} ssr />
                   Delete
-                </button>
+                </Link>
               </td>
             </tr>
           ))

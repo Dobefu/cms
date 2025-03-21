@@ -5,8 +5,10 @@ import { redirect } from 'next/navigation'
 
 export default async function Layout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode
+  modal: React.ReactNode
 }>) {
   const { isAnonymous } = await validateSession()
 
@@ -27,6 +29,8 @@ export default async function Layout({
       >
         {children}
       </main>
+
+      {modal}
     </div>
   )
 }

@@ -1,6 +1,5 @@
 'use client'
 
-import { deleteContentType } from '@/actions/delete-content-type'
 import {
   type FormState,
   submitContentType,
@@ -12,7 +11,7 @@ import iconPlus from '@iconify/icons-mdi/plus'
 import iconDelete from '@iconify/icons-mdi/trash'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import Form from 'next/form'
-import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { useActionState } from 'react'
 import FormError from '../form-elements/form-error'
 
@@ -70,21 +69,14 @@ export default function ContentTypeForm({ contentTypeId, initialData }: Props) {
         )}
 
         {state.id ? (
-          <button
+          <Link
             className="btn btn--danger"
-            /* v8 ignore start */
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={async () => {
-              if (!state.id) return
-
-              await deleteContentType(state.id)
-              redirect('/content-types')
-            }}
-            /* v8 ignore stop */
+            href={`/content-types/delete/${state.id}`}
+            scroll={false}
           >
             <Icon className="size-4 shrink-0" icon={iconDelete} ssr />
             Delete
-          </button>
+          </Link>
         ) : undefined}
       </div>
     </Form>
