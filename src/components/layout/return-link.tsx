@@ -11,7 +11,7 @@ export type Props = Readonly<{
 export default function ReturnLink({ children, href }: Props) {
   return (
     <Link
-      className="flex items-center gap-2 py-2 transition-all max-lg:-mt-4 max-md:mt-0 max-sm:pb-0"
+      className="flex items-center gap-2 pb-2 transition-all max-md:pb-0 max-sm:pt-2"
       href={href}
     >
       <Icon className="size-4 shrink-0" icon={iconBack} ssr />
