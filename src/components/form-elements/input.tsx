@@ -21,7 +21,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ) : undefined}
 
           <input
-            className={cn('btn btn--primary data-icon:ps-11', className)}
+            className={cn(
+              'btn data-icon:ps-11',
+              type === 'submit' && 'btn--primary',
+              className,
+            )}
             data-icon={icon ? '' : undefined}
             ref={ref}
             type={type}
