@@ -25,13 +25,13 @@ export default function Sidebar({ isCollapsedInitial, links }: Props) {
   return (
     <nav
       aria-label="Sidebar"
-      className="group flex w-xs flex-col py-4 transition-all data-[collapsed]:w-20 max-md:w-20"
+      className="group flex w-xs flex-col py-4 transition-all data-[collapsed]:w-20 max-lg:w-20"
       data-collapsed={isCollapsed || undefined}
     >
       <div className="flex-1">
         {links.map((link) => (
           <Link
-            className="me-4 flex items-center gap-4 rounded-e-full p-4 font-medium transition-all group-[[data-collapsed]]:mx-2 group-[[data-collapsed]]:gap-8 group-[[data-collapsed]]:rounded-full hover:bg-zinc-100 max-md:mx-2 max-md:gap-8 max-md:rounded-full dark:hover:bg-zinc-700"
+            className="me-4 flex items-center gap-4 rounded-e-full p-4 font-medium transition-all group-[[data-collapsed]]:mx-2 group-[[data-collapsed]]:gap-8 group-[[data-collapsed]]:rounded-full hover:bg-zinc-100 max-lg:mx-2 max-lg:gap-8 max-lg:rounded-full dark:hover:bg-zinc-700"
             href={link.href}
             key={link.href}
           >
@@ -45,7 +45,7 @@ export default function Sidebar({ isCollapsedInitial, links }: Props) {
       <div className="px-4">
         <button
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="btn ms-auto p-3 max-md:hidden"
+          className="btn ms-auto p-3 max-lg:hidden"
           onClick={toggleCollapse}
         >
           <Icon
