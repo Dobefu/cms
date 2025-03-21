@@ -33,6 +33,7 @@ export default function Modal({ children }: Props) {
       <div
         className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
         onClick={closeModal}
+        role="button"
       />
 
       <dialog
