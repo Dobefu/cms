@@ -1,7 +1,6 @@
 import Heading from '@/components/elements/heading'
 import Container from '@/components/layout/container'
 import TitleContainer from '@/components/layout/title-container'
-import { getContentTypes } from '@/utils/get-content-types'
 import iconPlus from '@iconify/icons-mdi/plus'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { Metadata } from 'next'
@@ -12,9 +11,7 @@ export const metadata: Metadata = {
   title: 'Content Types',
 }
 
-export default async function ContentTypes() {
-  const { data, error } = await getContentTypes()
-
+export default function ContentTypes() {
   return (
     <Container className="flex flex-col gap-8">
       <TitleContainer>
@@ -26,11 +23,7 @@ export default async function ContentTypes() {
         </Link>
       </TitleContainer>
 
-      <Client
-        contentTypes={
-          !error && data?.content_types ? data.content_types : undefined
-        }
-      />
+      <Client />
     </Container>
   )
 }

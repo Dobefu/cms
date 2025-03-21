@@ -1,20 +1,12 @@
-import { render } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { cookies } from 'next/headers'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import ContentTypes from './page'
 
 const cookieStore = await cookies()
 
 describe('content-types', () => {
-  afterEach(() => {
-    vi.restoreAllMocks()
-
-    cookieStore.delete('session')
-  })
-
-  it('renders normally', async () => {
-    expect.hasAssertions()
-
+  beforeEach(() => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
       json: () =>
@@ -27,26 +19,41 @@ describe('content-types', () => {
       ok: true,
       status: 200,
     })
+  })
 
-    cookieStore.set({ name: 'session', value: 'test' })
+  afterEach(() => {
+    vi.restoreAllMocks()
 
-    render(await ContentTypes())
+    cookieStore.delete('session')
+  })
+
+  it('renders normally', async () => {
+    expect.hasAssertions()
+
+    render(<ContentTypes />)
+
+    await waitFor(() => {
+      expect(screen.getByText('There are no content types yet')).toBeDefined()
+    })
 
     expect(screen).toBeDefined()
   })
 
-  it('renders without content types', async () => {
+  it('renders can delete a content type', async () => {
     expect.hasAssertions()
 
-    vi.spyOn(global, 'fetch').mockResolvedValue({
-      ...new Response(),
-      json: () => Promise.resolve({}),
-      ok: false,
-      status: 500,
+    cookieStore.set({ name: 'session', value: 'test' })
+
+    render(<ContentTypes />)
+
+    expect(screen.getByText('Loading...')).toBeDefined()
+
+    await waitFor(() => {
+      expect(screen.getByText('Delete')).toBeDefined()
     })
 
-    render(await ContentTypes())
+    fireEvent.click(screen.getByText('Delete'))
 
-    expect(screen).toBeDefined()
+    expect(screen.getByText('Delete')).toBeDefined()
   })
 })

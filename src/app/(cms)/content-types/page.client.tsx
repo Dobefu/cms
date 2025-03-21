@@ -1,34 +1,59 @@
 'use client'
 
 import { deleteContentType } from '@/actions/delete-content-type'
+import { getContentTypes } from '@/actions/get-content-types'
 import { ContentType } from '@/types/content-type'
 import iconEdit from '@iconify/icons-mdi/edit'
 import iconDelete from '@iconify/icons-mdi/trash'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { MouseEvent, useCallback, useEffect, useState } from 'react'
 
-export type Props = Readonly<{
-  contentTypes?: ContentType[]
-}>
+export default function Client() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [contentTypes, setContentTypes] = useState<ContentType[] | undefined>(
+    undefined,
+  )
 
-export default function Client({ contentTypes }: Props) {
+  const actionGetContentTypes = async () => {
+    setIsLoading(true)
+    const { data, error } = await getContentTypes()
+    setIsLoading(false)
+
+    if (!data || error) return
+
+    setContentTypes(data?.content_types)
+  }
+
+  // Fetch all content types as soon as the page loads.
+  useEffect(() => void actionGetContentTypes(), [])
+
+  const deleteContentTypeById = useCallback(
+    async (e: MouseEvent<HTMLButtonElement>) => {
+      const id = (e.target as HTMLButtonElement).dataset.id!
+
+      await deleteContentType(+id)
+      await actionGetContentTypes()
+    },
+    [],
+  )
+
   return (
     <table>
       <thead>
         <tr>
-          <th className="text-left">ID</th>
-          <th className="text-left">Title</th>
-          <th className="text-left"></th>
+          <th className="p-1 text-left">ID</th>
+          <th className="w-full p-1 text-left">Title</th>
+          <th className="p-1 text-left"></th>
         </tr>
       </thead>
       <tbody>
-        {contentTypes ? (
+        {contentTypes && !isLoading ? (
           contentTypes.map((contentType) => (
             <tr key={contentType.id}>
               <td className="p-1">{contentType.id}</td>
-              <td className="w-full p-1">{contentType.title}</td>
-              <td className="flex gap-4 p-1 max-sm:gap-2">
+              <td className="p-1">{contentType.title}</td>
+              <td className="flex gap-2 p-1 max-sm:gap-2">
                 <Link
                   className="btn"
                   href={`/content-types/edit/${contentType.id}`}
@@ -39,13 +64,8 @@ export default function Client({ contentTypes }: Props) {
 
                 <button
                   className="btn btn--danger"
-                  /* v8 ignore start */
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onClick={async () => {
-                    await deleteContentType(contentType.id)
-                    redirect('')
-                  }}
-                  /* v8 ignore stop */
+                  data-id={contentType.id}
+                  onClick={deleteContentTypeById}
                 >
                   <Icon className="size-4 shrink-0" icon={iconDelete} ssr />
                   Delete
@@ -56,7 +76,7 @@ export default function Client({ contentTypes }: Props) {
         ) : (
           <tr>
             <td className="p-8 text-center" colSpan={3}>
-              There are no content types yet
+              {isLoading ? 'Loading...' : 'There are no content types yet'}
             </td>
           </tr>
         )}
