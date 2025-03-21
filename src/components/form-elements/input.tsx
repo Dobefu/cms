@@ -11,10 +11,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, icon, type, ...props }, ref) => {
     if (type === 'button' || type === 'submit') {
       return (
-        <div className="relative text-white">
+        <div className="relative">
           {icon ? (
             <Icon
-              className="pointer-events-none absolute start-5 top-3.5 size-4 shrink-0"
+              className="pointer-events-none absolute start-5 top-3.5 z-10 size-4 shrink-0 text-white"
               icon={icon}
               ssr
             />
