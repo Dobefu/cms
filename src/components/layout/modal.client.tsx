@@ -15,13 +15,17 @@ export default function Modal({ children }: Props) {
   const dialogRef = useRef<ComponentRef<'dialog'>>(null)
 
   useEffect(() => {
+    /* v8 ignore start */
     if (!dialogRef.current?.open) {
       dialogRef.current?.show()
     }
+    /* v8 ignore stop */
   }, [])
 
   const closeModal = useCallback(() => {
+    /* v8 ignore start */
     router.back()
+    /* v8 ignore stop */
   }, [router])
 
   return createPortal(

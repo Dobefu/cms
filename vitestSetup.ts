@@ -71,10 +71,6 @@ vi.mock('next/headers', async () => {
   }
 })
 
-vi.mock('next-view-transitions', async () => {
-  return { Link }
-})
-
 const IntersectionObserverMock = vi.fn(() => ({
   disconnect: vi.fn(),
   observe: vi.fn(),

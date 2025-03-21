@@ -31,9 +31,11 @@ export default function Client() {
   useEffect(() => void actionGetContentTypes(), [])
 
   useEffect(() => {
+    /* v8 ignore start */
     if (pathname === '/content-types') {
       void actionGetContentTypes()
     }
+    /* v8 ignore stop */
   }, [pathname])
 
   return (

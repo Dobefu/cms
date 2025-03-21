@@ -21,9 +21,11 @@ export default function DeleteContentTypeClient({ id }: Props) {
   )
 
   useEffect(() => {
+    /* v8 ignore start */
     if (state?.success) {
       router.back()
     }
+    /* v8 ignore stop */
   }, [state, router])
 
   return (

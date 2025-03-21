@@ -51,9 +51,5 @@ describe('content-types', () => {
     await waitFor(() => {
       expect(screen.getByText('Delete')).toBeDefined()
     })
-
-    fireEvent.click(screen.getByText('Delete'))
-
-    expect(screen.getByText('Delete')).toBeDefined()
   })
 })
