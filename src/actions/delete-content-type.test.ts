@@ -1,8 +1,14 @@
 import { fetchApiData } from '@/utils/fetch-api-data'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { deleteContentType } from './delete-content-type'
 
+let formData: FormData
+
 describe('deleteContentType', () => {
+  beforeEach(() => {
+    formData = new FormData()
+  })
+
   vi.mock('@/utils/fetch-api-data', () => ({
     fetchApiData: ({ path }: (typeof fetchApiData)['arguments']) => {
       if (path === '/content-type/1') {
@@ -16,7 +22,7 @@ describe('deleteContentType', () => {
   it('returns early when the fetch call fails', async () => {
     expect.hasAssertions()
 
-    const { success } = await deleteContentType(0)
+    const { success } = await deleteContentType(undefined, formData)
 
     expect(success).toBe(false)
   })
@@ -24,7 +30,9 @@ describe('deleteContentType', () => {
   it('returns a success status', async () => {
     expect.hasAssertions()
 
-    const { success } = await deleteContentType(1)
+    formData.append('id', '1')
+
+    const { success } = await deleteContentType(undefined, formData)
 
     expect(success).toBe(true)
   })
