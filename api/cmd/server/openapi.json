@@ -198,6 +198,80 @@
           }
         ]
       }
+    },
+    "/logout": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Log out",
+        "description": "Log out an authenticated user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Session-Token",
+            "description": "The user session token that is obtained after logging in",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "null"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4xx | 5xx": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": "Missing session_token"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
     }
   },
   "components": {
