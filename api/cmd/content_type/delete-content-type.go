@@ -1,4 +1,4 @@
-package content
+package content_type
 
 import (
 	"github.com/Dobefu/cms/api/cmd/database"

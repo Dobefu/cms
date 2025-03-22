@@ -1,10 +1,10 @@
-package content
+package content_type
 
 import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	content_structs "github.com/Dobefu/cms/api/cmd/content/structs"
+	content_type_structs "github.com/Dobefu/cms/api/cmd/content_type/structs"
 	"github.com/Dobefu/cms/api/cmd/database"
 	"github.com/Dobefu/cms/api/cmd/user"
 	"github.com/stretchr/testify/assert"
@@ -29,7 +29,7 @@ func TestGetContentTypesErrSelect(t *testing.T) {
 
 	contentTypes, err := GetContentTypes()
 	assert.EqualError(t, err, user.ErrUnexpected.Error())
-	assert.Equal(t, []content_structs.ContentType(nil), contentTypes)
+	assert.Equal(t, []content_type_structs.ContentType(nil), contentTypes)
 }
 
 func TestGetContentTypesErrScan(t *testing.T) {
@@ -42,7 +42,7 @@ func TestGetContentTypesErrScan(t *testing.T) {
 
 	contentTypes, err := GetContentTypes()
 	assert.EqualError(t, err, user.ErrUnexpected.Error())
-	assert.Equal(t, []content_structs.ContentType(nil), contentTypes)
+	assert.Equal(t, []content_type_structs.ContentType(nil), contentTypes)
 }
 
 func TestGetContentTypesSuccess(t *testing.T) {
@@ -55,5 +55,5 @@ func TestGetContentTypesSuccess(t *testing.T) {
 
 	contentTypes, err := GetContentTypes()
 	assert.NoError(t, err)
-	assert.Equal(t, []content_structs.ContentType{{Id: 1, Title: "Title", CreatedAt: "", UpdatedAt: ""}}, contentTypes)
+	assert.Equal(t, []content_type_structs.ContentType{{Id: 1, Title: "Title", CreatedAt: "", UpdatedAt: ""}}, contentTypes)
 }

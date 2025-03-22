@@ -33,7 +33,7 @@ func GetContentType(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	contentType, err := contentGetContentType(id)
+	contentType, err := contentTypeGetContentType(id)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)

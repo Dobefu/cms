@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Dobefu/cms/api/cmd/content"
+	"github.com/Dobefu/cms/api/cmd/content_type"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,12 +18,12 @@ func setupUpdateContentTypeTests() (rr *httptest.ResponseRecorder, cleanup func(
 		return "", 1, nil
 	}
 
-	contentUpdateContentType = func(id int, userId int, title string) (err error) {
+	contentTypeUpdateContentType = func(id int, userId int, title string) (err error) {
 		return nil
 	}
 
 	return rr, func() {
-		contentUpdateContentType = content.UpdateContentType
+		contentTypeUpdateContentType = content_type.UpdateContentType
 	}
 }
 
@@ -85,7 +85,7 @@ func TestUpdateContentTypeErrUpdateContentType(t *testing.T) {
 	rr, cleanup := setupUpdateContentTypeTests()
 	defer cleanup()
 
-	contentUpdateContentType = func(id int, userId int, title string) (err error) {
+	contentTypeUpdateContentType = func(id int, userId int, title string) (err error) {
 		return assert.AnError
 	}
 

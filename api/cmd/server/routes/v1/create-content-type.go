@@ -32,7 +32,7 @@ func CreateContentType(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := contentCreateContentType(userId, title)
+	id, err := contentTypeCreateContentType(userId, title)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)

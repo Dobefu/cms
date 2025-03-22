@@ -1,12 +1,12 @@
-package content
+package content_type
 
 import (
-	content_structs "github.com/Dobefu/cms/api/cmd/content/structs"
+	content_type_structs "github.com/Dobefu/cms/api/cmd/content_type/structs"
 	"github.com/Dobefu/cms/api/cmd/database"
 	"github.com/Dobefu/cms/api/cmd/user"
 )
 
-func GetContentTypes() (contentTypes []content_structs.ContentType, err error) {
+func GetContentTypes() (contentTypes []content_type_structs.ContentType, err error) {
 	rows, err := database.DB.Query(`SELECT id,title,created_at,updated_at FROM content_types ORDER BY title ASC`)
 
 	if err != nil {
@@ -23,7 +23,7 @@ func GetContentTypes() (contentTypes []content_structs.ContentType, err error) {
 			return contentTypes, user.ErrUnexpected
 		}
 
-		contentTypes = append(contentTypes, content_structs.ContentType{
+		contentTypes = append(contentTypes, content_type_structs.ContentType{
 			Id:        id,
 			Title:     title,
 			CreatedAt: createdAt,

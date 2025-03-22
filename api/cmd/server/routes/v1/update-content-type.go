@@ -40,7 +40,7 @@ func UpdateContentType(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = contentUpdateContentType(id, userId, title)
+	err = contentTypeUpdateContentType(id, userId, title)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)

@@ -25,7 +25,7 @@ func GetContentTypes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	contentTypes, err := contentGetContentTypes()
+	contentTypes, err := contentTypeGetContentTypes()
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)

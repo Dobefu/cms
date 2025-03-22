@@ -6,8 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/Dobefu/cms/api/cmd/content"
-	content_structs "github.com/Dobefu/cms/api/cmd/content/structs"
+	"github.com/Dobefu/cms/api/cmd/content_type"
+	content_type_structs "github.com/Dobefu/cms/api/cmd/content_type/structs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,12 +18,12 @@ func setupGetContentTypeTests() (rr *httptest.ResponseRecorder, cleanup func()) 
 		return "", 1, nil
 	}
 
-	contentGetContentType = func(id int) (contentType content_structs.ContentType, err error) {
-		return content_structs.ContentType{}, nil
+	contentTypeGetContentType = func(id int) (contentType content_type_structs.ContentType, err error) {
+		return content_type_structs.ContentType{}, nil
 	}
 
 	return rr, func() {
-		contentGetContentType = content.GetContentType
+		contentTypeGetContentType = content_type.GetContentType
 	}
 }
 
@@ -71,8 +71,8 @@ func TestGetContentTypeErrGetContentType(t *testing.T) {
 	rr, cleanup := setupGetContentTypeTests()
 	defer cleanup()
 
-	contentGetContentType = func(id int) (contentType content_structs.ContentType, err error) {
-		return content_structs.ContentType{}, assert.AnError
+	contentTypeGetContentType = func(id int) (contentType content_type_structs.ContentType, err error) {
+		return content_type_structs.ContentType{}, assert.AnError
 	}
 
 	req, err := http.NewRequest("GET", "", nil)

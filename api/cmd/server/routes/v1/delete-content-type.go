@@ -33,7 +33,7 @@ func DeleteContentType(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = contentDeleteContentType(id)
+	err = contentTypeDeleteContentType(id)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)

@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Dobefu/cms/api/cmd/content"
-	content_structs "github.com/Dobefu/cms/api/cmd/content/structs"
+	"github.com/Dobefu/cms/api/cmd/content_type"
+	content_type_structs "github.com/Dobefu/cms/api/cmd/content_type/structs"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,12 +19,12 @@ func setupGetContentTypesTests() (rr *httptest.ResponseRecorder, cleanup func())
 		return "", 1, nil
 	}
 
-	contentGetContentTypes = func() (contentTypes []content_structs.ContentType, err error) {
-		return []content_structs.ContentType{}, nil
+	contentTypeGetContentTypes = func() (contentTypes []content_type_structs.ContentType, err error) {
+		return []content_type_structs.ContentType{}, nil
 	}
 
 	return rr, func() {
-		contentGetContentTypes = content.GetContentTypes
+		contentTypeGetContentTypes = content_type.GetContentTypes
 	}
 }
 
@@ -59,8 +59,8 @@ func TestGetContentTypesErrGetContentTypes(t *testing.T) {
 	rr, cleanup := setupGetContentTypesTests()
 	defer cleanup()
 
-	contentGetContentTypes = func() (contentTypes []content_structs.ContentType, err error) {
-		return []content_structs.ContentType(nil), assert.AnError
+	contentTypeGetContentTypes = func() (contentTypes []content_type_structs.ContentType, err error) {
+		return []content_type_structs.ContentType(nil), assert.AnError
 	}
 
 	req, err := http.NewRequest("PUT", "", strings.NewReader("title=Title"))
