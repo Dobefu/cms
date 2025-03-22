@@ -1,8 +1,22 @@
 'use client'
 
+import { AnimatePresence, motion } from 'motion/react'
 import { useRouter } from 'next/navigation'
-import { type ComponentRef, useCallback, useEffect, useRef } from 'react'
+import {
+  type ComponentRef,
+  createContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { createPortal } from 'react-dom'
+
+type ModalContext = {
+  closeModal: (onClose?: () => void) => void
+}
+
+export const ModalContext = createContext<ModalContext | null>(null)
 
 export type Props = Readonly<{
   children: React.ReactNode
@@ -11,6 +25,8 @@ export type Props = Readonly<{
 export default function Modal({ children }: Props) {
   const router = useRouter()
   const dialogRef = useRef<ComponentRef<'dialog'>>(null)
+  const [isOpen, setIsOpen] = useState(true)
+  const onCloseRef = useRef<(() => void) | undefined>(undefined)
 
   useEffect(() => {
     /* v8 ignore start */
@@ -20,28 +36,56 @@ export default function Modal({ children }: Props) {
     /* v8 ignore stop */
   }, [])
 
-  const closeModal = useCallback(() => {
+  const closeModal = useCallback((onClose?: () => void) => {
     /* v8 ignore start */
-    router.back()
+    onCloseRef.current = onClose
+    setIsOpen(false)
     /* v8 ignore stop */
+  }, [])
+
+  const handleClose = useCallback(() => {
+    closeModal()
+  }, [closeModal])
+
+  const handleExitComplete = useCallback(() => {
+    const callback = onCloseRef.current
+    onCloseRef.current = undefined
+
+    if (callback) {
+      callback()
+    } else {
+      router.back()
+    }
   }, [router])
 
   return createPortal(
-    <>
-      <div
-        aria-hidden
-        className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
-        onClick={closeModal}
-      />
+    <ModalContext.Provider value={{ closeModal }}>
+      <AnimatePresence mode="wait" onExitComplete={handleExitComplete}>
+        {isOpen ? (
+          <>
+            <motion.div
+              animate={{ opacity: 1 }}
+              aria-hidden
+              className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
+              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }}
+              onClick={handleClose}
+            />
 
-      <dialog
-        className="start-1/2 top-1/2 z-50 w-full max-w-xl -translate-1/2 rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-900"
-        onClose={closeModal}
-        ref={dialogRef}
-      >
-        {children}
-      </dialog>
-    </>,
+            <motion.dialog
+              animate={{ opacity: 1, translateY: 0 }}
+              className="start-1/2 top-1/2 z-50 w-full max-w-xl -translate-1/2 rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-900"
+              exit={{ opacity: 0, translateY: -16 }}
+              initial={{ opacity: 0, translateY: -16 }}
+              onClose={handleClose}
+              ref={dialogRef}
+            >
+              {children}
+            </motion.dialog>
+          </>
+        ) : null}
+      </AnimatePresence>
+    </ModalContext.Provider>,
     document.getElementById('modal-root')!,
   )
 }

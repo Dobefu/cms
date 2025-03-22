@@ -3,6 +3,7 @@
 import { deleteContentType } from '@/actions/delete-content-type'
 import Heading from '@/components/elements/heading'
 import Input from '@/components/form-elements/input'
+import { useModal } from '@/hooks/use-modal'
 import iconDelete from '@iconify/icons-mdi/trash'
 import Form from 'next/form'
 import { useRouter } from 'next/navigation'
@@ -13,6 +14,7 @@ type Props = Readonly<{
 }>
 
 export default function DeleteContentTypeClient({ id }: Props) {
+  const { closeModal } = useModal()
   const router = useRouter()
 
   const [state, formAction, pending] = useActionState(
@@ -23,16 +25,18 @@ export default function DeleteContentTypeClient({ id }: Props) {
   useEffect(() => {
     /* v8 ignore start */
     if (state?.success) {
-      router.back()
+      closeModal(() => {
+        router.push('/content-types')
+      })
     }
     /* v8 ignore stop */
-  }, [state, router])
+  }, [state, closeModal, router])
 
   const handleCancel = useCallback(() => {
     /* v8 ignore start */
-    router.back()
+    closeModal()
     /* v8 ignore stop */
-  }, [router])
+  }, [closeModal])
 
   return (
     <div className="flex flex-col gap-8">
