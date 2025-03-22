@@ -1,12 +1,17 @@
 package server
 
 import (
+	_ "embed"
 	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/Dobefu/cms/api/cmd/server/middleware"
+	"github.com/swaggest/swgui/v5emb"
 )
+
+//go:embed openapi.json
+var openapiJson string
 
 func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 	mux.Handle(
@@ -37,6 +42,12 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 			fmt.Fprint(w, `{"ok": true, "error": null}`)
 		}),
 	)
+
+	mux.Handle("GET /docs/openapi.json", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, openapiJson)
+	}))
+
+	mux.Handle("GET /docs/{subpaths...}", v5emb.New("CMS", "/docs/openapi.json", "/docs/"))
 
 	apiRoute(mux, 1, "/", "GET", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "{}")
