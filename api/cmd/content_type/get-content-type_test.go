@@ -1,6 +1,7 @@
 package content_type
 
 import (
+	"database/sql"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -32,7 +33,17 @@ func TestGetContentTypeErrSelect(t *testing.T) {
 	assert.Equal(t, content_type_structs.ContentType{}, contentType)
 }
 
-func TestGetContentTypeErrScan(t *testing.T) {
+func TestGetContentTypeErrScanNoRows(t *testing.T) {
+	mock, cleanup := setupGetContentTypeTests(t)
+	defer cleanup()
+
+	mock.ExpectQuery("SELECT id,title,created_at,updated_at FROM content_types").WillReturnError(sql.ErrNoRows)
+
+	_, err := GetContentType(1)
+	assert.EqualError(t, err, "Cannot find the content type")
+}
+
+func TestGetContentTypeErrScanUnexpected(t *testing.T) {
 	mock, cleanup := setupGetContentTypeTests(t)
 	defer cleanup()
 

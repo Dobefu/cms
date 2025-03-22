@@ -1,6 +1,9 @@
 package content_type
 
 import (
+	"database/sql"
+	"errors"
+
 	content_type_structs "github.com/Dobefu/cms/api/cmd/content_type/structs"
 	"github.com/Dobefu/cms/api/cmd/database"
 	"github.com/Dobefu/cms/api/cmd/user"
@@ -20,6 +23,10 @@ func GetContentType(id int) (contentType content_type_structs.ContentType, err e
 	)
 
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return contentType, errors.New("Cannot find the content type")
+		}
+
 		return contentType, user.ErrUnexpected
 	}
 
