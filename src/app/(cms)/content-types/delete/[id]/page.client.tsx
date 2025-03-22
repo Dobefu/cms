@@ -44,6 +44,15 @@ export default function DeleteContentTypeClient({ id }: Props) {
         Are you sure you want to delete the content type?
       </Heading>
 
+      <div className="flex flex-col gap-4">
+        <p>
+          Deleting the content type will also delete any content that uses this
+          content type.
+        </p>
+
+        <b>This action cannot be undone!</b>
+      </div>
+
       <Form action={formAction} className="flex flex-col gap-8">
         <Input name="id" type="hidden" value={id} />
 
