@@ -31,10 +31,8 @@ export default function DeleteContentTypeClient({ id }: Props) {
   }, [state, closeModal, router])
 
   const handleCancel = useCallback(() => {
-    closeModal(() => {
-      router.push('/content-types')
-    })
-  }, [closeModal, router])
+    closeModal()
+  }, [closeModal])
 
   return (
     <div className="flex flex-col gap-8">
