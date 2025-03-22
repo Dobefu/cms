@@ -42,18 +42,28 @@ export default function Client() {
     <table>
       <thead>
         <tr>
-          <th className="p-1 text-left">ID</th>
-          <th className="w-full p-1 text-left">Title</th>
-          <th className="p-1 text-left"></th>
+          <th className="w-full py-1 pe-4 text-left">Title</th>
+          <th className="py-1 pe-4 text-left text-nowrap max-xl:hidden">
+            Created At
+          </th>
+          <th className="py-1 pe-4 text-left text-nowrap max-lg:hidden">
+            Updated At
+          </th>
+          <th className="py-1 text-left">Actions</th>
         </tr>
       </thead>
       <tbody>
         {contentTypes && !isLoading ? (
           contentTypes.map((contentType) => (
             <tr key={contentType.id}>
-              <td className="p-1">{contentType.id}</td>
-              <td className="p-1">{contentType.title}</td>
-              <td className="flex gap-2 p-1 max-sm:gap-2">
+              <td className="py-1 pe-4">{contentType.title}</td>
+              <td className="py-1 pe-4 text-nowrap max-xl:hidden">
+                {new Date(contentType.created_at).toLocaleString()}
+              </td>
+              <td className="py-1 pe-4 text-nowrap max-lg:hidden">
+                {new Date(contentType.updated_at).toLocaleString()}
+              </td>
+              <td className="flex gap-2 py-1 max-sm:gap-2">
                 <Link
                   className="btn"
                   href={`/content-types/edit/${contentType.id}`}
@@ -75,7 +85,7 @@ export default function Client() {
           ))
         ) : (
           <tr>
-            <td className="p-8 text-center" colSpan={3}>
+            <td className="px-8 py-4 text-center" colSpan={3}>
               {isLoading ? 'Loading...' : 'There are no content types yet'}
             </td>
           </tr>
