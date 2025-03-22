@@ -10,7 +10,7 @@ type Props = Readonly<{
 export default function DeleteContentTypeModal({ params }: Props) {
   return (
     <Modal>
-      <DeleteContentType params={params} isInModal />
+      <DeleteContentType isInModal params={params} />
     </Modal>
   )
 }
