@@ -14,6 +14,10 @@
     {
       "name": "User",
       "description": "All user endpoints"
+    },
+    {
+      "name": "Content types",
+      "description": "All content type endpoints"
     }
   ],
   "paths": {
@@ -379,9 +383,119 @@
           }
         ]
       }
+    },
+    "/content-types": {
+      "get": {
+        "tags": ["Content types"],
+        "summary": "Content types",
+        "description": "Get a list of all content types",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Session-Token",
+            "description": "The user session token that is obtained after logging in",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "content_types": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/content_type"
+                          }
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": "null"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": {
+                        "content_types": [
+                          {
+                            "id": 1,
+                            "title": "Content Type Title",
+                            "created_at": "1970-01-01T00:00:00.000000Z",
+                            "updated_at": "1970-01-01T00:00:00.000000Z"
+                          }
+                        ]
+                      },
+                      "error": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4xx | 5xx": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": "Could not validate session_token"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
     }
   },
   "components": {
+    "schemas": {
+      "content_type": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "securitySchemes": {
       "api_key": {
         "type": "apiKey",
