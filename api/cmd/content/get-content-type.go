@@ -8,11 +8,16 @@ import (
 
 func GetContentType(id int) (contentType content_structs.ContentType, err error) {
 	row := database.DB.QueryRow(
-		`SELECT id,title FROM content_types WHERE id = $1 LIMIT 1`,
+		`SELECT id,title,created_at,updated_at FROM content_types WHERE id = $1 LIMIT 1`,
 		id,
 	)
 
-	err = row.Scan(&contentType.Id, &contentType.Title)
+	err = row.Scan(
+		&contentType.Id,
+		&contentType.Title,
+		&contentType.CreatedAt,
+		&contentType.UpdatedAt,
+	)
 
 	if err != nil {
 		return contentType, user.ErrUnexpected

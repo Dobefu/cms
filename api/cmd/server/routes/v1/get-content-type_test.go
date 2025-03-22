@@ -98,5 +98,5 @@ func TestGetContentTypeSuccess(t *testing.T) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	GetContentType(rr, req)
-	assert.JSONEq(t, `{"data": {"content_type": {"id": 0, "title": ""}}, "error": null}`, rr.Body.String())
+	assert.JSONEq(t, `{"data": {"content_type": {"id": 0, "title": "", "created_at": "", "updated_at": ""}}, "error": null}`, rr.Body.String())
 }

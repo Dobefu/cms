@@ -36,8 +36,8 @@ func TestGetContentTypesErrScan(t *testing.T) {
 	mock, cleanup := setupGetContentTypesTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT id,title FROM content_types").WillReturnRows(
-		sqlmock.NewRows([]string{"id", "title"}).AddRow("bogus", "Title"),
+	mock.ExpectQuery("SELECT id,title,created_at,updated_at FROM content_types").WillReturnRows(
+		sqlmock.NewRows([]string{"id", "title", "", ""}).AddRow("bogus", "Title", "", ""),
 	)
 
 	contentTypes, err := GetContentTypes()
@@ -49,11 +49,11 @@ func TestGetContentTypesSuccess(t *testing.T) {
 	mock, cleanup := setupGetContentTypesTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT id,title FROM content_types").WillReturnRows(
-		sqlmock.NewRows([]string{"id", "title"}).AddRow(1, "Title"),
+	mock.ExpectQuery("SELECT id,title,created_at,updated_at FROM content_types").WillReturnRows(
+		sqlmock.NewRows([]string{"id", "title", "created_at", "updated_at"}).AddRow(1, "Title", "", ""),
 	)
 
 	contentTypes, err := GetContentTypes()
 	assert.NoError(t, err)
-	assert.Equal(t, []content_structs.ContentType{{Id: 1, Title: "Title"}}, contentTypes)
+	assert.Equal(t, []content_structs.ContentType{{Id: 1, Title: "Title", CreatedAt: "", UpdatedAt: ""}}, contentTypes)
 }

@@ -7,7 +7,7 @@ import (
 )
 
 func GetContentTypes() (contentTypes []content_structs.ContentType, err error) {
-	rows, err := database.DB.Query(`SELECT id,title FROM content_types ORDER BY title ASC`)
+	rows, err := database.DB.Query(`SELECT id,title,created_at,updated_at FROM content_types ORDER BY title ASC`)
 
 	if err != nil {
 		return contentTypes, user.ErrUnexpected
@@ -15,17 +15,19 @@ func GetContentTypes() (contentTypes []content_structs.ContentType, err error) {
 
 	for rows.Next() {
 		var id int
-		var title string
+		var title, created_at, updated_at string
 
-		err = rows.Scan(&id, &title)
+		err = rows.Scan(&id, &title, &created_at, &updated_at)
 
 		if err != nil {
 			return contentTypes, user.ErrUnexpected
 		}
 
 		contentTypes = append(contentTypes, content_structs.ContentType{
-			Id:    id,
-			Title: title,
+			Id:        id,
+			Title:     title,
+			CreatedAt: created_at,
+			UpdatedAt: updated_at,
 		})
 	}
 
