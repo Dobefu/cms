@@ -115,21 +115,23 @@
       }
     },
     "/validate-session": {
+      "parameters": [
+        {
+          "name": "Session-Token",
+          "description": "The user session token that is obtained after logging in",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
       "get": {
         "tags": ["User"],
         "summary": "Validate user session",
         "description": "Validate a user session",
         "produces": ["application/json"],
         "parameters": [
-          {
-            "name": "Session-Token",
-            "description": "The user session token that is obtained after logging in",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "Refresh",
             "description": "Refresh the session token if it's older than five minutes",
@@ -204,22 +206,22 @@
       }
     },
     "/logout": {
+      "parameters": [
+        {
+          "name": "Session-Token",
+          "description": "The user session token that is obtained after logging in",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
       "get": {
         "tags": ["User"],
         "summary": "Log out",
         "description": "Log out an authenticated user",
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "Session-Token",
-            "description": "The user session token that is obtained after logging in",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -278,22 +280,22 @@
       }
     },
     "/user-data": {
+      "parameters": [
+        {
+          "name": "Session-Token",
+          "description": "The user session token that is obtained after logging in",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
       "get": {
         "tags": ["User"],
-        "summary": "User data",
+        "summary": "Get user data",
         "description": "Get the data of the currently logged in user",
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "Session-Token",
-            "description": "The user session token that is obtained after logging in",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -385,22 +387,22 @@
       }
     },
     "/content-types": {
+      "parameters": [
+        {
+          "name": "Session-Token",
+          "description": "The user session token that is obtained after logging in",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
       "get": {
         "tags": ["Content types"],
-        "summary": "Content types",
+        "summary": "Get content types",
         "description": "Get a list of all content types",
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "Session-Token",
-            "description": "The user session token that is obtained after logging in",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -435,6 +437,368 @@
                             "updated_at": "1970-01-01T00:00:00.000000Z"
                           }
                         ]
+                      },
+                      "error": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4xx | 5xx": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": "Could not validate session_token"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/content-type": {
+      "parameters": [
+        {
+          "name": "Session-Token",
+          "description": "The user session token that is obtained after logging in",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "put": {
+        "tags": ["Content types"],
+        "summary": "Create content type",
+        "description": "Create a new content type",
+        "consumes": ["application/x-www-form-urlencoded"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": ["title"],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "",
+                    "default": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": "null"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": {
+                        "id": 1
+                      },
+                      "error": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4xx | 5xx": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": "Could not validate session_token"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/content-type/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "description": "The ID of the content type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "Session-Token",
+          "description": "The user session token that is obtained after logging in",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Content types"],
+        "summary": "Get content type",
+        "description": "Get a single content type by its ID",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "content_type": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "updated_at": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": "null"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": {
+                        "content_type": {
+                          "id": 1,
+                          "title": "Content Type Title",
+                          "created_at": "1970-01-01T00:00:00.000000Z",
+                          "updated_at": "1970-01-01T00:00:00.000000Z"
+                        }
+                      },
+                      "error": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4xx | 5xx": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": "Could not validate session_token"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Content types"],
+        "summary": "Update content type",
+        "description": "Update a new content type",
+        "consumes": ["application/x-www-form-urlencoded"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": ["title"],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "",
+                    "default": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": "null"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": {
+                        "id": 1
+                      },
+                      "error": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4xx | 5xx": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": "Could not validate session_token"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Content types"],
+        "summary": "Delete content type",
+        "description": "Delete a new content type",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": "null"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": {
+                        "id": 1
                       },
                       "error": null
                     }
