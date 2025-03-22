@@ -1,0 +1,19 @@
+meta {
+  name: Update Content Type
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{url}}/api/{{api_version}}/content-type/1
+  body: formUrlEncoded
+  auth: inherit
+}
+
+body:form-urlencoded {
+  title: Test Content Type
+}
+
+script:pre-request {
+  await login()
+}

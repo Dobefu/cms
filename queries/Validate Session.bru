@@ -1,0 +1,15 @@
+meta {
+  name: Validate Session
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{url}}/api/{{api_version}}/validate-session
+  body: none
+  auth: inherit
+}
+
+script:pre-request {
+  await login()
+}

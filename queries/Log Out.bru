@@ -1,0 +1,15 @@
+meta {
+  name: Log Out
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{url}}/api/{{api_version}}/logout
+  body: none
+  auth: inherit
+}
+
+script:pre-request {
+  await login()
+}

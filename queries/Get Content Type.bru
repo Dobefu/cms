@@ -1,0 +1,15 @@
+meta {
+  name: Get Content Type
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{url}}/api/{{api_version}}/content-type/1
+  body: none
+  auth: inherit
+}
+
+script:pre-request {
+  await login()
+}

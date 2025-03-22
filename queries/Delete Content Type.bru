@@ -1,0 +1,15 @@
+meta {
+  name: Delete Content Type
+  type: http
+  seq: 12
+}
+
+delete {
+  url: {{url}}/api/{{api_version}}/content-type/1
+  body: formUrlEncoded
+  auth: inherit
+}
+
+script:pre-request {
+  await login()
+}

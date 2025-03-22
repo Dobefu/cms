@@ -1,0 +1,15 @@
+meta {
+  name: Get User Data
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{url}}/api/{{api_version}}/user-data
+  body: none
+  auth: inherit
+}
+
+script:pre-request {
+  await login()
+}
