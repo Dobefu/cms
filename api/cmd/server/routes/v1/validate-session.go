@@ -19,7 +19,7 @@ func ValidateSession(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	newToken, _, err := userValidateSession(oldToken, refresh != "")
+	newToken, _, err := userValidateSession(oldToken, refresh != "" && refresh != "false")
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)
