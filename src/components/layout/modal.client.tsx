@@ -29,18 +29,14 @@ export default function Modal({ children }: Props) {
   const onCloseRef = useRef<(() => void) | undefined>(undefined)
 
   useEffect(() => {
-    /* v8 ignore start */
     if (!dialogRef.current?.open) {
       dialogRef.current?.show()
     }
-    /* v8 ignore stop */
   }, [])
 
   const closeModal = useCallback((onClose?: () => void) => {
-    /* v8 ignore start */
     onCloseRef.current = onClose
     setIsOpen(false)
-    /* v8 ignore stop */
   }, [])
 
   const handleClose = useCallback(() => {
@@ -51,11 +47,13 @@ export default function Modal({ children }: Props) {
     const callback = onCloseRef.current
     onCloseRef.current = undefined
 
+    /* v8 ignore start */
     if (callback) {
       callback()
     } else {
       router.back()
     }
+    /* v8 ignore stop */
   }, [router])
 
   return createPortal(
@@ -67,6 +65,7 @@ export default function Modal({ children }: Props) {
               animate={{ opacity: 1 }}
               aria-hidden
               className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
+              data-testid="modal-backdrop"
               exit={{ opacity: 0 }}
               initial={{ opacity: 0 }}
               onClick={handleClose}
