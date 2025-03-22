@@ -80,6 +80,19 @@ func TestHandleRoutesHealthSuccess(t *testing.T) {
 	assert.Equal(t, http.StatusOK, rr.Code)
 }
 
+func TestHandleRoutesDocsOpenapiJsonSuccess(t *testing.T) {
+	mux, cleanup := setupHandleRoutesTests()
+	defer cleanup()
+
+	req, err := http.NewRequest("GET", "/docs/openapi.json", nil)
+	assert.NoError(t, err)
+
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusOK, rr.Code)
+}
+
 func TestHandleRoutesAPIErrNoApiKey(t *testing.T) {
 	mux, cleanup := setupHandleRoutesTests()
 	defer cleanup()
