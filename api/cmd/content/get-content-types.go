@@ -15,9 +15,9 @@ func GetContentTypes() (contentTypes []content_structs.ContentType, err error) {
 
 	for rows.Next() {
 		var id int
-		var title, created_at, updated_at string
+		var title, createdAt, updatedAt string
 
-		err = rows.Scan(&id, &title, &created_at, &updated_at)
+		err = rows.Scan(&id, &title, &createdAt, &updatedAt)
 
 		if err != nil {
 			return contentTypes, user.ErrUnexpected
@@ -26,8 +26,8 @@ func GetContentTypes() (contentTypes []content_structs.ContentType, err error) {
 		contentTypes = append(contentTypes, content_structs.ContentType{
 			Id:        id,
 			Title:     title,
-			CreatedAt: created_at,
-			UpdatedAt: updated_at,
+			CreatedAt: createdAt,
+			UpdatedAt: updatedAt,
 		})
 	}
 
