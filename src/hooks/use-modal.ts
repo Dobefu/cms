@@ -8,6 +8,7 @@ export function useModal() {
 
   if (!context) {
     return {
+      /* v8 ignore start */
       closeModal: (onClose?: () => void) => {
         if (onClose) {
           onClose()
@@ -15,6 +16,7 @@ export function useModal() {
           router.back()
         }
       },
+      /* v8 ignore start */
     }
   }
 

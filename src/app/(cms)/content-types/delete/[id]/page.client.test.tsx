@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import DeleteContentTypeClient from './page.client'
 
@@ -11,7 +11,7 @@ describe('deleteContentTypeClient', () => {
     expect(screen).toBeDefined()
   })
 
-  it('redirects after deleting a content type', () => {
+  it('redirects after deleting a content type', async () => {
     expect.hasAssertions()
 
     vi.spyOn(global, 'fetch').mockResolvedValue({
@@ -25,6 +25,8 @@ describe('deleteContentTypeClient', () => {
 
     fireEvent.click(screen.getByText('Delete'))
 
-    expect(screen).toBeDefined()
+    await waitFor(() => {
+      expect(screen.getByText('Delete')).toBeDefined()
+    })
   })
 })

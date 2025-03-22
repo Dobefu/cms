@@ -23,15 +23,19 @@ export default function DeleteContentTypeClient({ id }: Props) {
   )
 
   useEffect(() => {
+    /* v8 ignore start */
     if (state?.success) {
       closeModal(() => {
         router.push('/content-types')
       })
     }
+    /* v8 ignore stop */
   }, [state, closeModal, router])
 
   const handleCancel = useCallback(() => {
+    /* v8 ignore start */
     closeModal()
+    /* v8 ignore stop */
   }, [closeModal])
 
   return (

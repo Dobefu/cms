@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { useState } from 'react'
 import { vi } from 'vitest'
 
@@ -11,7 +10,7 @@ vi.mock('react', async () => {
 
   return {
     ...actual,
-    useContext: () => ({ locale: { code: 'en' } }),
+    useContext: () => undefined,
     useActionState: (_action: () => unknown, initialState: unknown) => {
       const [isPending, setIsPending] = useState(false)
 
@@ -52,7 +51,7 @@ vi.mock('next/navigation', async () => {
 
 vi.mock('next/headers', async () => {
   const actual = await vi.importActual('next/headers')
-  let cookies: Record<string, string> = {}
+  const cookies: Record<string, string> = {}
 
   return {
     ...(actual as object),
