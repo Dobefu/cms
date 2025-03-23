@@ -9,7 +9,7 @@ import (
 	"github.com/Dobefu/cms/api/cmd/user"
 )
 
-func GetContent(id int) (content content_structs.Content, err error) {
+func GetContentEntry(id int) (content content_structs.Content, err error) {
 	row := database.DB.QueryRow(
 		`SELECT id,title,created_at,updated_at FROM content WHERE id = $1 LIMIT 1`,
 		id,

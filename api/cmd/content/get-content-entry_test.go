@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setupGetContentTests(t *testing.T) (mock sqlmock.Sqlmock, cleanup func()) {
+func setupGetContentEntryTests(t *testing.T) (mock sqlmock.Sqlmock, cleanup func()) {
 	db, mock, err := sqlmock.New()
 	assert.NoError(t, err)
 
@@ -24,46 +24,46 @@ func setupGetContentTests(t *testing.T) (mock sqlmock.Sqlmock, cleanup func()) {
 	}
 }
 
-func TestGetContentErrSelect(t *testing.T) {
-	_, cleanup := setupGetContentTests(t)
+func TestGetContentEntryErrSelect(t *testing.T) {
+	_, cleanup := setupGetContentEntryTests(t)
 	defer cleanup()
 
-	content, err := GetContent(1)
+	content, err := GetContentEntry(1)
 	assert.EqualError(t, err, user.ErrUnexpected.Error())
 	assert.Equal(t, content_structs.Content{}, content)
 }
 
-func TestGetContentErrScanNoRows(t *testing.T) {
-	mock, cleanup := setupGetContentTests(t)
+func TestGetContentEntryErrScanNoRows(t *testing.T) {
+	mock, cleanup := setupGetContentEntryTests(t)
 	defer cleanup()
 
 	mock.ExpectQuery("SELECT id,title,created_at,updated_at FROM content").WillReturnError(sql.ErrNoRows)
 
-	_, err := GetContent(1)
+	_, err := GetContentEntry(1)
 	assert.EqualError(t, err, "Cannot find the content")
 }
 
-func TestGetContentErrScanUnexpected(t *testing.T) {
-	mock, cleanup := setupGetContentTests(t)
+func TestGetContentEntryErrScanUnexpected(t *testing.T) {
+	mock, cleanup := setupGetContentEntryTests(t)
 	defer cleanup()
 
 	mock.ExpectQuery("SELECT id,title,created_at,updated_at FROM content").WillReturnRows(
 		sqlmock.NewRows([]string{"id", "title", "created_at", "updated_at"}).AddRow("bogus", "Title", "", ""),
 	)
 
-	_, err := GetContent(1)
+	_, err := GetContentEntry(1)
 	assert.EqualError(t, err, user.ErrUnexpected.Error())
 }
 
-func TestGetContentSuccess(t *testing.T) {
-	mock, cleanup := setupGetContentTests(t)
+func TestGetContentEntrySuccess(t *testing.T) {
+	mock, cleanup := setupGetContentEntryTests(t)
 	defer cleanup()
 
 	mock.ExpectQuery("SELECT id,title,created_at,updated_at FROM content").WillReturnRows(
 		sqlmock.NewRows([]string{"id", "title", "created_at", "updated_at"}).AddRow(1, "Title", "", ""),
 	)
 
-	content, err := GetContent(1)
+	content, err := GetContentEntry(1)
 	assert.NoError(t, err)
 	assert.Equal(t, content_structs.Content{Id: 1, Title: "Title", CreatedAt: "", UpdatedAt: ""}, content)
 }

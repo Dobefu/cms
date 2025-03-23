@@ -11,7 +11,7 @@ import (
 	"github.com/Dobefu/cms/api/cmd/user"
 )
 
-func GetContent(w http.ResponseWriter, r *http.Request) {
+func GetContentEntry(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.PathValue("id"))
 
 	if err != nil {
@@ -33,7 +33,7 @@ func GetContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	content, err := contentGetContent(id)
+	contentEntry, err := contentGetContentEntry(id)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)
@@ -42,7 +42,7 @@ func GetContent(w http.ResponseWriter, r *http.Request) {
 
 	response, _ := json.Marshal(map[string]any{
 		"data": map[string]any{
-			"content": content,
+			"content": contentEntry,
 		},
 		"error": nil,
 	})

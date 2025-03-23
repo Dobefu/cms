@@ -68,17 +68,16 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 
 	apiRoute(mux, 1, "/user-data", "GET", routes_v1.GetUserData)
 
-	apiRoute(mux, 1, "/content-types", "GET", routes_v1.GetContentTypes)
-
 	contentTypeRoute := "/content-type/{id}"
 	apiRoute(mux, 1, "/content-type", "PUT", routes_v1.CreateContentType)
+	apiRoute(mux, 1, "/content-types", "GET", routes_v1.GetContentTypes)
 	apiRoute(mux, 1, contentTypeRoute, "GET", routes_v1.GetContentType)
 	apiRoute(mux, 1, contentTypeRoute, "POST", routes_v1.UpdateContentType)
 	apiRoute(mux, 1, contentTypeRoute, "DELETE", routes_v1.DeleteContentType)
 
 	contentRoute := "/content/{id}"
 	apiRoute(mux, 1, "/content", "PUT", routes_v1.CreateContent)
-	apiRoute(mux, 1, contentRoute, "GET", routes_v1.GetContent)
+	apiRoute(mux, 1, contentRoute, "GET", routes_v1.GetContentEntry)
 	apiRoute(mux, 1, contentRoute, "POST", routes_v1.UpdateContent)
 	apiRoute(mux, 1, contentRoute, "DELETE", routes_v1.DeleteContent)
 
