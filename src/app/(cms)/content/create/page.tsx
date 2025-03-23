@@ -31,13 +31,15 @@ export default async function CreateContent() {
 
         <div className="flex flex-col gap-4">
           {data.content_types.map((contentType) => (
-            <div className="btn px-8 py-6" key={contentType.id}>
+            <Link
+              className="btn px-8 py-6"
+              href={`/content/create/${contentType.id}`}
+              key={contentType.id}
+            >
               <Icon className="size-4 shrink-0" icon={iconPlus} ssr />
 
-              <Link href={`/content/create/${contentType.id}`}>
-                {contentType.title}
-              </Link>
-            </div>
+              {contentType.title}
+            </Link>
           ))}
         </div>
       </Container>
