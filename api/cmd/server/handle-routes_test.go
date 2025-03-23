@@ -6,128 +6,112 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Dobefu/cms/api/cmd/database"
 	"github.com/stretchr/testify/assert"
 )
 
-func setupHandleRoutesTests() (mux *http.ServeMux, cleanup func()) {
-	dbPing = func() error { return nil }
+var mux *http.ServeMux
+var originalDBPing func() error
+var originalAPIKey string
+var rr *httptest.ResponseRecorder
 
-	oldApiKey := os.Getenv("API_KEY")
+func TestMain(m *testing.M) {
+	originalDBPing = dbPing
+	originalAPIKey = os.Getenv("API_KEY")
+
 	os.Setenv("API_KEY", "test-api-key")
+	dbPing = func() error { return nil }
 
 	mux = http.NewServeMux()
 	handleRoutes(mux)
 
-	return mux, func() {
-		dbPing = func() error { return database.DB.Ping() }
+	code := m.Run()
 
-		os.Setenv("API_KEY", oldApiKey)
-	}
+	dbPing = originalDBPing
+	os.Setenv("API_KEY", originalAPIKey)
+
+	os.Exit(code)
 }
 
 func TestHandleRoutesHomepage(t *testing.T) {
-	mux, cleanup := setupHandleRoutesTests()
-	defer cleanup()
-
 	req, err := http.NewRequest("GET", "/", nil)
 	assert.NoError(t, err)
 
-	rr := httptest.NewRecorder()
+	rr = httptest.NewRecorder()
 	mux.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusSeeOther, rr.Code)
 }
 
 func TestHandleRoutesInvalidPage(t *testing.T) {
-	mux, cleanup := setupHandleRoutesTests()
-	defer cleanup()
-
 	req, err := http.NewRequest("GET", "/bogus", nil)
 	assert.NoError(t, err)
 
-	rr := httptest.NewRecorder()
+	rr = httptest.NewRecorder()
 	mux.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusNotFound, rr.Code)
 }
 
 func TestHandleRoutesTrailingSlash(t *testing.T) {
-	mux, cleanup := setupHandleRoutesTests()
-	defer cleanup()
-
 	req, err := http.NewRequest("GET", "/api/", nil)
 	assert.NoError(t, err)
 
-	rr := httptest.NewRecorder()
+	rr = httptest.NewRecorder()
 	mux.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusSeeOther, rr.Code)
 }
 
 func TestHandleRoutesHealthErrDbPing(t *testing.T) {
-	mux, cleanup := setupHandleRoutesTests()
-	defer cleanup()
-
+	originalPing := dbPing
 	dbPing = func() error { return assert.AnError }
+	defer func() { dbPing = originalPing }()
 
 	req, err := http.NewRequest("GET", "/health", nil)
 	assert.NoError(t, err)
 
-	rr := httptest.NewRecorder()
+	rr = httptest.NewRecorder()
 	mux.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusInternalServerError, rr.Code)
 }
 
 func TestHandleRoutesHealthSuccess(t *testing.T) {
-	mux, cleanup := setupHandleRoutesTests()
-	defer cleanup()
-
 	req, err := http.NewRequest("GET", "/health", nil)
 	assert.NoError(t, err)
 
-	rr := httptest.NewRecorder()
+	rr = httptest.NewRecorder()
 	mux.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusOK, rr.Code)
 }
 
 func TestHandleRoutesDocsOpenapiJsonSuccess(t *testing.T) {
-	mux, cleanup := setupHandleRoutesTests()
-	defer cleanup()
-
 	req, err := http.NewRequest("GET", "/docs/openapi.json", nil)
 	assert.NoError(t, err)
 
-	rr := httptest.NewRecorder()
+	rr = httptest.NewRecorder()
 	mux.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusOK, rr.Code)
 }
 
 func TestHandleRoutesAPIErrNoApiKey(t *testing.T) {
-	mux, cleanup := setupHandleRoutesTests()
-	defer cleanup()
-
 	req, err := http.NewRequest("GET", "/api/v1", nil)
 	assert.NoError(t, err)
 
-	rr := httptest.NewRecorder()
+	rr = httptest.NewRecorder()
 	mux.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusUnauthorized, rr.Code)
 }
 
 func TestHandleRoutesAPIErrInvalidApiKey(t *testing.T) {
-	mux, cleanup := setupHandleRoutesTests()
-	defer cleanup()
-
 	req, err := http.NewRequest("GET", "/api/v1", nil)
 	req.Header.Add("X-Api-Key", "test-api-key")
 	assert.NoError(t, err)
 
-	rr := httptest.NewRecorder()
+	rr = httptest.NewRecorder()
 	mux.ServeHTTP(rr, req)
 
 	assert.Equal(t, http.StatusOK, rr.Code)
