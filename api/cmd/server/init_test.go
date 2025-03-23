@@ -1,39 +1,36 @@
 package server
 
 import (
-	"net/http"
-	"strings"
+	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func setupInitTests() (cleanup func()) {
-	httpListenAndServe = func(addr string, handler http.Handler) error {
-		if strings.Contains(addr, ":404") {
-			return assert.AnError
-		}
+func TestInitErr(t *testing.T) {
+	t.Parallel()
 
-		return nil
-	}
+	err := Init(65536, nil)
 
-	return func() {
-		httpListenAndServe = http.ListenAndServe
-	}
+	assert.EqualError(t, err, "listen tcp: address 65536: invalid port")
 }
 
-func TestStartErr(t *testing.T) {
-	cleanup := setupInitTests()
-	defer cleanup()
+func TestInitSuccess(t *testing.T) {
+	t.Parallel()
 
-	err := Init(404)
-	assert.NotEqual(t, nil, err)
-}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-func TestStart(t *testing.T) {
-	cleanup := setupInitTests()
-	defer cleanup()
+	serverErr := make(chan error, 1)
 
-	err := Init(4000)
-	assert.Equal(t, nil, err)
+	go func() {
+		err := Init(4001, ctx)
+		serverErr <- err
+	}()
+
+	time.Sleep(100 * time.Millisecond)
+	cancel()
+
+	assert.EqualError(t, <-serverErr, "http: Server closed")
 }

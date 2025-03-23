@@ -6,7 +6,9 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/Dobefu/cms/api/cmd/database"
 	"github.com/Dobefu/cms/api/cmd/server/middleware"
+	routes_v1 "github.com/Dobefu/cms/api/cmd/server/routes/v1"
 	"github.com/swaggest/swgui/v5emb"
 )
 
@@ -36,7 +38,7 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 	mux.Handle(
 		"GET /health",
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			err := dbPing()
+			err := database.DB.Ping()
 
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
@@ -58,21 +60,21 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 		fmt.Fprint(w, "{}")
 	})
 
-	apiRoute(mux, 1, "/login", "POST", routesV1Login)
+	apiRoute(mux, 1, "/login", "POST", routes_v1.Login)
 
-	apiRoute(mux, 1, "/validate-session", "GET", routesV1ValidateSession)
+	apiRoute(mux, 1, "/validate-session", "GET", routes_v1.ValidateSession)
 
-	apiRoute(mux, 1, "/logout", "GET", routesV1Logout)
+	apiRoute(mux, 1, "/logout", "GET", routes_v1.Logout)
 
-	apiRoute(mux, 1, "/user-data", "GET", routesV1GetUserData)
+	apiRoute(mux, 1, "/user-data", "GET", routes_v1.GetUserData)
 
-	apiRoute(mux, 1, "/content-types", "GET", routesV1GetContentTypes)
+	apiRoute(mux, 1, "/content-types", "GET", routes_v1.GetContentTypes)
 
 	contentTypeRoute := "/content-type/{id}"
-	apiRoute(mux, 1, "/content-type", "PUT", routesV1CreateContentType)
-	apiRoute(mux, 1, contentTypeRoute, "GET", routesV1GetContentType)
-	apiRoute(mux, 1, contentTypeRoute, "POST", routesV1UpdateContentType)
-	apiRoute(mux, 1, contentTypeRoute, "DELETE", routesV1DeleteContentType)
+	apiRoute(mux, 1, "/content-type", "PUT", routes_v1.CreateContentType)
+	apiRoute(mux, 1, contentTypeRoute, "GET", routes_v1.GetContentType)
+	apiRoute(mux, 1, contentTypeRoute, "POST", routes_v1.UpdateContentType)
+	apiRoute(mux, 1, contentTypeRoute, "DELETE", routes_v1.DeleteContentType)
 
 	return mux
 }

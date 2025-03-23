@@ -67,7 +67,7 @@ func runSubCommand(args []string) error {
 		}
 
 		applyGlobalFlags()
-		err = serverInit(*port)
+		err = serverInit(*port, nil)
 
 		if err != nil {
 			fmt.Printf("could not start the server: %s\n", err)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"os"
 	"testing"
@@ -30,7 +31,7 @@ func setupMainTests() (cleanup func()) {
 	}
 
 	osExit = func(code int) { isOsExitCalled = true }
-	serverInit = func(port uint) (err error) { return nil }
+	serverInit = func(port uint, ctx context.Context) (err error) { return nil }
 	migrateDbMain = func(reset bool) error { return nil }
 	databaseConnect = func() error { return nil }
 	dbPing = func() error { return nil }
@@ -125,7 +126,7 @@ func TestMainWithSubCommandServerErr(t *testing.T) {
 	cleanup := setupMainTests()
 	defer cleanup()
 
-	serverInit = func(port uint) (err error) { return errors.New("server subcommand test error") }
+	serverInit = func(port uint, ctx context.Context) (err error) { return errors.New("server subcommand test error") }
 	os.Args = []string{os.Args[0], "server", envFile}
 
 	main()
