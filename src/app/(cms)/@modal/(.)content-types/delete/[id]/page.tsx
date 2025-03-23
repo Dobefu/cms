@@ -14,9 +14,7 @@ export default async function DeleteContentTypeModal({ params }: Props) {
 
   return (
     <Modal>
-      <DeleteContentType
-        params={new Promise((resolve) => resolve(awaitedParams))}
-      />
+      <DeleteContentType params={Promise.resolve(awaitedParams)} />
     </Modal>
   )
 }

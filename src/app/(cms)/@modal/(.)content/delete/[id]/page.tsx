@@ -14,7 +14,7 @@ export default async function DeleteContentEntryModal({ params }: Props) {
 
   return (
     <Modal>
-      <DeleteContentEntry params={params} />
+      <DeleteContentEntry params={Promise.resolve(awaitedParams)} />
     </Modal>
   )
 }

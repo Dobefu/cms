@@ -1,4 +1,6 @@
 import Header from '@/components/layout/header'
+import ToastContainer from '@/components/toast/toast-container.client'
+import ToastProvider from '@/components/toast/toast-context.client'
 import { cn } from '@/utils/cn'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
@@ -37,9 +39,13 @@ export default function RootLayout({
           'flex h-full flex-col text-gray-800 antialiased dark:bg-zinc-900 dark:text-white',
         )}
       >
-        <Header />
+        <ToastProvider>
+          <Header />
 
-        {children}
+          {children}
+
+          <ToastContainer />
+        </ToastProvider>
 
         <div id="modal-root" />
       </body>
