@@ -4,7 +4,6 @@ import { fetchApiData } from '@/utils/fetch-api-data'
 import { getApiEndpoint } from '@/utils/get-api-endpoint'
 import { validateForm } from '@/utils/validate-form'
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
 import * as v from 'valibot'
 
 export interface FormState {

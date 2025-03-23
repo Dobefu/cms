@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { useCallback } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import Toast from './toast.client'
