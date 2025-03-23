@@ -10,7 +10,7 @@ describe('useModal', () => {
     vi.restoreAllMocks()
   })
 
-  it('returns fallback context when no ModalContext is provided', () => {
+  it('returns a fallback context when no ModalContext is provided', () => {
     expect.hasAssertions()
 
     const context = useModal()
