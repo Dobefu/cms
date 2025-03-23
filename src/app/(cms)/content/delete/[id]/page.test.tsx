@@ -44,8 +44,7 @@ describe('deleteContentEntry', () => {
     render(DeleteContentEntry({ params: Promise.resolve({ id: '1' }) }))
     render(
       DeleteContentEntry({
-        isInModal: true,
-        params: Promise.resolve({ id: '1' }),
+        params: Promise.resolve({ id: '1', isInModal: true }),
       }),
     )
 

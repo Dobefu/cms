@@ -45,8 +45,7 @@ describe('deleteContentType', () => {
     render(DeleteContentType({ params: Promise.resolve({ id: '1' }) }))
     render(
       DeleteContentType({
-        isInModal: true,
-        params: Promise.resolve({ id: '1' }),
+        params: Promise.resolve({ id: '1', isInModal: true }),
       }),
     )
 
