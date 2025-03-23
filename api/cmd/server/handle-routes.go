@@ -21,6 +21,7 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 
 			if path == "" {
 				http.Redirect(w, r, "/docs/", http.StatusSeeOther)
+				return
 			}
 
 			if path != r.URL.Path {
