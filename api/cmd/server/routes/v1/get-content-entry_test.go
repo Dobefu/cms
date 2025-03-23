@@ -98,5 +98,5 @@ func TestGetContentEntrySuccess(t *testing.T) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	GetContentEntry(rr, req)
-	assert.JSONEq(t, `{"data": {"content": {"id": 0, "content_type": 0, "title": "", "created_at": "", "updated_at": ""}}, "error": null}`, rr.Body.String())
+	assert.JSONEq(t, `{"data": {"content": {"id": 0, "content_type": {"id": 0, "title": "", "created_at": "", "updated_at": ""}, "title": "", "created_at": "", "updated_at": ""}}, "error": null}`, rr.Body.String())
 }
