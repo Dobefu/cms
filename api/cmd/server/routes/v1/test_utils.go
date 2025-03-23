@@ -19,4 +19,5 @@ var contentTypeGetContentType = content_type.GetContentType
 var contentCreateContent = content.CreateContent
 var contentUpdateContent = content.UpdateContent
 var contentDeleteContent = content.DeleteContent
+var contentGetContent = content.GetContent
 var contentGetContentEntry = content.GetContentEntry
