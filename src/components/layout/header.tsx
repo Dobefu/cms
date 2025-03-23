@@ -47,6 +47,7 @@ export default async function Header() {
               className="flex items-center gap-1 py-2 font-medium"
               href={link.href}
               key={link.href}
+              prefetch={false}
             >
               <Icon className="size-4" icon={link.icon} ssr />
 
