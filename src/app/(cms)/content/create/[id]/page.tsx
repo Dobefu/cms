@@ -30,7 +30,9 @@ export default async function CreateContent({ params }: Props) {
 
       <Container className="flex flex-col gap-8">
         <TitleContainer>
-          <Heading level={1}>Create Content</Heading>
+          <Heading level={1}>
+            Create <i>{data.content_type.title}</i>
+          </Heading>
         </TitleContainer>
 
         <ContentForm contentType={data.content_type} />
