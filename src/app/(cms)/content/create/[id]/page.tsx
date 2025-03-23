@@ -18,7 +18,7 @@ type Props = Readonly<{
 export default async function CreateContent({ params }: Props) {
   const id = (await params).id
 
-  const { data, error } = await getContentType(id)
+  const { data, error } = await getContentType(+id)
 
   if (!data || error) {
     notFound()

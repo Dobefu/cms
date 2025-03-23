@@ -1,5 +1,5 @@
 import { ContentType } from '@/types/content-type'
-import { fetchApiData } from './fetch-api-data'
+import { fetchApiData } from '@/utils/fetch-api-data'
 
 async function getContentType(id: number): Promise<{
   data?: { content_type: ContentType }
