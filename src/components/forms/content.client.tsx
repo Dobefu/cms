@@ -3,6 +3,7 @@
 import { type FormState, submitContent } from '@/actions/submit-content'
 import Input from '@/components/form-elements/input'
 import Label from '@/components/form-elements/label'
+import { type ContentType } from '@/types/content-type'
 import iconSave from '@iconify/icons-mdi/floppy'
 import iconPlus from '@iconify/icons-mdi/plus'
 import iconDelete from '@iconify/icons-mdi/trash'
@@ -13,6 +14,7 @@ import { useActionState } from 'react'
 import FormError from '../form-elements/form-error'
 
 export const initialState: FormState = {
+  content_type: undefined,
   title: '',
   errors: {
     title: undefined,
@@ -21,14 +23,20 @@ export const initialState: FormState = {
 }
 
 export type Props = Readonly<{
-  contentTypeId?: number
+  contentType: ContentType
+  contentId?: number
   initialData?: Omit<FormState, 'errors'>
 }>
 
-export default function ContentForm({ contentId, initialData }: Props) {
+export default function ContentForm({
+  contentId,
+  contentType,
+  initialData,
+}: Props) {
   const [state, formAction, pending] = useActionState(submitContent, {
     ...initialState,
     id: contentId,
+    content_type: contentType,
     ...(initialData ?? {}),
   })
 
@@ -39,6 +47,8 @@ export default function ContentForm({ contentId, initialData }: Props) {
 
   return (
     <Form action={formAction} className="flex flex-col gap-8">
+      <Input name="content_type" type="hidden" value={contentType.id} />
+
       <Label>
         Title
         <Input

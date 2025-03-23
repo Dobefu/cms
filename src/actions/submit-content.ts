@@ -1,5 +1,6 @@
 'use server'
 
+import { type ContentType } from '@/types/content-type'
 import { fetchApiData } from '@/utils/fetch-api-data'
 import { getApiEndpoint } from '@/utils/get-api-endpoint'
 import { validateForm } from '@/utils/validate-form'
@@ -9,6 +10,7 @@ import * as v from 'valibot'
 
 export interface FormState {
   id?: number
+  content_type?: ContentType
   title: string
   errors: {
     title?: string[]
@@ -35,12 +37,13 @@ export async function submitContent(
     return prevState
   }
 
+  const contentTypeId = formData.get('content_type') as string
   const title = formData.get('title') as string
 
   const { isValid, newState } = validateForm<typeof ContentSchema, FormState>(
     ContentSchema,
     prevState,
-    { title },
+    { content_type: contentTypeId, title },
   )
 
   if (!isValid) {

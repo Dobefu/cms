@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: 'Edit Content Type',
 }
 
-export type Props = Readonly<{
+type Props = Readonly<{
   params: Promise<{ id: number }>
 }>
 

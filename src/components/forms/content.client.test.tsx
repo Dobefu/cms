@@ -1,6 +1,14 @@
+import { type ContentType } from '@/types/content-type'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import ContentForm, { initialState } from './content.client'
+
+const contentType = {
+  id: 1,
+  title: 'Content Type',
+  created_at: '',
+  updated_at: '',
+} satisfies ContentType
 
 describe('contentForm', () => {
   beforeEach(() => {
@@ -19,7 +27,7 @@ describe('contentForm', () => {
   it('renders normally', () => {
     expect.hasAssertions()
 
-    render(<ContentForm />)
+    render(<ContentForm contentType={contentType} />)
 
     expect(screen.getByRole<HTMLInputElement>('textbox').name).toBe('title')
     expect(screen.getByRole<HTMLInputElement>('button').type).toBe('submit')
@@ -28,7 +36,7 @@ describe('contentForm', () => {
   it('can submit (type: create)', () => {
     expect.hasAssertions()
 
-    render(<ContentForm />)
+    render(<ContentForm contentType={contentType} />)
 
     const titleInput = screen.getByTestId('title')
 
@@ -43,7 +51,7 @@ describe('contentForm', () => {
   it('can submit (type: update)', () => {
     expect.hasAssertions()
 
-    render(<ContentForm />)
+    render(<ContentForm contentType={contentType} />)
 
     const titleInput = screen.getByTestId('title')
 
@@ -62,7 +70,7 @@ describe('contentForm', () => {
     initialState.errors.title = ['Title error']
     initialState.errors.generic = ['Generic error']
 
-    render(<ContentForm />)
+    render(<ContentForm contentType={contentType} />)
 
     const paragraphs = screen.getAllByRole<HTMLParagraphElement>('paragraph')
 
