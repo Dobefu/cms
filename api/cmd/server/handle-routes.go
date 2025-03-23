@@ -76,6 +76,9 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 	apiRoute(mux, 1, contentTypeRoute, "POST", routes_v1.UpdateContentType)
 	apiRoute(mux, 1, contentTypeRoute, "DELETE", routes_v1.DeleteContentType)
 
+	contentRoute := "/content/{id}"
+	apiRoute(mux, 1, contentRoute, "GET", routes_v1.GetContent)
+
 	return mux
 }
 
