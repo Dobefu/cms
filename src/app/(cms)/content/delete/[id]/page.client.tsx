@@ -42,7 +42,7 @@ export default function DeleteContentEntryClient({ content }: Props) {
   return (
     <div className="flex flex-col gap-8">
       <Heading level={1}>
-        Are you sure you want to delete{' '}
+        Are you sure you want to delete the {content.content_type.title}{' '}
         <i className="text-nowrap">&quot;{content.title}&quot;</i>?
       </Heading>
 
