@@ -14,7 +14,7 @@ func GetContent() (content []content_structs.Content, err error) {
       c.id,ct.title,ct.created_at,ct.updated_at,c.title,c.created_at,c.updated_at
       FROM content AS c
       INNER JOIN content_types AS ct
-      ON c.id = ct.id
+      ON c.content_type = ct.id
       ORDER BY c.title ASC
     `,
 	)

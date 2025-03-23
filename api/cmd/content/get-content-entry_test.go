@@ -41,7 +41,7 @@ func TestGetContentEntryErrScanNoRows(t *testing.T) {
 	mock.ExpectQuery("SELECT .+ FROM content .+").WillReturnError(sql.ErrNoRows)
 
 	_, err := GetContentEntry(1)
-	assert.EqualError(t, err, "Cannot find the content")
+	assert.EqualError(t, err, "Cannot find the content entry")
 }
 
 func TestGetContentEntryErrScanUnexpected(t *testing.T) {

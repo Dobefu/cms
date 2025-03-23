@@ -16,7 +16,7 @@ func GetContentEntry(id int) (content content_structs.Content, err error) {
 			SELECT c.id,ct.title,ct.created_at,ct.updated_at,c.title,c.created_at,c.updated_at
 			FROM content AS c
 			INNER JOIN content_types AS ct
-			ON c.id = ct.id
+			ON c.content_type = ct.id
 			WHERE c.id = $1
 			LIMIT 1
 		`,
@@ -40,7 +40,7 @@ func GetContentEntry(id int) (content content_structs.Content, err error) {
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return content, errors.New("Cannot find the content")
+			return content, errors.New("Cannot find the content entry")
 		}
 
 		return content, user.ErrUnexpected
