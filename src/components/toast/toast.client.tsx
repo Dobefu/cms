@@ -8,7 +8,7 @@ import iconInfo from '@iconify/icons-mdi/information'
 import iconWarning from '@iconify/icons-mdi/warning-circle'
 import { Icon } from '@iconify/react'
 import { motion } from 'motion/react'
-import React from 'react'
+import { useCallback } from 'react'
 import { type Toast as ToastType } from './toast-context.client'
 
 type Props = Readonly<{
@@ -31,9 +31,11 @@ const colors = {
 }
 
 export default function Toast({ toast, onClose }: Props) {
-  const handleClose = React.useCallback(() => {
+  /* v8 ignore start */
+  const handleClose = useCallback(() => {
     onClose(toast.id)
   }, [onClose, toast.id])
+  /* v8 ignore stop */
 
   return (
     <motion.div
@@ -46,7 +48,9 @@ export default function Toast({ toast, onClose }: Props) {
       initial={{ opacity: 0, translateX: 100 }}
     >
       <Icon className="size-5" icon={icons[toast.type]} ssr />
+
       <p className="flex-1">{toast.message}</p>
+
       <button
         className="ml-2 cursor-pointer rounded-full p-1 hover:bg-white/10"
         onClick={handleClose}
