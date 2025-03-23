@@ -4,6 +4,19 @@ import { describe, expect, it, vi } from 'vitest'
 import EditContentEntry from './page'
 
 describe('content/edit/[id]', () => {
+  vi.mock('react', async () => {
+    const actual = await vi.importActual('react')
+
+    return {
+      ...actual,
+      useContext: () => ({
+        showToast: (message: string) => {
+          throw new Error(message)
+        },
+      }),
+    }
+  })
+
   vi.mock('@/utils/fetch-api-data', () => ({
     fetchApiData: ({ path }: (typeof fetchApiData)['arguments']) => {
       if (path === '/content/1') {

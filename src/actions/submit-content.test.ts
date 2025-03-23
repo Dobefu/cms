@@ -46,6 +46,19 @@ describe('submitContent', () => {
     cookieStore.delete('session')
   })
 
+  vi.mock('react', async () => {
+    const actual = await vi.importActual('react')
+
+    return {
+      ...actual,
+      useContext: () => ({
+        showToast: (message: string) => {
+          throw new Error(message)
+        },
+      }),
+    }
+  })
+
   it('returns early when the session token cookie is missing', async () => {
     expect.hasAssertions()
 
@@ -128,7 +141,7 @@ describe('submitContent', () => {
     expect(spy).not.toHaveBeenCalled()
   })
 
-  it('redirects when creating new content', async () => {
+  it('does not redirect when creating new content', async () => {
     expect.hasAssertions()
 
     cookieStore.set({ name: 'session', value: 'test' })
@@ -142,9 +155,9 @@ describe('submitContent', () => {
 
     formData.append('title', 'Title')
 
-    await expect(submitContent(initialState, formData)).rejects.toThrow(
-      'Mock redirect error',
-    )
+    await submitContent(initialState, formData)
+
+    expect(spy).not.toHaveBeenCalled()
   })
 
   it('does not redirect when updating content', async () => {

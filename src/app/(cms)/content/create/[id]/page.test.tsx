@@ -4,6 +4,19 @@ import { describe, expect, it, vi } from 'vitest'
 import CreateContent from './page'
 
 describe('content/create/[id]', () => {
+  vi.mock('react', async () => {
+    const actual = await vi.importActual('react')
+
+    return {
+      ...actual,
+      useContext: () => ({
+        showToast: (message: string) => {
+          throw new Error(message)
+        },
+      }),
+    }
+  })
+
   vi.mock('@/utils/get-content-type', () => {
     return {
       getContentType: (id: (typeof getContentType)['arguments']) => {

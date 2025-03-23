@@ -70,11 +70,11 @@ export async function submitContent(
   }
 
   if (data?.id) {
-    if (prevState.id) {
-      return newState
+    if (!prevState.id) {
+      newState.id = +data.id
     }
 
-    redirect(`/content/edit/${data.id}`)
+    return newState
   } else {
     newState.errors.generic = ['Content submission failed']
     return newState

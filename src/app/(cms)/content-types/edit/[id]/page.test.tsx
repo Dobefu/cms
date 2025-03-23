@@ -4,6 +4,19 @@ import { describe, expect, it, vi } from 'vitest'
 import EditContentType from './page'
 
 describe('content-types/edit/[id]', () => {
+  vi.mock('react', async () => {
+    const actual = await vi.importActual('react')
+
+    return {
+      ...actual,
+      useContext: () => ({
+        showToast: (message: string) => {
+          throw new Error(message)
+        },
+      }),
+    }
+  })
+
   vi.mock('@/utils/fetch-api-data', () => ({
     fetchApiData: ({ path }: (typeof fetchApiData)['arguments']) => {
       if (path === '/content-type/1') {

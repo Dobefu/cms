@@ -6,13 +6,15 @@ import {
 } from '@/actions/submit-content-type'
 import Input from '@/components/form-elements/input'
 import Label from '@/components/form-elements/label'
+import { useToast } from '@/hooks/use-toast'
 import iconSave from '@iconify/icons-mdi/floppy'
 import iconPlus from '@iconify/icons-mdi/plus'
 import iconDelete from '@iconify/icons-mdi/trash'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import Form from 'next/form'
 import Link from 'next/link'
-import { useActionState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { useActionState, useEffect, useRef } from 'react'
 import FormError from '../form-elements/form-error'
 
 export const initialState: FormState = {
@@ -29,11 +31,37 @@ export type Props = Readonly<{
 }>
 
 export default function ContentTypeForm({ contentTypeId, initialData }: Props) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const { success } = useToast()
+
   const [state, formAction, pending] = useActionState(submitContentType, {
     ...initialState,
     id: contentTypeId,
     ...(initialData ?? {}),
   })
+
+  const prevStateRef = useRef(state)
+
+  /* v8 ignore start */
+  useEffect(() => {
+    if (
+      state !== prevStateRef.current &&
+      !state?.errors?.generic &&
+      !state?.errors?.title
+    ) {
+      success(
+        `The content type has been ${contentTypeId ? 'updated' : 'created'} successfully`,
+      )
+
+      if (pathname.includes('create')) {
+        router.push(`/content-types/edit/${state.id}`)
+      }
+    }
+
+    prevStateRef.current = state
+  }, [contentTypeId, state, success, pathname, router])
+  /* v8 ignore stop */
 
   const submitMessages = [
     ['Create', 'Creating'],
