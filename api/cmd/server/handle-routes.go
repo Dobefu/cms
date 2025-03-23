@@ -80,6 +80,7 @@ func handleRoutes(mux *http.ServeMux) *http.ServeMux {
 	apiRoute(mux, 1, "/content", "PUT", routes_v1.CreateContent)
 	apiRoute(mux, 1, contentRoute, "GET", routes_v1.GetContent)
 	apiRoute(mux, 1, contentRoute, "POST", routes_v1.UpdateContent)
+	apiRoute(mux, 1, contentRoute, "DELETE", routes_v1.DeleteContent)
 
 	return mux
 }
