@@ -36,6 +36,19 @@ func TestHandleRoutesHomepage(t *testing.T) {
 	rr := httptest.NewRecorder()
 	mux.ServeHTTP(rr, req)
 
+	assert.Equal(t, http.StatusSeeOther, rr.Code)
+}
+
+func TestHandleRoutesInvalidPage(t *testing.T) {
+	mux, cleanup := setupHandleRoutesTests()
+	defer cleanup()
+
+	req, err := http.NewRequest("GET", "/bogus", nil)
+	assert.NoError(t, err)
+
+	rr := httptest.NewRecorder()
+	mux.ServeHTTP(rr, req)
+
 	assert.Equal(t, http.StatusNotFound, rr.Code)
 }
 
