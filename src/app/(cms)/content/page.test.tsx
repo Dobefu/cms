@@ -13,7 +13,13 @@ describe('content', () => {
         Promise.resolve({
           data: {
             token: '',
-            content: [{ id: 1, title: 'Content' }],
+            content: [
+              {
+                id: 1,
+                content_type: { title: 'Content Type' },
+                title: 'Content',
+              },
+            ],
           },
         }),
       ok: true,

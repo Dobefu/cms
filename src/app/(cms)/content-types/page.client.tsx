@@ -56,7 +56,12 @@ export default function Client() {
         {contentTypes && !isLoading ? (
           contentTypes.map((contentType) => (
             <tr key={contentType.id}>
-              <td className="py-1 pe-4">{contentType.title}</td>
+              <td
+                className="max-w-0 overflow-hidden py-1 pe-4 text-ellipsis whitespace-nowrap"
+                title={contentType.title}
+              >
+                {contentType.title}
+              </td>
               <td className="py-1 pe-4 text-nowrap max-xl:hidden">
                 {new Date(contentType.created_at).toLocaleString()}
               </td>

@@ -41,6 +41,7 @@ export default function Client() {
       <thead>
         <tr>
           <th className="w-full py-1 pe-4 text-left">Title</th>
+          <th className="py-1 pe-4 text-left">Content&nbsp;Type</th>
           <th className="py-1 pe-4 text-left text-nowrap max-xl:hidden">
             Created At
           </th>
@@ -54,7 +55,13 @@ export default function Client() {
         {content && !isLoading ? (
           content.map((contentEntry) => (
             <tr key={contentEntry.id}>
-              <td className="py-1 pe-4">{contentEntry.title}</td>
+              <td
+                className="max-w-0 overflow-hidden py-1 pe-4 text-ellipsis whitespace-nowrap"
+                title={contentEntry.title}
+              >
+                {contentEntry.title}
+              </td>
+              <td className="py-1 pe-4">{contentEntry.content_type.title}</td>
               <td className="py-1 pe-4 text-nowrap max-xl:hidden">
                 {new Date(contentEntry.created_at).toLocaleString()}
               </td>
