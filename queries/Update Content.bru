@@ -1,0 +1,19 @@
+meta {
+  name: Update Content
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{url}}/api/{{api_version}}/content/1
+  body: formUrlEncoded
+  auth: inherit
+}
+
+body:form-urlencoded {
+  title: Test Content
+}
+
+script:pre-request {
+  await login()
+}
