@@ -5,14 +5,15 @@ import { Fragment } from 'react'
 import DeleteContentTypeClient from './page.client'
 
 type Props = Readonly<{
-  isInModal?: boolean
   params: Promise<{
     id: string
+    isInModal?: boolean
   }>
 }>
 
-export default async function DeleteContentType({ isInModal, params }: Props) {
+export default async function DeleteContentType({ params }: Props) {
   const id = (await params).id
+  const isInModal = (await params).isInModal
 
   const { data, error } = await getContentType(+id)
 

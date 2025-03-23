@@ -1,4 +1,4 @@
-import DeleteContentType from '@/app/(cms)/content-types/delete/[id]/page'
+import DeleteContentEntry from '@/app/(cms)/content/delete/[id]/page'
 import Modal from '@/components/layout/modal.client'
 
 type Props = Readonly<{
@@ -8,15 +8,13 @@ type Props = Readonly<{
   }>
 }>
 
-export default async function DeleteContentTypeModal({ params }: Props) {
+export default async function DeleteContentEntryModal({ params }: Props) {
   const awaitedParams = await params
   awaitedParams.isInModal = true
 
   return (
     <Modal>
-      <DeleteContentType
-        params={new Promise((resolve) => resolve(awaitedParams))}
-      />
+      <DeleteContentEntry params={params} />
     </Modal>
   )
 }
