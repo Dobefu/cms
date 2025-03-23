@@ -93,6 +93,8 @@ func TestLoginErrUpdateSessionToken(t *testing.T) {
 
 	mock.ExpectExec("UPDATE users SET last_login = .+").WillReturnResult(sqlmock.NewResult(1, 1))
 
+	mock.ExpectExec("INSERT INTO sessions .+ ON CONFLICT(.+) DO .+").WillReturnError(assert.AnError)
+
 	_, err = Login("test", "test")
 	assert.EqualError(t, err, ErrUnexpected.Error())
 }
