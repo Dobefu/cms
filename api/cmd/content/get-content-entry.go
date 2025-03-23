@@ -11,12 +11,13 @@ import (
 
 func GetContentEntry(id int) (content content_structs.Content, err error) {
 	row := database.DB.QueryRow(
-		`SELECT id,title,created_at,updated_at FROM content WHERE id = $1 LIMIT 1`,
+		`SELECT id,content_type,title,created_at,updated_at FROM content WHERE id = $1 LIMIT 1`,
 		id,
 	)
 
 	err = row.Scan(
 		&content.Id,
+		&content.ContentType,
 		&content.Title,
 		&content.CreatedAt,
 		&content.UpdatedAt,

@@ -36,8 +36,8 @@ func TestGetContentErrScan(t *testing.T) {
 	mock, cleanup := setupGetContentTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT id,title,created_at,updated_at FROM content").WillReturnRows(
-		sqlmock.NewRows([]string{"id", "title", "", ""}).AddRow("bogus", "Title", "", ""),
+	mock.ExpectQuery("SELECT id,content_type,title,created_at,updated_at FROM content").WillReturnRows(
+		sqlmock.NewRows([]string{"id", "content_type", "title", "", ""}).AddRow("bogus", 1, "Title", "", ""),
 	)
 
 	content, err := GetContent()
@@ -49,8 +49,8 @@ func TestGetContentSuccess(t *testing.T) {
 	mock, cleanup := setupGetContentTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT id,title,created_at,updated_at FROM content").WillReturnRows(
-		sqlmock.NewRows([]string{"id", "title", "created_at", "updated_at"}).AddRow(1, "Title", "", ""),
+	mock.ExpectQuery("SELECT id,content_type,title,created_at,updated_at FROM content").WillReturnRows(
+		sqlmock.NewRows([]string{"id", "content_type", "title", "created_at", "updated_at"}).AddRow(1, 1, "Title", "", ""),
 	)
 
 	content, err := GetContent()

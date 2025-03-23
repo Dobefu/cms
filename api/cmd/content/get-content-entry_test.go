@@ -37,7 +37,7 @@ func TestGetContentEntryErrScanNoRows(t *testing.T) {
 	mock, cleanup := setupGetContentEntryTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT id,title,created_at,updated_at FROM content").WillReturnError(sql.ErrNoRows)
+	mock.ExpectQuery("SELECT id,content_type,title,created_at,updated_at FROM content").WillReturnError(sql.ErrNoRows)
 
 	_, err := GetContentEntry(1)
 	assert.EqualError(t, err, "Cannot find the content")
@@ -47,8 +47,8 @@ func TestGetContentEntryErrScanUnexpected(t *testing.T) {
 	mock, cleanup := setupGetContentEntryTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT id,title,created_at,updated_at FROM content").WillReturnRows(
-		sqlmock.NewRows([]string{"id", "title", "created_at", "updated_at"}).AddRow("bogus", "Title", "", ""),
+	mock.ExpectQuery("SELECT id,content_type,title,created_at,updated_at FROM content").WillReturnRows(
+		sqlmock.NewRows([]string{"id", "content_type", "title", "created_at", "updated_at"}).AddRow("bogus", 1, "Title", "", ""),
 	)
 
 	_, err := GetContentEntry(1)
@@ -59,11 +59,11 @@ func TestGetContentEntrySuccess(t *testing.T) {
 	mock, cleanup := setupGetContentEntryTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT id,title,created_at,updated_at FROM content").WillReturnRows(
-		sqlmock.NewRows([]string{"id", "title", "created_at", "updated_at"}).AddRow(1, "Title", "", ""),
+	mock.ExpectQuery("SELECT id,content_type,title,created_at,updated_at FROM content").WillReturnRows(
+		sqlmock.NewRows([]string{"id", "content_type", "title", "created_at", "updated_at"}).AddRow(1, 1, "Title", "", ""),
 	)
 
 	content, err := GetContentEntry(1)
 	assert.NoError(t, err)
-	assert.Equal(t, content_structs.Content{Id: 1, Title: "Title", CreatedAt: "", UpdatedAt: ""}, content)
+	assert.Equal(t, content_structs.Content{Id: 1, ContentType: 1, Title: "Title", CreatedAt: "", UpdatedAt: ""}, content)
 }
