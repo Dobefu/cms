@@ -5,6 +5,7 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 	content_structs "github.com/Dobefu/cms/api/cmd/content/structs"
+	content_type_structs "github.com/Dobefu/cms/api/cmd/content_type/structs"
 	"github.com/Dobefu/cms/api/cmd/database"
 	"github.com/Dobefu/cms/api/cmd/user"
 	"github.com/stretchr/testify/assert"
@@ -36,8 +37,8 @@ func TestGetContentErrScan(t *testing.T) {
 	mock, cleanup := setupGetContentTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT id,content_type,title,created_at,updated_at FROM content").WillReturnRows(
-		sqlmock.NewRows([]string{"id", "content_type", "title", "", ""}).AddRow("bogus", 1, "Title", "", ""),
+	mock.ExpectQuery("SELECT .+ FROM content .+").WillReturnRows(
+		sqlmock.NewRows([]string{"c.id", "ct.title", "ct.created_at", "ct.updated_at", "title", "", ""}).AddRow("bogus", "", "", "", "Title", "", ""),
 	)
 
 	content, err := GetContent()
@@ -49,11 +50,11 @@ func TestGetContentSuccess(t *testing.T) {
 	mock, cleanup := setupGetContentTests(t)
 	defer cleanup()
 
-	mock.ExpectQuery("SELECT id,content_type,title,created_at,updated_at FROM content").WillReturnRows(
-		sqlmock.NewRows([]string{"id", "content_type", "title", "created_at", "updated_at"}).AddRow(1, 1, "Title", "", ""),
+	mock.ExpectQuery("SELECT .+ FROM content .+").WillReturnRows(
+		sqlmock.NewRows([]string{"c.id", "ct.title", "ct.created_at", "ct.updated_at", "title", "", ""}).AddRow(1, "", "", "", "Title", "", ""),
 	)
 
 	content, err := GetContent()
 	assert.NoError(t, err)
-	assert.Equal(t, []content_structs.Content{{Id: 1, Title: "Title", CreatedAt: "", UpdatedAt: ""}}, content)
+	assert.Equal(t, []content_structs.Content{{Id: 1, ContentType: content_type_structs.ContentType{Id: 1}, Title: "Title", CreatedAt: "", UpdatedAt: ""}}, content)
 }
