@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import CreateContent from './page'
 
-describe('content/create', () => {
+describe('content/create/[id]', () => {
   vi.mock('@/utils/get-content-type', () => {
     return {
       getContentType: (id: (typeof getContentType)['arguments']) => {
