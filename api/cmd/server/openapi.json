@@ -18,6 +18,10 @@
     {
       "name": "Content types",
       "description": "All content type endpoints"
+    },
+    {
+      "name": "Content",
+      "description": "All content endpoints"
     }
   ],
   "paths": {
@@ -838,6 +842,463 @@
           }
         ]
       }
+    },
+    "/content": {
+      "parameters": [
+        {
+          "name": "Session-Token",
+          "description": "The user session token that is obtained after logging in",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Content"],
+        "summary": "Get all content",
+        "description": "Get a list of all content entries",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "content": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/content"
+                          }
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": "null"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": {
+                        "content": [
+                          {
+                            "id": 1,
+                            "content_type": {
+                              "id": 1,
+                              "title": "Content Type Title",
+                              "created_at": "1970-01-01T00:00:00.000000Z",
+                              "updated_at": "1970-01-01T00:00:00.000000Z"
+                            },
+                            "title": "Content Title",
+                            "created_at": "1970-01-01T00:00:00.000000Z",
+                            "updated_at": "1970-01-01T00:00:00.000000Z"
+                          }
+                        ]
+                      },
+                      "error": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4xx | 5xx": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": "Could not validate session_token"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "put": {
+        "tags": ["Content"],
+        "summary": "Create content entry",
+        "description": "Create a new content entry",
+        "consumes": ["application/x-www-form-urlencoded"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": ["content_type", "title"],
+                "properties": {
+                  "content_type": {
+                    "type": "number",
+                    "description": "",
+                    "default": ""
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "",
+                    "default": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": "null"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": {
+                        "id": 1
+                      },
+                      "error": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4xx | 5xx": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": "Could not validate session_token"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/content/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "description": "The ID of the content entry",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "Session-Token",
+          "description": "The user session token that is obtained after logging in",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Content"],
+        "summary": "Get content entry",
+        "description": "Get a single content entry by its ID",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "content": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "updated_at": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": "null"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": {
+                        "content": {
+                          "id": 1,
+                          "content_type": {
+                            "id": 1,
+                            "title": "Content Type Title",
+                            "created_at": "1970-01-01T00:00:00.000000Z",
+                            "updated_at": "1970-01-01T00:00:00.000000Z"
+                          },
+                          "title": "Content Title",
+                          "created_at": "1970-01-01T00:00:00.000000Z",
+                          "updated_at": "1970-01-01T00:00:00.000000Z"
+                        }
+                      },
+                      "error": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4xx | 5xx": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": "Could not validate session_token"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Content"],
+        "summary": "Update content entry",
+        "description": "Update new content entry",
+        "consumes": ["application/x-www-form-urlencoded"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": ["title"],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "",
+                    "default": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": "null"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": {
+                        "id": 1
+                      },
+                      "error": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4xx | 5xx": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": "Could not validate session_token"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Content"],
+        "summary": "Delete content entry",
+        "description": "Delete a content entry",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": "null"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": {
+                        "id": 1
+                      },
+                      "error": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4xx | 5xx": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": [
+                    {
+                      "data": null,
+                      "error": "Could not validate session_token"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -847,6 +1308,40 @@
         "properties": {
           "id": {
             "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      },
+      "content": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "content_type": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "title": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "updated_at": {
+                "type": "string"
+              }
+            }
           },
           "title": {
             "type": "string"
