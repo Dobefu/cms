@@ -30,17 +30,29 @@ export default async function CreateContent() {
         </TitleContainer>
 
         <div className="flex flex-col gap-4">
-          {data.content_types.map((contentType) => (
-            <Link
-              className="btn px-8 py-6"
-              href={`/content/create/${contentType.id}`}
-              key={contentType.id}
-            >
-              <Icon className="size-4 shrink-0" icon={iconPlus} ssr />
+          {data.content_types ? (
+            data.content_types.map((contentType) => (
+              <Link
+                className="btn px-8 py-6"
+                href={`/content/create/${contentType.id}`}
+                key={contentType.id}
+              >
+                <Icon className="size-4 shrink-0" icon={iconPlus} ssr />
 
-              {contentType.title}
-            </Link>
-          ))}
+                {contentType.title}
+              </Link>
+            ))
+          ) : (
+            <p>
+              There are no content types yet.{' '}
+              <Link
+                className="font-medium text-blue-600 dark:text-blue-400"
+                href="/content-types/create"
+              >
+                Create one.
+              </Link>
+            </p>
+          )}
         </div>
       </Container>
     </>
