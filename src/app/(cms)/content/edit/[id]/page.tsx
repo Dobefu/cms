@@ -31,7 +31,7 @@ export default async function EditContentEntry({ params }: Props) {
       <Container className="flex flex-col gap-8">
         <TitleContainer>
           <Heading level={1}>
-            Edit <i>{data.content.content_type.title}</i> {data.content.title}
+            Edit {data.content.content_type.title} <i>{data.content.title}</i>
           </Heading>
         </TitleContainer>
 
