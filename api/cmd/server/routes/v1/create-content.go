@@ -40,7 +40,9 @@ func CreateContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := contentCreateContent(userId, contentType, title)
+	isPublished := r.FormValue("published") == "true" || r.FormValue("published") == "1"
+
+	id, err := contentCreateContent(userId, contentType, title, isPublished)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)

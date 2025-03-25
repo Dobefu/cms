@@ -26,7 +26,7 @@ func TestCreateContentErrMissingTitle(t *testing.T) {
 	_, cleanup := setupCreateContentTests(t)
 	defer cleanup()
 
-	id, err := CreateContent(1, 1, "")
+	id, err := CreateContent(1, 1, "", true)
 	assert.EqualError(t, err, "Missing title")
 	assert.Equal(t, 0, id)
 }
@@ -35,7 +35,7 @@ func TestCreateContentErrInsert(t *testing.T) {
 	_, cleanup := setupCreateContentTests(t)
 	defer cleanup()
 
-	id, err := CreateContent(1, 1, "Title")
+	id, err := CreateContent(1, 1, "Title", true)
 	assert.EqualError(t, err, user.ErrUnexpected.Error())
 	assert.Equal(t, 0, id)
 }
@@ -48,7 +48,7 @@ func TestCreateContentErrScan(t *testing.T) {
 		sqlmock.NewRows([]string{"id"}).AddRow("bogus"),
 	)
 
-	id, err := CreateContent(1, 1, "Title")
+	id, err := CreateContent(1, 1, "Title", true)
 	assert.EqualError(t, err, user.ErrUnexpected.Error())
 	assert.Equal(t, 0, id)
 }
@@ -61,7 +61,7 @@ func TestCreateContentSuccess(t *testing.T) {
 		sqlmock.NewRows([]string{"id"}).AddRow(1),
 	)
 
-	id, err := CreateContent(1, 1, "Title")
+	id, err := CreateContent(1, 1, "Title", true)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, id)
 }

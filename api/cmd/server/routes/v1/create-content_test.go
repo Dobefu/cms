@@ -18,7 +18,7 @@ func setupCreateContentTests() (rr *httptest.ResponseRecorder, cleanup func()) {
 		return "", 1, nil
 	}
 
-	contentCreateContent = func(userId int, contentType int, title string) (id int, err error) {
+	contentCreateContent = func(userId int, contentType int, title string, isPublished bool) (id int, err error) {
 		return 1, nil
 	}
 
@@ -84,7 +84,7 @@ func TestCreateContentErrCreateContent(t *testing.T) {
 	rr, cleanup := setupCreateContentTests()
 	defer cleanup()
 
-	contentCreateContent = func(userId int, contentType int, title string) (id int, err error) {
+	contentCreateContent = func(userId int, contentType int, title string, isPublished bool) (id int, err error) {
 		return 0, assert.AnError
 	}
 

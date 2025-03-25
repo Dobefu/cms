@@ -7,7 +7,7 @@ import (
 	"github.com/Dobefu/cms/api/cmd/user"
 )
 
-func CreateContent(userId int, contentType int, title string) (id int, err error) {
+func CreateContent(userId int, contentType int, title string, isPublished bool) (id int, err error) {
 	if title == "" {
 		return 0, errors.New("Missing title")
 	}
@@ -17,7 +17,7 @@ func CreateContent(userId int, contentType int, title string) (id int, err error
 		contentType,
 		title,
 		userId,
-		true,
+		isPublished,
 	)
 
 	if err != nil {
