@@ -950,7 +950,7 @@
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
-                "required": ["content_type", "title"],
+                "required": ["content_type", "title", "published"],
                 "properties": {
                   "content_type": {
                     "type": "number",
@@ -961,6 +961,11 @@
                     "type": "string",
                     "description": "",
                     "default": ""
+                  },
+                  "published": {
+                    "type": "boolean",
+                    "description": "",
+                    "default": true
                   }
                 }
               }
