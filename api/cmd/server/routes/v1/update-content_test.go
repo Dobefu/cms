@@ -18,7 +18,7 @@ func setupUpdateContentTests() (rr *httptest.ResponseRecorder, cleanup func()) {
 		return "", 1, nil
 	}
 
-	contentUpdateContent = func(id int, userId int, title string) (err error) {
+	contentUpdateContent = func(id int, userId int, title string, isPublished bool) (err error) {
 		return nil
 	}
 
@@ -85,7 +85,7 @@ func TestUpdateContentErrUpdateContent(t *testing.T) {
 	rr, cleanup := setupUpdateContentTests()
 	defer cleanup()
 
-	contentUpdateContent = func(id int, userId int, title string) (err error) {
+	contentUpdateContent = func(id int, userId int, title string, isPublished bool) (err error) {
 		return assert.AnError
 	}
 

@@ -8,7 +8,7 @@ import (
 	"github.com/Dobefu/cms/api/cmd/user"
 )
 
-func UpdateContent(id int, userId int, title string) (err error) {
+func UpdateContent(id int, userId int, title string, isPublished bool) (err error) {
 	if title == "" {
 		return errors.New("Missing title")
 	}
@@ -19,7 +19,7 @@ func UpdateContent(id int, userId int, title string) (err error) {
 		title,
 		userId,
 		time.Now(),
-		true,
+		isPublished,
 	)
 
 	if err != nil {

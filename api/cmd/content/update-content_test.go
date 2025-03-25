@@ -26,7 +26,7 @@ func TestUpdateContentErrMissingTitle(t *testing.T) {
 	_, cleanup := setupUpdateContentTests(t)
 	defer cleanup()
 
-	err := UpdateContent(1, 1, "")
+	err := UpdateContent(1, 1, "", true)
 	assert.EqualError(t, err, "Missing title")
 }
 
@@ -34,7 +34,7 @@ func TestUpdateContentErrInsert(t *testing.T) {
 	_, cleanup := setupUpdateContentTests(t)
 	defer cleanup()
 
-	err := UpdateContent(1, 1, "Title")
+	err := UpdateContent(1, 1, "Title", true)
 	assert.EqualError(t, err, user.ErrUnexpected.Error())
 }
 
@@ -46,6 +46,6 @@ func TestUpdateContentSuccess(t *testing.T) {
 		sqlmock.NewResult(1, 1),
 	)
 
-	err := UpdateContent(1, 1, "Title")
+	err := UpdateContent(1, 1, "Title", true)
 	assert.NoError(t, err)
 }

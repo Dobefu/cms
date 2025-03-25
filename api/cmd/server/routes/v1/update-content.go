@@ -40,7 +40,9 @@ func UpdateContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = contentUpdateContent(id, userId, title)
+	isPublished := r.FormValue("published") == "true" || r.FormValue("published") == "1"
+
+	err = contentUpdateContent(id, userId, title, isPublished)
 
 	if err != nil {
 		utils.PrintError(w, err, err == user.ErrUnexpected)
