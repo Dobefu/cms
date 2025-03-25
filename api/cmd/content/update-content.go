@@ -14,11 +14,12 @@ func UpdateContent(id int, userId int, title string) (err error) {
 	}
 
 	_, err = database.DB.Exec(
-		`UPDATE content SET (title, author_id, updated_at) = ($2, $3, $4) WHERE id = $1`,
+		`UPDATE content SET (title, author_id, updated_at, published) = ($2, $3, $4, $5) WHERE id = $1`,
 		id,
 		title,
 		userId,
 		time.Now(),
+		true,
 	)
 
 	if err != nil {

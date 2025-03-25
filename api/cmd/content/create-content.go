@@ -13,10 +13,11 @@ func CreateContent(userId int, contentType int, title string) (id int, err error
 	}
 
 	rows, err := database.DB.Query(
-		`INSERT INTO content (content_type, title, author_id) VALUES ($1, $2, $3) RETURNING id`,
+		`INSERT INTO content (content_type, title, author_id, published) VALUES ($1, $2, $3, $4) RETURNING id`,
 		contentType,
 		title,
 		userId,
+		true,
 	)
 
 	if err != nil {

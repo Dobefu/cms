@@ -11,7 +11,7 @@ func GetContent() (content []content_structs.Content, err error) {
 	rows, err := database.DB.Query(
 		`
       SELECT
-      c.id,ct.title,ct.created_at,ct.updated_at,c.title,c.created_at,c.updated_at
+      c.id,ct.title,ct.created_at,ct.updated_at,c.title,c.created_at,c.updated_at,c.published
       FROM content AS c
       INNER JOIN content_types AS ct
       ON c.content_type = ct.id
@@ -26,10 +26,11 @@ func GetContent() (content []content_structs.Content, err error) {
 	for rows.Next() {
 		var id int
 		var title, createdAt, updatedAt string
+		var isPublished bool
 
 		var contentType content_type_structs.ContentType
 
-		err = rows.Scan(&id, &contentType.Title, &contentType.CreatedAt, &contentType.UpdatedAt, &title, &createdAt, &updatedAt)
+		err = rows.Scan(&id, &contentType.Title, &contentType.CreatedAt, &contentType.UpdatedAt, &title, &createdAt, &updatedAt, &isPublished)
 
 		contentType.Id = id
 
@@ -43,6 +44,7 @@ func GetContent() (content []content_structs.Content, err error) {
 			Title:       title,
 			CreatedAt:   createdAt,
 			UpdatedAt:   updatedAt,
+			Published:   isPublished,
 		})
 	}
 

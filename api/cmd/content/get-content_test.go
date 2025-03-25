@@ -51,10 +51,10 @@ func TestGetContentSuccess(t *testing.T) {
 	defer cleanup()
 
 	mock.ExpectQuery("SELECT .+ FROM content .+").WillReturnRows(
-		sqlmock.NewRows([]string{"c.id", "ct.title", "ct.created_at", "ct.updated_at", "title", "", ""}).AddRow(1, "", "", "", "Title", "", ""),
+		sqlmock.NewRows([]string{"c.id", "ct.title", "ct.created_at", "ct.updated_at", "title", "", "", "published"}).AddRow(1, "", "", "", "Title", "", "", true),
 	)
 
 	content, err := GetContent()
 	assert.NoError(t, err)
-	assert.Equal(t, []content_structs.Content{{Id: 1, ContentType: content_type_structs.ContentType{Id: 1}, Title: "Title", CreatedAt: "", UpdatedAt: ""}}, content)
+	assert.Equal(t, []content_structs.Content{{Id: 1, ContentType: content_type_structs.ContentType{Id: 1}, Title: "Title", CreatedAt: "", UpdatedAt: "", Published: true}}, content)
 }

@@ -13,7 +13,7 @@ import (
 func GetContentEntry(id int) (content content_structs.Content, err error) {
 	row := database.DB.QueryRow(
 		`
-			SELECT c.id,ct.title,ct.created_at,ct.updated_at,c.title,c.created_at,c.updated_at
+			SELECT c.id,ct.title,ct.created_at,ct.updated_at,c.title,c.created_at,c.updated_at,c.published
 			FROM content AS c
 			INNER JOIN content_types AS ct
 			ON c.content_type = ct.id
@@ -33,6 +33,7 @@ func GetContentEntry(id int) (content content_structs.Content, err error) {
 		&content.Title,
 		&content.CreatedAt,
 		&content.UpdatedAt,
+		&content.Published,
 	)
 
 	contentType.Id = content.Id
