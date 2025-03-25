@@ -18,8 +18,10 @@ import FormError from '../form-elements/form-error'
 export const initialState: FormState = {
   content_type: undefined,
   title: '',
+  published: true,
   errors: {
     title: undefined,
+    published: undefined,
     generic: undefined,
   },
 }
@@ -91,6 +93,20 @@ export default function ContentForm({
         />
         {!!state.errors?.title && <FormError>{state.errors.title}</FormError>}
       </Label>
+
+      <Label className="flex-row">
+        <Input
+          data-testid="published"
+          /* v8 ignore next */
+          defaultChecked={state.published ?? initialData?.published ?? true}
+          name="published"
+          type="checkbox"
+        />
+        Published
+      </Label>
+      {!!state.errors?.published && (
+        <FormError>{state.errors.published}</FormError>
+      )}
 
       <div className="flex items-center justify-between gap-4">
         <Input

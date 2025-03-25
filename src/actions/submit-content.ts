@@ -11,8 +11,10 @@ export interface FormState {
   id?: number
   content_type?: ContentType
   title: string
+  published: boolean
   errors: {
     title?: string[]
+    published?: string[]
     generic?: string[]
   }
 }
@@ -23,6 +25,7 @@ const ContentSchema = v.object({
     v.nonEmpty('Please enter a title'),
     v.minLength(3, 'Please enter a title of at least 3 characters'),
   ),
+  published: v.pipe(v.boolean('Published must be a boolean')),
 })
 
 export async function submitContent(
@@ -38,11 +41,12 @@ export async function submitContent(
 
   const contentTypeId = formData.get('content_type') as string
   const title = formData.get('title') as string
+  const isPublished = formData.get('published') === 'on'
 
   const { isValid, newState } = validateForm<typeof ContentSchema, FormState>(
     ContentSchema,
     prevState,
-    { content_type: contentTypeId, title },
+    { content_type: contentTypeId, title, published: isPublished },
   )
 
   if (!isValid) {
@@ -59,7 +63,7 @@ export async function submitContent(
     path: prevState.id ? `/content/${prevState.id}` : '/content',
     method: prevState.id ? 'POST' : 'PUT',
     body: formData,
-    queryKeyParts: [title, prevState.id],
+    queryKeyParts: [title, isPublished, prevState.id],
   })
 
   if (error) {

@@ -35,6 +35,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       )
     }
 
+    if (type === 'checkbox' || type === 'radio') {
+      return <input className={className} ref={ref} type={type} {...props} />
+    }
+
     return (
       <input
         className={cn(
