@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS content(
   content_type bigint,
   title varchar(255) NOT NULL,
   author_id bigint NOT NULL,
+  published boolean NOT NULL DEFAULT FALSE,
   created_at timestamp without time zone NOT NULL DEFAULT NOW(),
   updated_at timestamp without time zone NOT NULL DEFAULT NOW(),
   FOREIGN KEY (author_id) REFERENCES users(id),
