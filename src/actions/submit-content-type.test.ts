@@ -25,10 +25,7 @@ describe('submitContentType', () => {
 
     initialState = {
       title: '',
-      errors: {
-        title: undefined,
-        generic: undefined,
-      },
+      errors: {},
     }
 
     vi.spyOn(global, 'fetch').mockResolvedValue({

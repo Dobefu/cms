@@ -24,11 +24,7 @@ describe('login', () => {
 
     initialState = {
       username: '',
-      errors: {
-        username: undefined,
-        password: undefined,
-        generic: undefined,
-      },
+      errors: {},
     }
 
     vi.spyOn(global, 'fetch').mockResolvedValue({

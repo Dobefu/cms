@@ -9,13 +9,12 @@ describe('getContent', () => {
   it('fetches the content', async () => {
     expect.hasAssertions()
 
-    vi.mock('@/utils/fetch-api-data', () => {
-      return {
-        fetchApiData: () => {
-          return { data: {}, error: undefined }
-        },
-      }
-    })
+    vi.mock('@/utils/fetch-api-data', () => ({
+      fetchApiData: () => ({
+        data: {},
+        error: undefined,
+      }),
+    }))
 
     const { data, error } = await getContent()
 

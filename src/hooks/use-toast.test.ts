@@ -6,8 +6,6 @@ let shouldHaveContext: boolean
 describe('useToast', () => {
   beforeEach(() => {
     shouldHaveContext = false
-
-    vi.clearAllMocks()
   })
 
   afterEach(() => {
