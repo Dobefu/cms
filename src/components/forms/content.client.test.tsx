@@ -24,18 +24,14 @@ describe('contentForm', () => {
     vi.restoreAllMocks()
   })
 
-  vi.mock('react', async () => {
-    const actual = await vi.importActual('react')
-
-    return {
-      ...actual,
-      useContext: () => ({
-        showToast: (message: string) => {
-          throw new Error(message)
-        },
-      }),
-    }
-  })
+  vi.mock('react', async () => ({
+    ...(await vi.importActual('react')),
+    useContext: () => ({
+      showToast: (message: string) => {
+        throw new Error(message)
+      },
+    }),
+  }))
 
   it('renders normally', () => {
     expect.hasAssertions()

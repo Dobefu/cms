@@ -6,14 +6,10 @@ import Toast from './toast.client'
 describe('toast', () => {
   const onClose = useCallback(() => {}, [])
 
-  vi.mock('react', async () => {
-    const actual = await vi.importActual('react')
-
-    return {
-      ...actual,
-      useCallback: () => undefined,
-    }
-  })
+  vi.mock('react', async () => ({
+    ...(await vi.importActual('react')),
+    useCallback: () => undefined,
+  }))
 
   it('renders normally', () => {
     expect.hasAssertions()

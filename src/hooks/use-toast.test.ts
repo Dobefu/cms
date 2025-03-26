@@ -12,22 +12,18 @@ describe('useToast', () => {
     vi.restoreAllMocks()
   })
 
-  vi.mock('react', async () => {
-    const actual = await vi.importActual('react')
+  vi.mock('react', async () => ({
+    ...(await vi.importActual('react')),
+    useContext: () => {
+      if (!shouldHaveContext) return
 
-    return {
-      ...actual,
-      useContext: () => {
-        if (!shouldHaveContext) return
-
-        return {
-          showToast: (message: string) => {
-            throw new Error(message)
-          },
-        }
-      },
-    }
-  })
+      return {
+        showToast: (message: string) => {
+          throw new Error(message)
+        },
+      }
+    },
+  }))
 
   it('returns fallback context when no ToastContext is provided', () => {
     expect.hasAssertions()

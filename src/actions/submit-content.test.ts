@@ -44,18 +44,14 @@ describe('submitContent', () => {
     cookieStore.delete('session')
   })
 
-  vi.mock('react', async () => {
-    const actual = await vi.importActual('react')
-
-    return {
-      ...actual,
-      useContext: () => ({
-        showToast: (message: string) => {
-          throw new Error(message)
-        },
-      }),
-    }
-  })
+  vi.mock('react', async () => ({
+    ...(await vi.importActual('react')),
+    useContext: () => ({
+      showToast: (message: string) => {
+        throw new Error(message)
+      },
+    }),
+  }))
 
   it('returns early when the session token cookie is missing', async () => {
     expect.hasAssertions()

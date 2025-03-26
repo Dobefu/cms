@@ -3,22 +3,18 @@ import { describe, expect, it, vi } from 'vitest'
 import ToastContainer from './toast-container.client'
 
 describe('toastContainer', () => {
-  vi.mock('react', async () => {
-    const actual = await vi.importActual('react')
-
-    return {
-      ...actual,
-      useContext: () => ({
-        toasts: [
-          {
-            id: '',
-            message: '',
-            type: 'info',
-          },
-        ],
-      }),
-    }
-  })
+  vi.mock('react', async () => ({
+    ...(await vi.importActual('react')),
+    useContext: () => ({
+      toasts: [
+        {
+          id: '',
+          message: '',
+          type: 'info',
+        },
+      ],
+    }),
+  }))
 
   it('renders normally', () => {
     expect.hasAssertions()
