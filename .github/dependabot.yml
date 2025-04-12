@@ -4,3 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: 'tuesday'
+      time: '00:00'
+    assignees:
+      - 'Dobefu'
+    reviewers:
+      - 'Dobefu'
+
