@@ -33,7 +33,7 @@
     "@iconify/react": "^5.2.0",
     "@tailwindcss/postcss": "^4.0.15",
     "@tanstack/eslint-plugin-query": "^5.71.5",
-    "@testing-library/react": "^16.2.0",
+    "@testing-library/react": "^16.3.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^22.13.14",
     "@types/react": "^19.0.12",
