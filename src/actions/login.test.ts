@@ -14,7 +14,7 @@ let initialState: FormState
 let spy: MockInstance
 let formData: FormData
 
-describe('login', () => {
+describe('login action', () => {
   const oldApiEndpoint = process.env.API_ENDPOINT
   const oldApiKey = process.env.API_KEY
 

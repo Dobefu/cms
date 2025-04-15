@@ -4,14 +4,14 @@ import { middleware } from './middleware'
 
 const cookieStore = await cookies()
 
-describe('middleware', () => {
+describe('route middleware', () => {
   beforeEach(() => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ...new Response(),
       json: () => {
         const token = cookieStore.get('session')
 
-        if (!token || !token?.value || token.value === 'bogus') {
+        if (!token?.value || token.value === 'bogus') {
           return Promise.resolve({ data: null, error: '' })
         }
 
