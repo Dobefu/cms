@@ -26,7 +26,7 @@ export default function Sidebar({ isCollapsedInitial, links }: Props) {
     <nav
       aria-label="Sidebar"
       className="group flex w-xs flex-col py-4 transition-all data-[collapsed]:w-20 max-lg:w-20"
-      data-collapsed={isCollapsed ?? undefined}
+      data-collapsed={!!isCollapsed ? true : null}
     >
       <div className="flex-1">
         {links.map((link) => (
