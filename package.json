@@ -18,13 +18,13 @@
   },
   "dependencies": {
     "@iconify/icons-mdi": "^1.2.48",
-    "@tanstack/react-query": "^5.74.7",
+    "@tanstack/react-query": "^5.76.1",
     "clsx": "^2.1.1",
     "motion": "^12.9.2",
-    "next": "15.3.1",
+    "next": "15.3.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tailwind-merge": "^3.2.0",
+    "tailwind-merge": "^3.3.0",
     "valibot": "1.1.0"
   },
   "devDependencies": {
@@ -46,7 +46,7 @@
     "eslint": "^9.26.0",
     "eslint-config-next": "15.2.4",
     "eslint-config-prettier": "^10.1.2",
-    "eslint-plugin-testing-library": "^7.1.1",
+    "eslint-plugin-testing-library": "^7.2.1",
     "jsdom": "^26.1.0",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
