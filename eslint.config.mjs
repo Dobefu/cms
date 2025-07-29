@@ -65,6 +65,7 @@ const eslintConfig = [
       'react/require-default-props': ['error'],
       'react/style-prop-object': ['warn'],
 
+      'vitest/prefer-describe-function-title': ['off'],
       'vitest/no-hooks': [
         'error',
         {

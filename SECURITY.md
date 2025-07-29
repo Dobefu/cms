@@ -11,7 +11,6 @@ We take the security of the project seriously. If you have discovered a security
 2. Instead, please create a new issue with the title "Security Vulnerability Report" and mark it as confidential.
 
 3. Include the following information in your report:
-
    - Type of vulnerability (e.g., buffer overflow, SQL injection, cross-site scripting, etc.)
    - Full paths of source file(s) related to the manifestation of the vulnerability
    - The location of the affected source code (tag/branch/commit or direct URL)
