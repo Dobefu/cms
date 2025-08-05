@@ -43,8 +43,8 @@ importers:
         specifier: ^9.32.0
         version: 9.32.0
       '@iconify/react':
-        specifier: ^5.2.1
-        version: 5.2.1(react@19.1.1)
+        specifier: ^6.0.0
+        version: 6.0.0(react@19.1.1)
       '@tailwindcss/postcss':
         specifier: ^4.1.11
         version: 4.1.11
@@ -476,8 +476,8 @@ packages:
   '@iconify/icons-mdi@1.2.48':
     resolution: {integrity: sha512-1Tiq+iX1d2MzrdDiw45Tc9HuhNgg8H4vvaKNV+kF+jmr/kPG+YyeLMyXUKp4bwv+gheIAgNpZPjuqAPRkmMieA==}
 
-  '@iconify/react@5.2.1':
-    resolution: {integrity: sha512-37GDR3fYDZmnmUn9RagyaX+zca24jfVOMY8E1IXTqJuE8pxNtN51KWPQe3VODOWvuUurq7q9uUu3CFrpqj5Iqg==}
+  '@iconify/react@6.0.0':
+    resolution: {integrity: sha512-eqNscABVZS8eCpZLU/L5F5UokMS9mnCf56iS1nM9YYHdH8ZxqZL9zyjSwW60IOQFsXZkilbBiv+1paMXBhSQnw==}
     peerDependencies:
       react: '>=16'
 
@@ -3397,7 +3397,7 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify/react@5.2.1(react@19.1.1)':
+  '@iconify/react@6.0.0(react@19.1.1)':
     dependencies:
       '@iconify/types': 2.0.0
       react: 19.1.1
