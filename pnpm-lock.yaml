@@ -12,8 +12,8 @@ importers:
         specifier: ^1.2.48
         version: 1.2.48
       '@tanstack/react-query':
-        specifier: ^5.85.6
-        version: 5.85.6(react@19.1.1)
+        specifier: ^5.87.4
+        version: 5.87.4(react@19.1.1)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -954,11 +954,11 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
 
-  '@tanstack/query-core@5.85.6':
-    resolution: {integrity: sha512-hCj0TktzdCv2bCepIdfwqVwUVWb+GSHm1Jnn8w+40lfhQ3m7lCO7ADRUJy+2unxQ/nzjh2ipC6ye69NDW3l73g==}
+  '@tanstack/query-core@5.87.4':
+    resolution: {integrity: sha512-uNsg6zMxraEPDVO2Bn+F3/ctHi+Zsk+MMpcN8h6P7ozqD088F6mFY5TfGM7zuyIrL7HKpDyu6QHfLWiDxh3cuw==}
 
-  '@tanstack/react-query@5.85.6':
-    resolution: {integrity: sha512-VUAag4ERjh+qlmg0wNivQIVCZUrYndqYu3/wPCVZd4r0E+1IqotbeyGTc+ICroL/PqbpSaGZg02zSWYfcvxbdA==}
+  '@tanstack/react-query@5.87.4':
+    resolution: {integrity: sha512-T5GT/1ZaNsUXf5I3RhcYuT17I4CPlbZgyLxc/ZGv7ciS6esytlbjb3DgUFO6c8JWYMDpdjSWInyGZUErgzqhcA==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -3909,11 +3909,11 @@ snapshots:
       - supports-color
       - typescript
 
-  '@tanstack/query-core@5.85.6': {}
+  '@tanstack/query-core@5.87.4': {}
 
-  '@tanstack/react-query@5.85.6(react@19.1.1)':
+  '@tanstack/react-query@5.87.4(react@19.1.1)':
     dependencies:
-      '@tanstack/query-core': 5.85.6
+      '@tanstack/query-core': 5.87.4
       react: 19.1.1
 
   '@testing-library/dom@10.4.0':
