@@ -35,7 +35,7 @@
     "@tanstack/eslint-plugin-query": "^5.91.2",
     "@testing-library/react": "^16.3.2",
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",
-    "@types/node": "^25.0.7",
+    "@types/node": "^25.0.10",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.1.2",
